@@ -1,1 +1,1 @@
-# bluepenguin-portal
+# Blue Penguin Portal
