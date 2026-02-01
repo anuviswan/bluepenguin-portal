@@ -1,0 +1,49 @@
+:root {
+  --color-blue-primary: #1B4B8A;
+  --color-blue-light: #4A7AB0;
+  --color-text-main: #333333;
+  --color-text-light: #666666;
+  --color-bg-light: #F9FAFB;
+  --color-border: #E5E7EB;
+  --color-white: #FFFFFF;
+  
+  --font-family-body: 'Inter', sans-serif;
+  --font-family-display: 'Dancing Script', cursive;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-body);
+  color: var(--color-text-main);
+  background-color: var(--color-bg-light);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
