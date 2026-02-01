@@ -3,20 +3,32 @@ import BaseCheckbox from './BaseCheckbox.vue';
 import { useProductFilter } from '@/composables/useProductFilter';
 import { computed } from 'vue';
 
+import { ref, onMounted } from 'vue';
+import CategoryService from '@/services/CategoryService';
+import type { Category } from '@/types/Category';
+
 const { filters, toggleFilter, clearFilters, getCount } = useProductFilter();
 
 interface FilterOption {
   label: string;
   value: string;
+  id?: string; // Optional ID for keying if needed
 }
 
-const categories: FilterOption[] = [
-  { label: 'Necklace', value: 'Necklace' },
-  { label: 'Bracelet', value: 'Bracelet' },
-  { label: 'Earrings', value: 'Earrings' },
-  { label: 'Ring', value: 'Ring' },
-  { label: 'Anklet', value: 'Anklet' },
-];
+const categories = ref<FilterOption[]>([]);
+
+onMounted(async () => {
+    try {
+        const data = await CategoryService.getAll();
+        categories.value = data.map((c: Category) => ({ 
+            label: c.name, 
+            value: c.name,
+            id: c.id 
+        }));
+    } catch (error) {
+        console.error('Failed to fetch categories:', error);
+    }
+});
 
 const materials: FilterOption[] = [
   { label: 'Bead-Based', value: 'Bead-Based' },
