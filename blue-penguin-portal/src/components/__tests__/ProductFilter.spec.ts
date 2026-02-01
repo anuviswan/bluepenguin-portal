@@ -2,14 +2,34 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import ProductFilter from '../ProductFilter.vue'
+import { useMetadataStore } from '@/stores/metadata'
 
-// Mock CategoryService
+// Mock services are implicitly useful if store uses them, but if we assume logic is moved to store,
+// we might want to mock the store actions or just rely on service mocks if store calls them.
+// Let's rely on service mocks and the real store logic to verify integration, 
+// OR mock the store state directly.
+// Given we want to test ProductFilter, we should probably mock the store state or spy on fetchAll.
+// But using real store with mocked services verifies the chain.
+
+// Mock Services
 vi.mock('@/services/CategoryService', () => ({
     default: {
-        getAll: vi.fn().mockResolvedValue([
-            { id: '1', name: 'Necklace' },
-            { id: '2', name: 'Bracelet' }
-        ])
+        getAll: vi.fn().mockResolvedValue([{ id: '1', name: 'Necklace' }])
+    }
+}))
+vi.mock('@/services/MaterialService', () => ({
+    default: {
+        getAll: vi.fn().mockResolvedValue([{ id: '1', name: 'Bead-Based' }])
+    }
+}))
+vi.mock('@/services/CollectionService', () => ({
+    default: {
+        getAll: vi.fn().mockResolvedValue([{ id: '1', name: 'Ocean Dreams' }])
+    }
+}))
+vi.mock('@/services/FeatureService', () => ({
+    default: {
+        getAll: vi.fn().mockResolvedValue([{ id: '1', name: 'Handmade' }])
     }
 }))
 
@@ -21,17 +41,21 @@ describe('ProductFilter', () => {
 
     it('renders filter groups', async () => {
         const wrapper = mount(ProductFilter)
-        await flushPromises() // Wait for onMounted
+        // Store call happens on mount
+        await flushPromises()
+
         expect(wrapper.text()).toContain('Category')
         expect(wrapper.text()).toContain('Raw Material')
         expect(wrapper.text()).toContain('Necklace')
-        expect(wrapper.text()).toContain('Bracelet')
+        expect(wrapper.text()).toContain('Bead-Based')
+        expect(wrapper.text()).toContain('Ocean Dreams')
+        expect(wrapper.text()).toContain('Handmade')
     })
 
     it('toggles checkboxes', async () => {
         const wrapper = mount(ProductFilter)
         await flushPromises()
-        const checkbox = wrapper.find('input[type="checkbox"]') // This might grab the first one which should be Necklace now
+        const checkbox = wrapper.find('input[type="checkbox"]')
         if (checkbox.exists()) {
             await checkbox.setValue(true)
             expect((checkbox.element as HTMLInputElement).checked).toBe(true)

@@ -1,49 +1,55 @@
 <script setup lang="ts">
+import { computed, onMounted } from 'vue';
 import BaseCheckbox from './BaseCheckbox.vue';
 import { useProductFilter } from '@/composables/useProductFilter';
-import { computed } from 'vue';
-
-import { ref, onMounted } from 'vue';
-import CategoryService from '@/services/CategoryService';
+import { useMetadataStore } from '@/stores/metadata';
+import { storeToRefs } from 'pinia';
 import type { Category } from '@/types/Category';
+import type { Material } from '@/types/Material';
+import type { Collection } from '@/types/Collection';
+import type { Feature } from '@/types/Feature';
 
 const { filters, toggleFilter, clearFilters, getCount } = useProductFilter();
+const metadataStore = useMetadataStore();
+const { categories: rawCategories, materials: rawMaterials, collections: rawCollections, features: rawFeatures } = storeToRefs(metadataStore);
 
 interface FilterOption {
   label: string;
   value: string;
-  id?: string; // Optional ID for keying if needed
+  id?: string;
 }
 
-const categories = ref<FilterOption[]>([]);
+const categories = computed<FilterOption[]>(() => rawCategories.value.map((c: Category) => ({ 
+    label: c.name, 
+    value: c.name,
+    id: c.id 
+})));
+
+const materials = computed<FilterOption[]>(() => rawMaterials.value.map((m: Material) => ({
+    label: m.name,
+    value: m.name,
+    id: m.id
+})));
+
+const collections = computed<FilterOption[]>(() => rawCollections.value.map((c: Collection) => ({
+    label: c.name,
+    value: c.name,
+    id: c.id
+})));
+
+const features = computed<FilterOption[]>(() => rawFeatures.value.map((f: Feature) => ({
+    label: f.name,
+    value: f.name,
+    id: f.id
+})));
 
 onMounted(async () => {
-    try {
-        const data = await CategoryService.getAll();
-        categories.value = data.map((c: Category) => ({ 
-            label: c.name, 
-            value: c.name,
-            id: c.id 
-        }));
-    } catch (error) {
-        console.error('Failed to fetch categories:', error);
-    }
+    await metadataStore.fetchAll();
 });
 
-const materials: FilterOption[] = [
-  { label: 'Bead-Based', value: 'Bead-Based' },
-  { label: 'Resin-Based', value: 'Resin-Based' },
-];
 
-const features: FilterOption[] = [
-  { label: 'Handmade', value: 'Handmade' },
-  { label: 'Hypoallergenic', value: 'Hypoallergenic' },
-  { label: 'Adjustable', value: 'Adjustable' },
-];
 
-const collections: FilterOption[] = [
-    { label: 'Ocean Dreams', value: 'Ocean Dreams' }
-];
+
 
 // Computed checks for checked state
 const isChecked = (group: keyof typeof filters, value: string) => filters[group].includes(value);
