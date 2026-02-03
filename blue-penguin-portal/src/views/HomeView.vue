@@ -6,7 +6,7 @@ import ProductCard from '@/components/ProductCard.vue';
 import { useProductFilter } from '@/composables/useProductFilter';
 import { computed } from 'vue';
 
-const { filteredProducts, getCount } = useProductFilter();
+const { filteredProducts, loading, error } = useProductFilter();
 const totalItems = computed(() => filteredProducts.value.length);
 </script>
 
@@ -22,18 +22,33 @@ const totalItems = computed(() => filteredProducts.value.length);
            <p class="count">{{ totalItems }} items</p>
         </div>
         
-        <div class="product-grid" v-if="filteredProducts.length > 0">
+        <!-- Error State -->
+        <div v-if="error" class="error-state">
+            <p class="error-message">{{ error }}</p>
+            <p class="error-hint">Please try again or adjust your filters.</p>
+        </div>
+
+        <!-- Loading State -->
+        <div v-else-if="loading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading products...</p>
+        </div>
+
+        <!-- Products Grid -->
+        <div v-else-if="filteredProducts.length > 0" class="product-grid">
           <ProductCard 
             v-for="product in filteredProducts" 
-            :key="product.id" 
+            :key="product.sku" 
             :product="product" 
           />
         </div>
+
+        <!-- No Results -->
         <div v-else class="no-results">
             <p>No products found matching your filters.</p>
         </div>
 
-        <div class="load-more" v-if="filteredProducts.length > 0">
+        <div class="load-more" v-if="filteredProducts.length > 0 && !loading">
            <button class="load-more-btn">Load More ›</button> 
         </div>
       </main>
@@ -111,6 +126,43 @@ const totalItems = computed(() => filteredProducts.value.length);
 
 .load-more-btn:hover {
     background-color: #f9f9f9;
+}
+
+.loading-state {
+    padding: 4rem;
+    text-align: center;
+    color: var(--color-text-light);
+}
+
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--color-blue-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-state {
+    padding: 4rem;
+    text-align: center;
+}
+
+.error-message {
+    color: #dc2626;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.error-hint {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
