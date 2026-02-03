@@ -9,31 +9,32 @@ const props = defineProps<{
 
 const { formatted: price } = useCurrency(computed(() => props.product.price));
 
-// Helper for image colors/placeholders based on design feel
-// In real app, `props.product.image` would be real url.
-// I will use a placeholder or style the div if image fails.
+// Parse feature codes - they might be comma-separated or single values
+const featureCodesArray = computed(() => {
+  if (!props.product.featureCodes) return [];
+  return props.product.featureCodes.split(',').map(code => code.trim());
+});
 </script>
 
 <template>
   <div class="product-card">
     <div class="image-container">
-        <!-- Using a placeholder div with dynamic colors or patterns could be cool if no image. 
-             For now, just a standard img with error fallback or simple rect.
-             Since I don't have real images, I'll style a div to look like "content". 
-        -->
+        <!-- Placeholder image with first letter of product name -->
         <div class="placeholder-image">
-            {{ product.title[0] }}
+            {{ product.productName[0] }}
         </div>
     </div>
     <div class="info">
-        <h3 class="title">{{ product.title }}</h3>
+        <h3 class="title">{{ product.productName }}</h3>
+        <p class="sku">{{ product.sku }}</p>
         <div class="details">
             <span class="price">{{ price }}</span>
             <div class="icons">
-                <span v-if="product.features.includes('Ocean Dreams')" title="Ocean Dreams">🌊</span> 
-                <span v-if="product.features.includes('Handmade')" title="Handmade">✋</span>
-                <span title="Adjustable" v-if="product.features.includes('Adjustable')">🔧</span>
-                <span title="Hypoallergenic" v-if="product.features.includes('Hypoallergenic')">🌿</span>
+                <!-- Show icons based on collection and feature codes -->
+                <span v-if="product.collectionCode === 'NAT'" title="Nature Collection">🌿</span>
+                <span v-if="featureCodesArray.includes('EM')" title="Embedded">💎</span>
+                <span v-if="featureCodesArray.includes('HM')" title="Handmade">✋</span>
+                <span v-if="featureCodesArray.includes('AD')" title="Adjustable">🔧</span>
             </div>
         </div>
     </div>
@@ -77,6 +78,12 @@ const { formatted: price } = useCurrency(computed(() => props.product.price));
     background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
 }
 
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .info {
   padding: 1rem 0; /* Design has minimal padding, text mostly below image aligned left */
 }
@@ -85,7 +92,14 @@ const { formatted: price } = useCurrency(computed(() => props.product.price));
   font-size: 1rem;
   font-weight: 500;
   color: var(--color-text-main);
+  margin-bottom: 0.25rem;
+}
+
+.sku {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
   margin-bottom: 0.5rem;
+  font-family: monospace;
 }
 
 .details {

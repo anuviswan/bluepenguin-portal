@@ -9,38 +9,34 @@ import type { Material } from '@/types/Material';
 import type { Collection } from '@/types/Collection';
 import type { Feature } from '@/types/Feature';
 
-const { filters, toggleFilter, clearFilters, getCount } = useProductFilter();
+const { filters, toggleFilter, clearFilters } = useProductFilter();
 const metadataStore = useMetadataStore();
 const { categories: rawCategories, materials: rawMaterials, collections: rawCollections, features: rawFeatures } = storeToRefs(metadataStore);
+
 
 interface FilterOption {
   label: string;
   value: string;
-  id?: string;
 }
 
 const categories = computed<FilterOption[]>(() => rawCategories.value.map((c: Category) => ({ 
     label: c.name, 
-    value: c.name,
-    id: c.id 
+    value: c.id
 })));
 
 const materials = computed<FilterOption[]>(() => rawMaterials.value.map((m: Material) => ({
     label: m.name,
-    value: m.name,
-    id: m.id
+    value: m.id
 })));
 
 const collections = computed<FilterOption[]>(() => rawCollections.value.map((c: Collection) => ({
     label: c.name,
-    value: c.name,
-    id: c.id
+    value: c.id
 })));
 
 const features = computed<FilterOption[]>(() => rawFeatures.value.map((f: Feature) => ({
     label: f.name,
-    value: f.name,
-    id: f.id
+    value: f.id
 })));
 
 onMounted(async () => {
@@ -69,7 +65,6 @@ const isChecked = (group: keyof typeof filters, value: string) => filters[group]
         :key="opt.value"
         :id="`cat-${opt.value}`"
         :label="opt.label"
-        :count="getCount('category', opt.value)"
         :modelValue="isChecked('categories', opt.value)"
         @update:modelValue="toggleFilter('categories', opt.value)"
       />
@@ -82,7 +77,6 @@ const isChecked = (group: keyof typeof filters, value: string) => filters[group]
         :key="opt.value"
          :id="`mat-${opt.value}`"
         :label="opt.label"
-        :count="getCount('material', opt.value)"
         :modelValue="isChecked('materials', opt.value)"
         @update:modelValue="toggleFilter('materials', opt.value)"
       />
