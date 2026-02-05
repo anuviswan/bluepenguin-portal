@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useCurrency } from '@/composables/useCurrency';
-import type { Product } from '@/stores/products';
+import { useProductImage } from '@/composables/useProductImage';
+import type { Product } from '@/types/Product';
 
 const props = defineProps<{
   product: Product;
 }>();
 
 const { formatted: price } = useCurrency(computed(() => props.product.price));
+const { imageUrl, isLoading, error } = useProductImage(props.product.sku);
 
 // Parse feature codes - they might be comma-separated or single values
 const featureCodesArray = computed(() => {
@@ -19,8 +21,11 @@ const featureCodesArray = computed(() => {
 <template>
   <div class="product-card">
     <div class="image-container">
-        <!-- Placeholder image with first letter of product name -->
-        <div class="placeholder-image">
+        <div v-if="isLoading" class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+        <img v-else-if="imageUrl && !error" :src="imageUrl" :alt="product.productName" class="product-image" />
+        <div v-else class="placeholder-image">
             {{ product.productName[0] }}
         </div>
     </div>
@@ -65,6 +70,35 @@ const featureCodesArray = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-blue-primary);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .placeholder-image {
@@ -78,11 +112,7 @@ const featureCodesArray = computed(() => {
     background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
 }
 
-.product-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+
 
 .info {
   padding: 1rem 0; /* Design has minimal padding, text mostly below image aligned left */
