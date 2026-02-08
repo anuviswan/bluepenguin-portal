@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 import BaseCheckbox from './BaseCheckbox.vue';
 import { useProductFilter } from '@/composables/useProductFilter';
 import { useMetadataStore } from '@/stores/metadata';
@@ -50,6 +50,24 @@ onMounted(async () => {
 // Computed checks for checked state
 const isChecked = (group: keyof typeof filters, value: string) => filters[group].includes(value);
 
+const INITIAL_LIMIT = 5;
+
+const expandedGroups = reactive({
+  categories: false,
+  materials: false,
+  collections: false,
+  features: false,
+});
+
+const toggleExpand = (group: keyof typeof expandedGroups) => {
+  expandedGroups[group] = !expandedGroups[group];
+};
+
+const getDisplayedOptions = (options: FilterOption[], group: keyof typeof expandedGroups) => {
+  if (expandedGroups[group]) return options;
+  return options.slice(0, INITIAL_LIMIT);
+};
+
 </script>
 
 <template>
@@ -61,49 +79,77 @@ const isChecked = (group: keyof typeof filters, value: string) => filters[group]
     <div class="filter-group">
       <h3>Category</h3>
       <BaseCheckbox 
-        v-for="opt in categories" 
+        v-for="opt in getDisplayedOptions(categories, 'categories')" 
         :key="opt.value"
         :id="`cat-${opt.value}`"
         :label="opt.label"
         :modelValue="isChecked('categories', opt.value)"
         @update:modelValue="toggleFilter('categories', opt.value)"
       />
+      <button 
+        v-if="categories.length > INITIAL_LIMIT" 
+        class="toggle-more"
+        @click="toggleExpand('categories')"
+      >
+        {{ expandedGroups.categories ? 'Show Less' : `+ ${categories.length - INITIAL_LIMIT} more` }}
+      </button>
     </div>
 
     <div class="filter-group">
       <h3>Raw Material</h3>
       <BaseCheckbox 
-        v-for="opt in materials" 
+        v-for="opt in getDisplayedOptions(materials, 'materials')" 
         :key="opt.value"
          :id="`mat-${opt.value}`"
         :label="opt.label"
         :modelValue="isChecked('materials', opt.value)"
         @update:modelValue="toggleFilter('materials', opt.value)"
       />
+      <button 
+        v-if="materials.length > INITIAL_LIMIT" 
+        class="toggle-more"
+        @click="toggleExpand('materials')"
+      >
+        {{ expandedGroups.materials ? 'Show Less' : `+ ${materials.length - INITIAL_LIMIT} more` }}
+      </button>
     </div>
 
     <div class="filter-group">
       <h3>Features</h3>
       <BaseCheckbox 
-        v-for="opt in features" 
+        v-for="opt in getDisplayedOptions(features, 'features')" 
         :key="opt.value"
          :id="`feat-${opt.value}`"
         :label="opt.label"
         :modelValue="isChecked('features', opt.value)"
         @update:modelValue="toggleFilter('features', opt.value)"
       />
+      <button 
+        v-if="features.length > INITIAL_LIMIT" 
+        class="toggle-more"
+        @click="toggleExpand('features')"
+      >
+        {{ expandedGroups.features ? 'Show Less' : `+ ${features.length - INITIAL_LIMIT} more` }}
+      </button>
     </div>
 
     <div class="filter-group">
       <h3>Collection</h3>
       <BaseCheckbox 
-        v-for="opt in collections" 
+        v-for="opt in getDisplayedOptions(collections, 'collections')" 
         :key="opt.value"
          :id="`col-${opt.value}`"
         :label="opt.label"
         :modelValue="isChecked('collections', opt.value)"
         @update:modelValue="toggleFilter('collections', opt.value)"
       />
+      <button 
+        v-if="collections.length > INITIAL_LIMIT" 
+        class="toggle-more"
+        @click="toggleExpand('collections')"
+      >
+        {{ expandedGroups.collections ? 'Show Less' : `+ ${collections.length - INITIAL_LIMIT} more` }}
+      </button>
     </div>
     
      <div class="actions">
@@ -143,6 +189,23 @@ h3 {
 
 .actions {
     margin-top: 2rem;
+}
+
+.toggle-more {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: 0.5rem;
+    color: var(--color-blue-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.toggle-more:hover {
+    color: var(--color-text-main);
+    text-decoration: underline;
 }
 
 .clear-btn {
