@@ -52,13 +52,37 @@ describe('ProductFilter', () => {
         expect(wrapper.text()).toContain('Handmade')
     })
 
-    it('toggles checkboxes', async () => {
+    it('limits filter options to 5 and toggles more/less', async () => {
+        const CategoryService = (await import('@/services/CategoryService')).default
+        vi.mocked(CategoryService.getAll).mockResolvedValue(Array.from({ length: 8 }, (_, i) => ({
+            id: `${i + 1}`,
+            name: `Category ${i + 1}`,
+            description: `Desc ${i + 1}`
+        })))
+
         const wrapper = mount(ProductFilter)
         await flushPromises()
-        const checkbox = wrapper.find('input[type="checkbox"]')
-        if (checkbox.exists()) {
-            await checkbox.setValue(true)
-            expect((checkbox.element as HTMLInputElement).checked).toBe(true)
-        }
+
+        // Initially should show only 5 checkboxes in Category group
+        const categoryGroup = wrapper.findAll('.filter-group').find(g => g.find('h3').text() === 'Category')
+        const checkboxes = categoryGroup?.findAllComponents({ name: 'BaseCheckbox' })
+        expect(checkboxes?.length).toBe(5)
+
+        // Find "more" button
+        const moreBtn = categoryGroup?.find('.toggle-more')
+        expect(moreBtn?.exists()).toBe(true)
+        expect(moreBtn?.text()).toContain('+ 3 more')
+
+        // Click "more"
+        await moreBtn?.trigger('click')
+
+        // Should show all 8 checkboxes
+        const updatedCheckboxes = categoryGroup?.findAllComponents({ name: 'BaseCheckbox' })
+        expect(updatedCheckboxes?.length).toBe(8)
+        expect(moreBtn?.text()).toBe('Show Less')
+
+        // Click "less"
+        await moreBtn?.trigger('click')
+        expect(categoryGroup?.findAllComponents({ name: 'BaseCheckbox' }).length).toBe(5)
     })
 })
