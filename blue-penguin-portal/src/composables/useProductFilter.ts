@@ -5,7 +5,14 @@ import type { SearchProductsRequest } from '@/types/SearchProductsRequest';
 
 export function useProductFilter() {
     const productsStore = useProductsStore();
-    const { products, loading, error } = storeToRefs(productsStore);
+    const {
+        products,
+        loading,
+        error,
+        totalCount,
+        pageNumber,
+        pageSize
+    } = storeToRefs(productsStore);
 
     const filters = reactive({
         categories: [] as string[],
@@ -24,6 +31,8 @@ export function useProductFilter() {
             selectedMaterials: filters.materials,
             selectedCollections: filters.collections,
             selectedFeatures: filters.features,
+            pageNumber: 1, // Reset to page 1 on filter change
+            pageSize: pageSize.value
         };
     };
 
@@ -48,13 +57,24 @@ export function useProductFilter() {
         { deep: true }
     );
 
+    // Load more products
+    const loadMore = async () => {
+        const searchRequest = buildSearchRequest();
+        searchRequest.pageNumber = pageNumber.value; // Store already knows current page
+        await productsStore.loadMoreProducts(searchRequest);
+    };
+
+    const hasMore = computed(() => products.value.length < totalCount.value);
+
     // Load initial products on mount
     onMounted(async () => {
         await productsStore.searchProducts({
             selectedCategories: [],
             selectedMaterials: [],
             selectedCollections: [],
-            selectedFeatures: []
+            selectedFeatures: [],
+            pageNumber: 1,
+            pageSize: pageSize.value
         });
     });
 
@@ -76,10 +96,13 @@ export function useProductFilter() {
 
     return {
         filters,
-        filteredProducts: products, // Products are now filtered by the API
+        filteredProducts: products,
         loading,
         error,
+        totalCount,
+        hasMore,
         toggleFilter,
-        clearFilters
+        clearFilters,
+        loadMore
     };
 }

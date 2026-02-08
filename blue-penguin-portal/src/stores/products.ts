@@ -13,18 +13,47 @@ export const useProductsStore = defineStore('products', () => {
     const loading = ref(false);
     const error = ref<string | null>(null);
 
-    async function searchProducts(filters: SearchProductsRequest) {
+    // Pagination state
+    const totalCount = ref(0);
+    const pageNumber = ref(1);
+    const pageSize = ref(12);
+
+    async function searchProducts(filters: SearchProductsRequest, append: boolean = false) {
         loading.value = true;
         error.value = null;
 
         try {
-            products.value = await ProductService.searchProducts(filters);
+            // Ensure pagination params are set
+            const request: SearchProductsRequest = {
+                ...filters,
+                pageNumber: filters.pageNumber || 1,
+                pageSize: filters.pageSize || pageSize.value
+            };
+
+            const result = await ProductService.searchProducts(request);
+
+            if (append) {
+                products.value = [...products.value, ...result.items];
+            } else {
+                products.value = result.items;
+            }
+
+            totalCount.value = result.totalCount;
+            pageNumber.value = result.pageNumber;
+            pageSize.value = result.pageSize;
         } catch (err) {
             error.value = err instanceof Error ? err.message : 'Failed to fetch products';
-            products.value = [];
+            if (!append) products.value = [];
         } finally {
             loading.value = false;
         }
+    }
+
+    async function loadMoreProducts(filters: SearchProductsRequest) {
+        if (loading.value || products.value.length >= totalCount.value) return;
+
+        const nextPage = pageNumber.value + 1;
+        await searchProducts({ ...filters, pageNumber: nextPage }, true);
     }
 
     async function fetchProductBySku(skuId: string) {
@@ -67,7 +96,11 @@ export const useProductsStore = defineStore('products', () => {
         currentProductImages,
         loading,
         error,
+        totalCount,
+        pageNumber,
+        pageSize,
         searchProducts,
+        loadMoreProducts,
         fetchProductBySku
     };
 });
