@@ -32,4 +32,14 @@ export async function downloadByImageId(skuId: string, imageId: string): Promise
     return URL.createObjectURL(blob);
 }
 
+/**
+ * Fetches all image IDs for a given SKU
+ */
+export async function getAllImagesForSkuId(skuId: string): Promise<string[]> {
+    const response = await api.get<string[]>('/api/FileUpload/getAllImagesForSkuId', {
+        params: { skuId }
+    });
+    return response.data;
+}
+
 export default api;

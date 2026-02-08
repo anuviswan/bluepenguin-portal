@@ -12,4 +12,5 @@ export interface Product {
     featureCodes: string;
     yearCode: number;
     sequenceCode?: number;
+    productDescription?: string;
 }
