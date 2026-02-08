@@ -6,8 +6,14 @@ import ProductCard from '@/components/ProductCard.vue';
 import { useProductFilter } from '@/composables/useProductFilter';
 import { computed } from 'vue';
 
-const { filteredProducts, loading, error } = useProductFilter();
-const totalItems = computed(() => filteredProducts.value.length);
+const { 
+  filteredProducts, 
+  loading, 
+  error, 
+  totalCount, 
+  hasMore, 
+  loadMore 
+} = useProductFilter();
 </script>
 
 <template>
@@ -19,7 +25,7 @@ const totalItems = computed(() => filteredProducts.value.length);
       
       <main class="content">
         <div class="content-header">
-           <p class="count">{{ totalItems }} items</p>
+           <p class="count">{{ totalCount }} items</p>
         </div>
         
         <!-- Error State -->
@@ -29,7 +35,7 @@ const totalItems = computed(() => filteredProducts.value.length);
         </div>
 
         <!-- Loading State -->
-        <div v-else-if="loading" class="loading-state">
+        <div v-else-if="loading && filteredProducts.length === 0" class="loading-state">
             <div class="spinner"></div>
             <p>Loading products...</p>
         </div>
@@ -44,12 +50,19 @@ const totalItems = computed(() => filteredProducts.value.length);
         </div>
 
         <!-- No Results -->
-        <div v-else class="no-results">
+        <div v-else-if="!loading" class="no-results">
             <p>No products found matching your filters.</p>
         </div>
 
-        <div class="load-more" v-if="filteredProducts.length > 0 && !loading">
-           <button class="load-more-btn">Load More ›</button> 
+        <div class="load-more" v-if="hasMore">
+           <button 
+             class="load-more-btn" 
+             @click="loadMore" 
+             :disabled="loading"
+           >
+             <span v-if="loading" class="btn-spinner"></span>
+             {{ loading ? 'Loading...' : 'Load More ›' }}
+           </button> 
         </div>
       </main>
     </div>
@@ -147,6 +160,20 @@ const totalItems = computed(() => filteredProducts.value.length);
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.btn-spinner {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--color-blue-primary);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+}
+
+.load-more-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 
 .error-state {
