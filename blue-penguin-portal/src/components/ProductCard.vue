@@ -19,7 +19,7 @@ const featureCodesArray = computed(() => {
 </script>
 
 <template>
-  <div class="product-card">
+  <RouterLink :to="{ name: 'product-details', params: { sku: product.sku } }" class="product-card">
     <div class="image-container">
         <div v-if="isLoading" class="loading-overlay">
             <div class="spinner"></div>
@@ -43,7 +43,7 @@ const featureCodesArray = computed(() => {
             </div>
         </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped>
@@ -56,6 +56,7 @@ const featureCodesArray = computed(() => {
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   border: 1px solid transparent;
+  text-decoration: none;
 }
 
 .product-card:hover {

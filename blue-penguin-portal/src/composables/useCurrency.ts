@@ -1,6 +1,6 @@
 import { computed, type Ref, unref } from 'vue';
 
-export function useCurrency(amount: Ref<number> | number, currencyCode = 'USD') {
+export function useCurrency(amount: Ref<number> | number, currencyCode = 'INR') {
   const formatted = computed(() => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
