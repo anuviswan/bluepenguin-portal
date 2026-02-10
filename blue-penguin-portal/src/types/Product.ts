@@ -9,7 +9,7 @@ export interface Product {
     eTag: string;
     materialCode: string;
     collectionCode: string;
-    featureCodes: string;
+    featureCodes: string[];
     yearCode: number;
     sequenceCode?: number;
     productDescription?: string;
