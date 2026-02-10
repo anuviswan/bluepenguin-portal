@@ -44,7 +44,7 @@ const mainImage = computed(() => {
 
 const featureCodesArray = computed(() => {
   if (!currentProduct.value?.featureCodes) return [];
-  return currentProduct.value.featureCodes.split(',').map(code => code.trim());
+  return currentProduct.value.featureCodes.map(code => code.trim());
 });
 
 const featureNames = computed(() => {
