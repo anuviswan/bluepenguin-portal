@@ -9,13 +9,19 @@ describe('ProductCard', () => {
     })
 
     const mockProduct = {
-        id: 1,
-        title: 'Test Necklace',
+        productName: 'Test Necklace',
+        sku: 'TEST-SKU',
         price: 99,
-        image: 'test.jpg',
-        category: 'Necklace',
+        stock: 10,
+        partitionKey: 'Necklace',
+        rowKey: 'TEST-SKU',
+        timestamp: new Date().toISOString(),
+        eTag: '*',
         material: 'Silver',
-        features: ['Handmade']
+        collectionCode: 'NAT',
+        featureCodes: ['Handmade'],
+        categoryCode: 'Necklace',
+        yearCode: 2024
     }
 
     it('renders product details', () => {
@@ -25,6 +31,6 @@ describe('ProductCard', () => {
             }
         })
         expect(wrapper.text()).toContain('Test Necklace')
-        expect(wrapper.text()).toContain('$99')
+        expect(wrapper.text()).toContain('₹99')
     })
 })

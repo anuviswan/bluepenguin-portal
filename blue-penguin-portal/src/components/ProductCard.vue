@@ -11,10 +11,17 @@ const props = defineProps<{
 const { formatted: price } = useCurrency(computed(() => props.product.price));
 const { imageUrl, isLoading, error } = useProductImage(props.product.sku);
 
-// Parse feature codes - they might be comma-separated or single values
+// Parse feature codes - they might be an array or a comma-separated string
 const featureCodesArray = computed(() => {
-  if (!props.product.featureCodes) return [];
-  return props.product.featureCodes.split(',').map(code => code.trim());
+  const codes = props.product.featureCodes;
+  if (!codes) return [];
+  if (Array.isArray(codes)) {
+    return codes.map((code: string) => String(code).trim()).filter(Boolean);
+  }
+  if (typeof codes === 'string') {
+    return (codes as string).split(',').map((code: string) => code.trim()).filter(Boolean);
+  }
+  return [];
 });
 </script>
 

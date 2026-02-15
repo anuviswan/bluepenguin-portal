@@ -14,7 +14,7 @@ describe('useProductFilter', () => {
         expect(filters.categories).toContain('Necklace')
 
         // Check if all filtered products are Necklaces
-        const allNecklaces = filteredProducts.value.every(p => p.category === 'Necklace')
+        const allNecklaces = filteredProducts.value.every(p => p.categoryCode === 'Necklace')
         expect(allNecklaces).toBe(true)
     })
 
@@ -24,7 +24,7 @@ describe('useProductFilter', () => {
         toggleFilter('materials', 'Bead-Based')
 
         const correctFilter = filteredProducts.value.every(p =>
-            p.category === 'Necklace' && p.material === 'Bead-Based'
+            p.categoryCode === 'Necklace' && p.material === 'Bead-Based'
         )
         expect(correctFilter).toBe(true)
     })

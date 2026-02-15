@@ -10,7 +10,7 @@ export function useProductFilter() {
         loading,
         error,
         totalCount,
-        pageNumber,
+        page,
         pageSize
     } = storeToRefs(productsStore);
 
@@ -30,9 +30,7 @@ export function useProductFilter() {
             selectedCategories: filters.categories,
             selectedMaterials: filters.materials,
             selectedCollections: filters.collections,
-            selectedFeatures: filters.features,
-            pageNumber: 1, // Reset to page 1 on filter change
-            pageSize: pageSize.value
+            selectedFeatures: filters.features
         };
     };
 
@@ -60,7 +58,6 @@ export function useProductFilter() {
     // Load more products
     const loadMore = async () => {
         const searchRequest = buildSearchRequest();
-        searchRequest.pageNumber = pageNumber.value; // Store already knows current page
         await productsStore.loadMoreProducts(searchRequest);
     };
 
@@ -72,9 +69,7 @@ export function useProductFilter() {
             selectedCategories: [],
             selectedMaterials: [],
             selectedCollections: [],
-            selectedFeatures: [],
-            pageNumber: 1,
-            pageSize: pageSize.value
+            selectedFeatures: []
         });
     });
 

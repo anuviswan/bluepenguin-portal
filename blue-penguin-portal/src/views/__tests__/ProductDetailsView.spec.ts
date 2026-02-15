@@ -53,10 +53,17 @@ describe('ProductDetailsView', () => {
             sku: 'SKU123',
             productName: 'Blue Pearl Necklace',
             price: 45,
-            featureCodes: 'HM,HP,AD',
-            materialCode: 'SLV',
+            featureCodes: ['HM', 'HP', 'AD'],
+            material: 'SLV',
             collectionCode: 'NAT',
-            productDescription: 'Mock Description'
+            description: 'Mock Description',
+            stock: 10,
+            partitionKey: 'Necklace',
+            rowKey: 'SKU123',
+            timestamp: new Date().toISOString(),
+            eTag: '*',
+            categoryCode: 'Necklace',
+            yearCode: 2024
         }
         productsStore.loading = false
 
@@ -96,7 +103,7 @@ describe('ProductDetailsView', () => {
         // Verify tags are rendered
         const tags = wrapper.findAll('.tag')
         expect(tags.length).toBe(5) // 3 features + 1 material + 1 collection
-        expect(tags[0].text()).toBe('Material: Silver')
+        expect(tags[0]!.text()).toBe('Material: Silver')
     })
 
     it('handles quantity changes', async () => {
@@ -104,7 +111,12 @@ describe('ProductDetailsView', () => {
             sku: 'SKU123',
             productName: 'Blue Pearl Necklace',
             price: 45,
-            featureCodes: 'HM,HP,AD'
+            featureCodes: ['HM', 'HP', 'AD'],
+            stock: 10,
+            categoryCode: 'Necklace',
+            material: 'Silver',
+            collectionCode: 'NAT',
+            yearCode: 2024
         }
         productsStore.loading = false
 
