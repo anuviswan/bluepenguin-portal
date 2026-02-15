@@ -43,21 +43,28 @@ const mainImage = computed(() => {
 });
 
 const featureCodesArray = computed(() => {
-  if (!currentProduct.value?.featureCodes) return [];
-  return currentProduct.value.featureCodes.map(code => code.trim());
+  const codes = currentProduct.value?.featureCodes;
+  if (!codes) return [];
+  if (Array.isArray(codes)) {
+    return codes.map((code: string) => String(code).trim()).filter(Boolean);
+  }
+  if (typeof codes === 'string') {
+    return (codes as string).split(',').map((code: string) => code.trim()).filter(Boolean);
+  }
+  return [];
 });
 
 const featureNames = computed(() => {
-  return featureCodesArray.value.map(code => {
+  return featureCodesArray.value.map((code: string) => {
     const feature = allFeatures.value.find(f => f.id === code);
     return feature ? feature.name : code;
   });
 });
 
 const materialName = computed(() => {
-  if (!currentProduct.value?.materialCode) return '';
-  const mat = allMaterials.value.find(m => m.id === currentProduct.value?.materialCode);
-  return mat ? mat.name : currentProduct.value.materialCode;
+  if (!currentProduct.value?.material) return '';
+  const mat = allMaterials.value.find(m => m.id === currentProduct.value?.material);
+  return mat ? mat.name : currentProduct.value.material;
 });
 
 const collectionName = computed(() => {
@@ -173,7 +180,7 @@ const goBack = () => {
         <div class="product-description-section">
           <h2>Product Details</h2>
           <div class="description-text">
-            <p>{{ currentProduct.productDescription }}</p>
+            <p>{{ currentProduct.description }}</p>
           </div>
         </div>
 

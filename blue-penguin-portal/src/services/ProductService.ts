@@ -4,13 +4,15 @@ import type { Product } from '@/types/Product';
 import type { PaginatedResult } from '@/types/PaginatedResult';
 
 export const ProductService = {
-    async searchProducts(filters: SearchProductsRequest): Promise<PaginatedResult<Product>> {
-        const response = await api.post<PaginatedResult<Product>>('/api/Product/search', filters);
+    async searchProducts(filters: SearchProductsRequest, params: { page: number, pageSize: number }): Promise<PaginatedResult<Product>> {
+        const response = await api.post<PaginatedResult<Product>>('/api/Product/search', filters, {
+            params: params
+        });
         return response.data;
     },
-    async getAllProducts(pageNumber: number = 1, pageSize: number = 12): Promise<PaginatedResult<Product>> {
+    async getAllProducts(page: number = 1, pageSize: number = 12): Promise<PaginatedResult<Product>> {
         const response = await api.get<PaginatedResult<Product>>('/api/Product/getall', {
-            params: { pageNumber, pageSize }
+            params: { page, pageSize }
         });
         return response.data;
     },

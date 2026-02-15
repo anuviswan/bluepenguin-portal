@@ -4,6 +4,4 @@ export interface SearchProductsRequest {
     selectedCollections: string[];
     selectedFeatures: string[];
     selectedYears?: string[];
-    pageNumber?: number;
-    pageSize?: number;
 }

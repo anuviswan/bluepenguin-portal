@@ -125,17 +125,48 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddFeatureRequest"
+                "$ref": "#/components/schemas/AddCollectionRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddFeatureRequest"
+                "$ref": "#/components/schemas/AddCollectionRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddFeatureRequest"
+                "$ref": "#/components/schemas/AddCollectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Collection/update": {
+      "put": {
+        "tags": [
+          "Collection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCollectionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCollectionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCollectionRequest"
               }
             }
           }
@@ -161,6 +192,37 @@
     },
     "/api/Feature/create": {
       "post": {
+        "tags": [
+          "Feature"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddFeatureRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddFeatureRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddFeatureRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Feature/update": {
+      "put": {
         "tags": [
           "Feature"
         ],
@@ -290,6 +352,27 @@
         }
       }
     },
+    "/api/FileUpload/getproductimagesdetails": {
+      "get": {
+        "tags": [
+          "FileUpload"
+        ],
+        "parameters": [
+          {
+            "name": "skuId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/FileUpload/getPrimaryImageIdForSkuId": {
       "get": {
         "tags": [
@@ -311,38 +394,47 @@
         }
       }
     },
-    "/api/Material/getall": {
-      "get": {
-        "tags": [
-          "Material"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/MetaData/feature/create": {
+    "/api/FileUpload/addproductimage": {
       "post": {
         "tags": [
-          "MetaData"
+          "FileUpload"
+        ],
+        "parameters": [
+          {
+            "name": "isPrimaryImage",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/MetaDataEntity"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetaDataEntity"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetaDataEntity"
+                "required": [
+                  "File",
+                  "SkuId"
+                ],
+                "type": "object",
+                "properties": {
+                  "SkuId": {
+                    "type": "string"
+                  },
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "SkuId": {
+                  "style": "form"
+                },
+                "File": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -354,10 +446,38 @@
         }
       }
     },
-    "/api/MetaData/feature/getall": {
+    "/api/FileUpload/deleteproductimage": {
+      "delete": {
+        "tags": [
+          "FileUpload"
+        ],
+        "parameters": [
+          {
+            "name": "skuId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Material/getall": {
       "get": {
         "tags": [
-          "MetaData"
+          "Material"
         ],
         "responses": {
           "200": {
@@ -501,7 +621,38 @@
         }
       }
     },
-    "/seed/execute": {
+    "/api/Product/update": {
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Seed/execute": {
       "post": {
         "tags": [
           "Seed"
@@ -513,7 +664,7 @@
         }
       }
     },
-    "/seed/clear": {
+    "/api/Seed/clear": {
       "post": {
         "tags": [
           "Seed"
@@ -528,6 +679,20 @@
   },
   "components": {
     "schemas": {
+      "AddCollectionRequest": {
+        "type": "object",
+        "properties": {
+          "collectionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "collectionName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AddFeatureRequest": {
         "type": "object",
         "properties": {
@@ -637,40 +802,6 @@
         },
         "additionalProperties": false
       },
-      "ETag": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "MetaDataEntity": {
-        "type": "object",
-        "properties": {
-          "partitionKey": {
-            "type": "string",
-            "nullable": true
-          },
-          "rowKey": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "notes": {
-            "type": "string",
-            "nullable": true
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "eTag": {
-            "$ref": "#/components/schemas/ETag"
-          }
-        },
-        "additionalProperties": false
-      },
       "SearchProductsRequest": {
         "type": "object",
         "properties": {
@@ -707,6 +838,48 @@
             "items": {
               "type": "string"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateProductRequest": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string",
+            "nullable": true
+          },
+          "productName": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "specifications": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "productCareInstructions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "stock": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

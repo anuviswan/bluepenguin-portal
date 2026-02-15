@@ -3,14 +3,11 @@ export interface Product {
     sku: string;
     price: number;
     stock: number;
-    partitionKey: string;
-    rowKey: string;
-    timestamp: string;
-    eTag: string;
-    materialCode: string;
+    categoryCode: string;
+    material: string;
     collectionCode: string;
     featureCodes: string[];
     yearCode: number;
     sequenceCode?: number;
-    productDescription?: string;
+    description?: string;
 }

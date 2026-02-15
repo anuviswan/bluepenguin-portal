@@ -7,9 +7,9 @@ describe('Products Store', () => {
         setActivePinia(createPinia())
     })
 
-    it('initializes with mock data', () => {
+    it('initializes with empty products', () => {
         const store = useProductsStore()
-        expect(store.products.length).toBeGreaterThan(0)
-        expect(store.products[0]).toHaveProperty('title')
+        expect(store.products).toHaveLength(0)
+        expect(store.currentProduct).toBeNull()
     })
 })
