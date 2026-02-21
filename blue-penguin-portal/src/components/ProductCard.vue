@@ -123,7 +123,8 @@ const featureCodesArray = computed(() => {
 
 
 .info {
-  padding: 1rem 0; /* Design has minimal padding, text mostly below image aligned left */
+  padding: 0.5rem 0; /* Design has minimal padding, text mostly below image aligned left */
+  padding-left: 0.5rem;
 }
 
 .title {
