@@ -5,12 +5,14 @@
 
 <template>
   <header class="header">
-    <div class="logo-container">
-       <img src="/images/penguin-logo.png" alt="Blue Penguin Logo" class="logo-img" /> 
-       <div class="brand">
-         <span class="brand-name">Blue Penguin</span>
-       </div>
-    </div>
+    <RouterLink to="/" class="logo-link">
+      <div class="logo-container">
+         <img src="/images/penguin-logo.png" alt="Blue Penguin Logo" class="logo-img" /> 
+         <div class="brand">
+           <span class="brand-name">Blue Penguin</span>
+         </div>
+      </div>
+    </RouterLink>
   </header>
 </template>
 
@@ -20,6 +22,16 @@
   justify-content: center;
   padding: 2rem 0;
   background-color: var(--color-bg-light); 
+}
+
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s;
+}
+
+.logo-link:hover {
+  opacity: 0.8;
 }
 
 .logo-container {

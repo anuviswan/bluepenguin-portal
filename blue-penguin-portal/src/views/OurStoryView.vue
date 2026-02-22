@@ -43,6 +43,9 @@ import TheFooter from '@/components/TheFooter.vue';
               With every design, we celebrate resilience, uniqueness, and the wonder hidden in everyday moments.
             </p>
           </div>
+          <div class="cta-container">
+            <RouterLink to="/" class="cta-button">Start Exploring</RouterLink>
+          </div>
         </section>
       </div>
     </main>
@@ -165,6 +168,28 @@ import TheFooter from '@/components/TheFooter.vue';
   font-style: italic;
   color: var(--color-blue-primary);
   margin: 0;
+}
+
+.cta-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 6rem;
+}
+
+.cta-button {
+  background-color: var(--color-blue-primary);
+  color: white;
+  padding: 1rem 3rem;
+  border-radius: 2px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 15px rgba(27, 75, 138, 0.2);
+}
+
+.cta-button:hover {
+  background-color: var(--color-blue-light);
+  transform: translateY(-3px);
 }
 
 @media (max-width: 768px) {

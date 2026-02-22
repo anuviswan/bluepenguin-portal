@@ -34,6 +34,9 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com';
         </div>
       </div>
     </div>
+    <div class="footer-bottom">
+      <p>&copy; {{ new Date().getFullYear() }} Blue Penguin. All rights reserved.</p>
+    </div>
   </footer>
 </template>
 
@@ -109,6 +112,20 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com';
 .instagram:hover {
   color: #E1306C;
   transform: translateY(-2px);
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding: 2rem 2rem 0;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: var(--color-text-light);
+  font-size: 0.85rem;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
