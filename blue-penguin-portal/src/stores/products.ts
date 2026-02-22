@@ -35,7 +35,9 @@ export const useProductsStore = defineStore('products', () => {
                     : [],
             yearCode: typeof product.yearCode === 'number' ? product.yearCode : new Date().getFullYear(),
             sequenceCode: product.sequenceCode,
-            description: product.description
+            description: product.description,
+            discountPrice: typeof product.discountPrice === 'number' ? product.discountPrice : undefined,
+            discountExpiryDate: product.discountExpiryDate
         };
     }
 
