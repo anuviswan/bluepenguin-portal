@@ -9,6 +9,9 @@ const props = defineProps<{
 }>();
 
 const { formatted: price } = useCurrency(computed(() => props.product.price));
+const { formatted: discountPrice } = useCurrency(computed(() => props.product.discountPrice || 0));
+
+const hasDiscount = computed(() => !!props.product.discountPrice && props.product.discountPrice < props.product.price);
 const { imageUrl, isLoading, error } = useProductImage(props.product.sku);
 
 // Parse feature codes - they might be an array or a comma-separated string
@@ -28,6 +31,7 @@ const featureCodesArray = computed(() => {
 <template>
   <RouterLink :to="{ name: 'product-details', params: { sku: product.sku } }" class="product-card">
     <div class="image-container">
+        <div v-if="hasDiscount" class="sale-badge">SALE</div>
         <div v-if="isLoading" class="loading-overlay">
             <div class="spinner"></div>
         </div>
@@ -40,7 +44,10 @@ const featureCodesArray = computed(() => {
         <h3 class="title">{{ product.productName }}</h3>
         <p class="sku">{{ product.sku }}</p>
         <div class="details">
-            <span class="price">{{ price }}</span>
+            <div class="price-container">
+                <span v-if="hasDiscount" class="discount-price">{{ discountPrice }}</span>
+                <span class="price" :class="{ 'original-price': hasDiscount }">{{ price }}</span>
+            </div>
             <div class="icons">
                 <!-- Show icons based on collection and feature codes -->
                 <span v-if="product.collectionCode === 'NAT'" title="Nature Collection">🌿</span>
@@ -79,6 +86,20 @@ const featureCodesArray = computed(() => {
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+.sale-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #e63946;
+    color: white;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 2px;
+    z-index: 10;
+    letter-spacing: 0.5px;
 }
 
 .product-image {
@@ -120,8 +141,6 @@ const featureCodesArray = computed(() => {
     background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
 }
 
-
-
 .info {
   padding: 0.5rem 0; /* Design has minimal padding, text mostly below image aligned left */
   padding-left: 0.5rem;
@@ -147,9 +166,27 @@ const featureCodesArray = computed(() => {
   align-items: center;
 }
 
+.price-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.discount-price {
+    font-weight: 700;
+    color: #e63946;
+    font-size: 1rem;
+}
+
 .price {
   font-weight: 600;
   color: var(--color-text-main);
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: var(--color-text-light);
+    font-size: 0.85rem;
+    font-weight: 400;
 }
 
 .icons {
