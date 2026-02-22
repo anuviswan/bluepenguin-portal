@@ -21,6 +21,26 @@ const selectedImageIndex = ref(0);
 
 
 const { formatted: price } = useCurrency(computed(() => currentProduct.value?.price || 0));
+const { formatted: discountPrice } = useCurrency(computed(() => currentProduct.value?.discountPrice || 0));
+
+const hasDiscount = computed(() => {
+  const p = currentProduct.value;
+  return !!p && !!p.discountPrice && p.discountPrice < p.price;
+});
+
+const discountPercentage = computed(() => {
+  if (!hasDiscount.value || !currentProduct.value) return 0;
+  return Math.round(((currentProduct.value.price - currentProduct.value.discountPrice!) / currentProduct.value.price) * 100);
+});
+
+const formattedExpiryDate = computed(() => {
+  if (!currentProduct.value?.discountExpiryDate) return '';
+  return new Date(currentProduct.value.discountExpiryDate).toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+});
 
 const loadData = async () => {
   if (sku.value) {
@@ -120,6 +140,7 @@ const goBack = () => {
           <!-- Image Gallery -->
           <div class="gallery-section">
             <div class="main-image-container">
+              <div v-if="hasDiscount" class="sale-badge">SALE -{{ discountPercentage }}%</div>
               <img v-if="mainImage" :src="mainImage" :alt="currentProduct.productName" class="main-image" />
               <div v-else class="placeholder-main">
                 {{ currentProduct.productName[0] }}
@@ -142,7 +163,16 @@ const goBack = () => {
           <div class="info-section">
             <h1 class="product-title">{{ currentProduct.productName }}</h1>
             <div class="price-row">
-              <span class="price-large">{{ price }}</span>
+              <div v-if="hasDiscount" class="discount-container">
+                <span class="price-large discount-price">{{ discountPrice }}</span>
+                <span class="price-original">{{ price }}</span>
+                <span class="discount-badge">SAVE {{ discountPercentage }}%</span>
+              </div>
+              <span v-else class="price-large">{{ price }}</span>
+
+              <div v-if="hasDiscount && formattedExpiryDate" class="expiry-date">
+                Offer ends {{ formattedExpiryDate }}
+              </div>
             </div>
 
             <div class="quick-features">
@@ -284,6 +314,22 @@ const goBack = () => {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
+}
+
+.sale-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background-color: #e63946;
+    color: white;
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 4px;
+    z-index: 5;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .main-image {
@@ -334,7 +380,45 @@ const goBack = () => {
 }
 
 .price-row {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.discount-container {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.discount-price {
+    color: #e63946 !important;
+}
+
+.price-original {
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+.discount-badge {
+    background-color: #fff1f2;
+    color: #e63946;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid #ffe4e6;
+}
+
+.expiry-date {
+    font-size: 0.85rem;
+    color: #e63946;
+    font-weight: 500;
+    margin-top: 0.25rem;
 }
 
 .price-large {

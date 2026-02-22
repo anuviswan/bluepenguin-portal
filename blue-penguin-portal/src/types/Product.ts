@@ -10,4 +10,6 @@ export interface Product {
     yearCode: number;
     sequenceCode?: number;
     description?: string;
+    discountPrice?: number;
+    discountExpiryDate?: string;
 }
