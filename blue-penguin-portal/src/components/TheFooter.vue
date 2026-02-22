@@ -15,7 +15,7 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com';
     <div class="footer-content">
       <div class="section">
         <h3>About Us</h3>
-        <p>Our Story</p>
+        <RouterLink to="/our-story" class="footer-link">Our Story</RouterLink>
         <p>Craftsmanship</p>
       </div>
       <div class="section">
@@ -33,6 +33,9 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com';
           </a>
         </div>
       </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; {{ new Date().getFullYear() }} Blue Penguin. All rights reserved.</p>
     </div>
   </footer>
 </template>
@@ -60,9 +63,15 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com';
   font-weight: 600;
 }
 
-.section p {
+.section p,
+.footer-link {
   color: var(--color-text-main);
   margin-bottom: 0.5rem;
+  display: block;
+}
+
+.footer-link:hover {
+  color: var(--color-blue-primary);
 }
 
 .contact-link {
@@ -103,6 +112,20 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com';
 .instagram:hover {
   color: #E1306C;
   transform: translateY(-2px);
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding: 2rem 2rem 0;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: var(--color-text-light);
+  font-size: 0.85rem;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
