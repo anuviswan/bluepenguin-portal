@@ -45,9 +45,9 @@ function onCategoryClick(item: { id: string }) {
     <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
     <section class="hero">
       <div class="hero-content">
-        <h1 class="hero-heading">Handcrafted Jewellery,<br />Full of Color</h1>
+        <h1 class="hero-heading">Handcrafted with Care,<br />Made Just for You</h1>
         <p class="hero-sub">
-          Discover bright, unique accessories<br />designed to bring a splash of joy to your day.
+          Thoughtfully designed and carefully crafted<br />to feel uniquely yours.
         </p>
         <div class="hero-ctas">
           <a :href="instagramLink" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
