@@ -16,7 +16,6 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com';
       <div class="section">
         <h3>About Us</h3>
         <RouterLink to="/our-story" class="footer-link">Our Story</RouterLink>
-        <p>Craftsmanship</p>
       </div>
       <div class="section">
         <h3>Contact</h3>
