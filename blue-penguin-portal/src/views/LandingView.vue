@@ -42,15 +42,36 @@ const topDeals       = ref<ShowcaseItem[]>([]);
 const dealsLoading   = ref(true);
 const dealsError     = ref<string | null>(null);
 
+// ── Inspired Collections ───────────────────────────────────────────────────────
+const collections    = ref<ShowcaseItem[]>([]);
+const collLoading    = ref(true);
+const collError      = ref<string | null>(null);
+
 onMounted(async () => {
   try {
-    topDeals.value = await ShowcaseService.getTopDiscounts(4);
-  } catch {
+    const [deals, colls] = await Promise.all([
+      ShowcaseService.getTopDiscounts(4),
+      ShowcaseService.getTopCollections(4)
+    ]);
+    topDeals.value = deals;
+    collections.value = colls;
+  } catch (err) {
+    console.error('[LandingView] Error fetching additional showcase data:', err);
     dealsError.value = 'Could not load top deals at this time.';
+    collError.value = 'Could not load collections at this time.';
   } finally {
     dealsLoading.value = false;
+    collLoading.value = false;
   }
 });
+
+function onCollectionClick(item: { id: string }) {
+  router.push({ path: '/shop', query: { collection: item.id } });
+}
+
+function onDealClick(item: { id: string }) {
+  router.push({ name: 'product-details', params: { sku: item.id } });
+}
 </script>
 
 <template>
@@ -157,12 +178,22 @@ onMounted(async () => {
         @item-click="onCategoryClick"
       />
 
+      <!-- ── Inspired Collections ─────────────────────────────────────────── -->
+      <ShowcaseGrid
+        title="Inspired Collections"
+        :items="collections"
+        :loading="collLoading"
+        :error="collError"
+        @item-click="onCollectionClick"
+      />
+
       <!-- ── Top Deals ────────────────────────────────────────────────────── -->
       <ShowcaseGrid
         title="Limited Offers"
         :items="topDeals"
         :loading="dealsLoading"
         :error="dealsError"
+        @item-click="onDealClick"
       />
 
       <!-- ── Browse All CTA ─────────────────────────────────────────────────── -->
