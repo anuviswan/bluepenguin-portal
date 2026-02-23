@@ -13,7 +13,7 @@ const route = useRoute();
 const router = useRouter();
 const productsStore = useProductsStore();
 const metadataStore = useMetadataStore();
-const { currentProduct, currentProductImages, loading, error, products: allProducts } = storeToRefs(productsStore);
+const { currentProduct, currentProductImages, loading, error, products: allProducts, artisanFavSkuList } = storeToRefs(productsStore);
 const { features: allFeatures, materials: allMaterials, collections: allCollections } = storeToRefs(metadataStore);
 
 const sku = computed(() => route.params.sku as string);
@@ -46,7 +46,8 @@ const loadData = async () => {
   if (sku.value) {
     await Promise.all([
       productsStore.fetchProductBySku(sku.value),
-      metadataStore.fetchAll()
+      metadataStore.fetchAll(),
+      productsStore.fetchArtisanFavs()
     ]);
     selectedImageIndex.value = 0;
   }
@@ -61,6 +62,8 @@ const mainImage = computed(() => {
   }
   return '';
 });
+
+const isArtisanFav = computed(() => !!currentProduct.value && artisanFavSkuList.value.includes(currentProduct.value.sku));
 
 const featureCodesArray = computed(() => {
   const codes = currentProduct.value?.featureCodes;
@@ -176,6 +179,9 @@ const goBack = () => {
             </div>
 
             <div class="quick-features">
+              <span v-if="isArtisanFav" class="q-feature">
+                <span class="icon" title="Artisan's Pick">⭐</span> Artisan's Pick
+              </span>
               <span v-if="featureCodesArray.includes('HM')" class="q-feature">
                 <span class="icon">✋</span> Handmade
               </span>

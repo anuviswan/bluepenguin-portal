@@ -84,6 +84,37 @@ export default {
         }
     },
 
+    async getArtisanFavs(): Promise<ShowcaseItem[]> {
+        const response = await api.get<string[]>('/api/ArtisanFav/getall');
+
+        return Promise.all(
+            response.data.map(async (skuId): Promise<ShowcaseItem> => {
+                let name = 'Product';
+                let price: number | undefined;
+                let discountPrice: number | undefined;
+
+                try {
+                    const product = await ProductService.getProductBySku(skuId);
+                    if (product) {
+                        name = product.productName;
+                        price = product.price;
+                        discountPrice = product.discountPrice;
+                    }
+                } catch (err) {
+                    console.error(`[ShowcaseService] Failed to fetch product details for ${skuId}:`, err);
+                }
+
+                return {
+                    id: skuId,
+                    label: name,
+                    originalPrice: price,
+                    discountPrice,
+                    imageUrl: skuId ? await fetchImageForSku(skuId) : undefined,
+                };
+            })
+        );
+    },
+
     async getTopDiscounts(count: number = 4): Promise<ShowcaseItem[]> {
         const response = await api.get<TopDiscountResponse[]>('/api/Showcase/GetTopDiscounts', {
             params: { count }

@@ -2,6 +2,8 @@
 import { computed } from 'vue';
 import { useCurrency } from '@/composables/useCurrency';
 import { useProductImage } from '@/composables/useProductImage';
+import { useProductsStore } from '@/stores/products';
+import { storeToRefs } from 'pinia';
 import type { Product } from '@/types/Product';
 
 const props = defineProps<{
@@ -13,6 +15,10 @@ const { formatted: discountPrice } = useCurrency(computed(() => props.product.di
 
 const hasDiscount = computed(() => !!props.product.discountPrice && props.product.discountPrice < props.product.price);
 const { imageUrl, isLoading, error } = useProductImage(props.product.sku);
+
+const productsStore = useProductsStore();
+const { artisanFavSkuList } = storeToRefs(productsStore);
+const isArtisanFav = computed(() => artisanFavSkuList.value.includes(props.product.sku));
 
 // Parse feature codes - they might be an array or a comma-separated string
 const featureCodesArray = computed(() => {
@@ -31,6 +37,10 @@ const featureCodesArray = computed(() => {
 <template>
   <RouterLink :to="{ name: 'product-details', params: { sku: product.sku } }" class="product-card">
     <div class="image-container">
+        <!-- Artisan Fav Overlay -->
+        <div v-if="isArtisanFav" class="artisan-badge" title="Artisan's Pick">
+            ⭐ Artisan's Pick
+        </div>
         <div v-if="hasDiscount" class="sale-badge">SALE</div>
         <div v-if="isLoading" class="loading-overlay">
             <div class="spinner"></div>
@@ -100,6 +110,23 @@ const featureCodesArray = computed(() => {
     border-radius: 2px;
     z-index: 10;
     letter-spacing: 0.5px;
+}
+
+.artisan-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--color-text-main);
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 20px;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .product-image {
