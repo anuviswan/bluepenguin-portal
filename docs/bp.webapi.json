@@ -735,6 +735,52 @@
           }
         }
       }
+    },
+    "/api/Showcase/GetTopDiscounts": {
+      "get": {
+        "tags": [
+          "Showcase"
+        ],
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 4
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Showcase/GetTopCollections": {
+      "get": {
+        "tags": [
+          "Showcase"
+        ],
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 4
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

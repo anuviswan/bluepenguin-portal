@@ -65,12 +65,18 @@ export function useProductFilter() {
 
     const hasMore = computed(() => products.value.length < totalCount.value);
 
-    // Load initial products on mount, pre-selecting category from query param if present
+    // Load initial products on mount, pre-selecting category/collection from query param if present
     onMounted(async () => {
-        const preselected = route.query.category as string | undefined;
-        if (preselected) {
-            filters.categories = [preselected];
+        const preselectedCat = route.query.category as string | undefined;
+        if (preselectedCat) {
+            filters.categories = [preselectedCat];
         }
+
+        const preselectedColl = route.query.collection as string | undefined;
+        if (preselectedColl) {
+            filters.collections = [preselectedColl];
+        }
+
         await productsStore.searchProducts(buildSearchRequest());
     });
 
