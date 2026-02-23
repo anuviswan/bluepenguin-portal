@@ -51,8 +51,13 @@ const emit = defineEmits<{
           <div v-else class="card-image-placeholder">
             <span class="placeholder-icon">🌸</span>
           </div>
+          <span v-if="item.badge" class="card-badge">{{ item.badge }}</span>
         </div>
         <p class="card-label">{{ item.label }}</p>
+        <div v-if="item.discountPrice || item.originalPrice" class="card-prices">
+          <span v-if="item.discountPrice" class="discount-price">₹{{ item.discountPrice }}</span>
+          <span v-if="item.originalPrice" class="original-price" :class="{ 'has-discount': item.discountPrice }">₹{{ item.originalPrice }}</span>
+        </div>
       </div>
     </div>
   </section>
@@ -73,8 +78,9 @@ const emit = defineEmits<{
 }
 
 .showcase-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.25rem;
 }
 
@@ -85,6 +91,8 @@ const emit = defineEmits<{
   gap: 0.75rem;
   cursor: pointer;
   transition: transform 0.2s ease;
+  flex: 0 1 calc(25% - 1.25rem); /* Safer calculation for 4 per row */
+  max-width: 280px; /* Limits size of items when few exist */
 }
 
 .showcase-card:hover {
@@ -97,6 +105,23 @@ const emit = defineEmits<{
   overflow: hidden;
   border-radius: 8px;
   background-color: #f3ece8;
+  position: relative;
+}
+
+.card-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #e63946;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .card-image {
@@ -104,6 +129,7 @@ const emit = defineEmits<{
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  z-index: 1;
 }
 
 .showcase-card:hover .card-image {
@@ -125,10 +151,34 @@ const emit = defineEmits<{
 }
 
 .card-label {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--color-text-main);
   text-align: center;
+  margin-top: 0.25rem;
+}
+
+.card-prices {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.discount-price {
+  font-weight: 700;
+  color: #e63946;
+  font-size: 1.1rem;
+}
+
+.original-price {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+}
+
+.original-price.has-discount {
+  text-decoration: line-through;
+  opacity: 0.8;
 }
 
 /* Skeleton loading */
@@ -163,18 +213,20 @@ const emit = defineEmits<{
 }
 
 @media (max-width: 900px) {
-  .showcase-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .showcase-card {
+    flex: 0 1 calc(50% - 1.25rem);
   }
 }
 
 @media (max-width: 500px) {
-  .showcase-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
+  .showcase-card {
+    flex: 0 1 calc(50% - 0.75rem);
   }
   .showcase-title {
     font-size: 1.6rem;
+  }
+  .showcase-grid {
+    gap: 0.75rem;
   }
 }
 </style>

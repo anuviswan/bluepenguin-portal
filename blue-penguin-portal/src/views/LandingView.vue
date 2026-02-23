@@ -36,6 +36,21 @@ onMounted(async () => {
 function onCategoryClick(item: { id: string }) {
   router.push({ path: '/shop', query: { category: item.id } });
 }
+
+// ── Top Deals ───────────────────────────────────────────────────────────
+const topDeals       = ref<ShowcaseItem[]>([]);
+const dealsLoading   = ref(true);
+const dealsError     = ref<string | null>(null);
+
+onMounted(async () => {
+  try {
+    topDeals.value = await ShowcaseService.getTopDiscounts(4);
+  } catch {
+    dealsError.value = 'Could not load top deals at this time.';
+  } finally {
+    dealsLoading.value = false;
+  }
+});
 </script>
 
 <template>
@@ -135,11 +150,19 @@ function onCategoryClick(item: { id: string }) {
 
       <!-- ── Categories (generic ShowcaseGrid) ─────────────────────────────── -->
       <ShowcaseGrid
-        title="Categories"
+        title="Find What You Love"
         :items="categories"
         :loading="catLoading"
         :error="catError"
         @item-click="onCategoryClick"
+      />
+
+      <!-- ── Top Deals ────────────────────────────────────────────────────── -->
+      <ShowcaseGrid
+        title="Limited Offers"
+        :items="topDeals"
+        :loading="dealsLoading"
+        :error="dealsError"
       />
 
       <!-- ── Browse All CTA ─────────────────────────────────────────────────── -->
