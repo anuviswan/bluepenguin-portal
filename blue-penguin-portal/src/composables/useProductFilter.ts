@@ -1,10 +1,12 @@
 import { computed, reactive, watch, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { useProductsStore, type Product } from '@/stores/products';
 import { storeToRefs } from 'pinia';
 import type { SearchProductsRequest } from '@/types/SearchProductsRequest';
 
 export function useProductFilter() {
     const productsStore = useProductsStore();
+    const route = useRoute();
     const {
         products,
         loading,
@@ -63,14 +65,13 @@ export function useProductFilter() {
 
     const hasMore = computed(() => products.value.length < totalCount.value);
 
-    // Load initial products on mount
+    // Load initial products on mount, pre-selecting category from query param if present
     onMounted(async () => {
-        await productsStore.searchProducts({
-            selectedCategories: [],
-            selectedMaterials: [],
-            selectedCollections: [],
-            selectedFeatures: []
-        });
+        const preselected = route.query.category as string | undefined;
+        if (preselected) {
+            filters.categories = [preselected];
+        }
+        await productsStore.searchProducts(buildSearchRequest());
     });
 
     const toggleFilter = (group: 'categories' | 'materials' | 'features' | 'collections', value: string) => {
