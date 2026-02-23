@@ -45,7 +45,7 @@ function onCategoryClick(item: { id: string }) {
     <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
     <section class="hero">
       <div class="hero-content">
-        <h1 class="hero-heading">Handcrafted Jewelry,<br />Full of Color</h1>
+        <h1 class="hero-heading">Handcrafted Jewellery,<br />Full of Color</h1>
         <p class="hero-sub">
           Discover bright, unique accessories<br />designed to bring a splash of joy to your day.
         </p>
@@ -65,7 +65,7 @@ function onCategoryClick(item: { id: string }) {
         </div>
       </div>
       <div class="hero-image-area">
-        <img :src="heroImage" alt="Colorful handcrafted jewelry" class="hero-img" />
+        <img :src="heroImage" alt="Colorful handcrafted jewellery" class="hero-img" />
       </div>
     </section>
 
@@ -76,7 +76,7 @@ function onCategoryClick(item: { id: string }) {
       <section class="story-section">
         <h2 class="story-title">Our Story</h2>
         <p class="story-text">
-          At Blue Penguin, we believe in spreading happiness through handcrafted jewelry
+          At Blue Penguin, we believe in spreading happiness through handcrafted jewellery
           that's as unique as you are. Each piece is made with love, featuring vibrant,
           high-quality beads assembled to brighten your day. We're a small team dedicated
           to creating colorful joy, one bracelet at a time.
