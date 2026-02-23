@@ -12,6 +12,11 @@ import type { ShowcaseItem } from '@/types/ShowcaseItem';
 const whatsappNumber = import.meta.env.VITE_WHATSAPP_CONTACT || '';
 const instagramLink  = import.meta.env.VITE_INSTAGRAM_LINK || 'https://www.instagram.com/';
 
+const enableArtisanFavs = String(import.meta.env.VITE_ENABLE_ARTISANFAVS).trim() === 'true';
+const enableInspiredColls = String(import.meta.env.VITE_ENABLE_INSPIREDCOLLS).trim() === 'true';
+const enableTopDeals = String(import.meta.env.VITE_ENABLE_TOPDEALS).trim() === 'true';
+const enableTopCategories = String(import.meta.env.VITE_ENABLE_TOPCATEGORIES).trim() === 'true';
+
 const whatsappLink = computed(() =>
   whatsappNumber ? `https://wa.me/${whatsappNumber}` : 'https://wa.me/'
 );
@@ -20,16 +25,18 @@ const router = useRouter();
 
 // ── Top Categories ─────────────────────────────────────────────────────────────
 const categories  = ref<ShowcaseItem[]>([]);
-const catLoading  = ref(true);
+const catLoading  = ref(enableTopCategories);
 const catError    = ref<string | null>(null);
 
 onMounted(async () => {
-  try {
-    categories.value = await ShowcaseService.getTopCategories(4);
-  } catch {
-    catError.value = 'Could not load categories at this time.';
-  } finally {
-    catLoading.value = false;
+  if (enableTopCategories) {
+    try {
+      categories.value = await ShowcaseService.getTopCategories(4);
+    } catch {
+      catError.value = 'Could not load categories at this time.';
+    } finally {
+      catLoading.value = false;
+    }
   }
 });
 
@@ -39,29 +46,41 @@ function onCategoryClick(item: { id: string }) {
 
 // ── Top Deals ───────────────────────────────────────────────────────────
 const topDeals       = ref<ShowcaseItem[]>([]);
-const dealsLoading   = ref(true);
+const dealsLoading   = ref(enableTopDeals);
 const dealsError     = ref<string | null>(null);
 
 // ── Inspired Collections ───────────────────────────────────────────────────────
 const collections    = ref<ShowcaseItem[]>([]);
-const collLoading    = ref(true);
+const collLoading    = ref(enableInspiredColls);
 const collError      = ref<string | null>(null);
+
+// ── Artisan Favs ───────────────────────────────────────────────────────────────
+const artisanFavs    = ref<ShowcaseItem[]>([]);
+const artisanLoading = ref(enableArtisanFavs);
+const artisanError   = ref<string | null>(null);
 
 onMounted(async () => {
   try {
-    const [deals, colls] = await Promise.all([
-      ShowcaseService.getTopDiscounts(4),
-      ShowcaseService.getTopCollections(4)
-    ]);
+    const promises: Promise<any>[] = [];
+
+    const dealsPromise = enableTopDeals ? ShowcaseService.getTopDiscounts(4) : Promise.resolve([]);
+    const collsPromise = enableInspiredColls ? ShowcaseService.getTopCollections(4) : Promise.resolve([]);
+    const favsPromise = enableArtisanFavs ? ShowcaseService.getArtisanFavs() : Promise.resolve([]);
+
+    const [deals, colls, favs] = await Promise.all([dealsPromise, collsPromise, favsPromise]);
+
     topDeals.value = deals;
     collections.value = colls;
+    artisanFavs.value = favs;
   } catch (err) {
     console.error('[LandingView] Error fetching additional showcase data:', err);
     dealsError.value = 'Could not load top deals at this time.';
     collError.value = 'Could not load collections at this time.';
+    artisanError.value = 'Could not load artisan favorites at this time.';
   } finally {
     dealsLoading.value = false;
     collLoading.value = false;
+    artisanLoading.value = false;
   }
 });
 
@@ -169,17 +188,19 @@ function onDealClick(item: { id: string }) {
         </div>
       </section>
 
-      <!-- ── Categories (generic ShowcaseGrid) ─────────────────────────────── -->
+      <!-- ── Artisan's Picks ────────────────────────────────────────────────── -->
       <ShowcaseGrid
-        title="Find What You Love"
-        :items="categories"
-        :loading="catLoading"
-        :error="catError"
-        @item-click="onCategoryClick"
+        v-if="enableArtisanFavs"
+        title="Artisan's Picks"
+        :items="artisanFavs"
+        :loading="artisanLoading"
+        :error="artisanError"
+        @item-click="onDealClick"
       />
 
       <!-- ── Inspired Collections ─────────────────────────────────────────── -->
       <ShowcaseGrid
+        v-if="enableInspiredColls"
         title="Inspired Collections"
         :items="collections"
         :loading="collLoading"
@@ -187,8 +208,19 @@ function onDealClick(item: { id: string }) {
         @item-click="onCollectionClick"
       />
 
+      <!-- ── Categories (generic ShowcaseGrid) ─────────────────────────────── -->
+      <ShowcaseGrid
+        v-if="enableTopCategories"
+        title="Find What You Love"
+        :items="categories"
+        :loading="catLoading"
+        :error="catError"
+        @item-click="onCategoryClick"
+      />
+
       <!-- ── Top Deals ────────────────────────────────────────────────────── -->
       <ShowcaseGrid
+        v-if="enableTopDeals"
         title="Limited Offers"
         :items="topDeals"
         :loading="dealsLoading"
