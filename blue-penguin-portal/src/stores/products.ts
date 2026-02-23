@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { ProductService } from '@/services/ProductService';
+import api from '@/services/api';
 import type { Product } from '@/types/Product';
 import type { SearchProductsRequest } from '@/types/SearchProductsRequest';
 
@@ -10,6 +11,7 @@ export const useProductsStore = defineStore('products', () => {
     const products = ref<Product[]>([]);
     const currentProduct = ref<Product | null>(null);
     const currentProductImages = ref<string[]>([]);
+    const artisanFavSkuList = ref<string[]>([]);
     const loading = ref(false);
     const error = ref<string | null>(null);
 
@@ -132,10 +134,21 @@ export const useProductsStore = defineStore('products', () => {
         }
     }
 
+    async function fetchArtisanFavs() {
+        if (artisanFavSkuList.value.length > 0) return; // Already cached
+        try {
+            const response = await api.get<string[]>('/api/ArtisanFav/getall');
+            artisanFavSkuList.value = response.data;
+        } catch (err) {
+            console.error('[ProductsStore] Failed to fetch artisan favs:', err);
+        }
+    }
+
     return {
         products,
         currentProduct,
         currentProductImages,
+        artisanFavSkuList,
         loading,
         error,
         totalCount,
@@ -143,6 +156,7 @@ export const useProductsStore = defineStore('products', () => {
         pageSize,
         searchProducts,
         loadMoreProducts,
-        fetchProductBySku
+        fetchProductBySku,
+        fetchArtisanFavs
     };
 });
