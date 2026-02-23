@@ -72,15 +72,6 @@ function onCategoryClick(item: { id: string }) {
     <!-- ── Main content wrapper ───────────────────────────────────────────── -->
     <div class="page-content">
 
-      <!-- ── Categories (generic ShowcaseGrid) ─────────────────────────────── -->
-      <ShowcaseGrid
-        title="Categories"
-        :items="categories"
-        :loading="catLoading"
-        :error="catError"
-        @item-click="onCategoryClick"
-      />
-
       <!-- ── Our Story ──────────────────────────────────────────────────────── -->
       <section class="story-section">
         <h2 class="story-title">Our Story</h2>
@@ -93,9 +84,9 @@ function onCategoryClick(item: { id: string }) {
         <RouterLink to="/our-story" class="story-link">Read Our Story →</RouterLink>
       </section>
 
-      <!-- ── How It Works ──────────────────────────────────────────────────── -->
+      <!-- ── How to Order ──────────────────────────────────────────────────── -->
       <section class="hiw-section">
-        <h2 class="hiw-title">How It Works</h2>
+        <h2 class="hiw-title">How to Order</h2>
         <div class="hiw-steps">
           <!-- Step 1 -->
           <div class="hiw-step">
@@ -112,9 +103,7 @@ function onCategoryClick(item: { id: string }) {
               <span class="hiw-sub">our <strong>collection</strong></span>
             </div>
           </div>
-
           <div class="hiw-arrow" aria-hidden="true">→</div>
-
           <!-- Step 2 -->
           <div class="hiw-step">
             <div class="hiw-icon">
@@ -127,9 +116,7 @@ function onCategoryClick(item: { id: string }) {
               <span class="hiw-sub">with product code</span>
             </div>
           </div>
-
           <div class="hiw-arrow" aria-hidden="true">→</div>
-
           <!-- Step 3 -->
           <div class="hiw-step">
             <div class="hiw-icon">
@@ -146,10 +133,20 @@ function onCategoryClick(item: { id: string }) {
         </div>
       </section>
 
+      <!-- ── Categories (generic ShowcaseGrid) ─────────────────────────────── -->
+      <ShowcaseGrid
+        title="Categories"
+        :items="categories"
+        :loading="catLoading"
+        :error="catError"
+        @item-click="onCategoryClick"
+      />
+
       <!-- ── Browse All CTA ─────────────────────────────────────────────────── -->
       <div class="browse-all-wrapper">
         <RouterLink to="/shop" class="browse-all-btn">Browse All ›</RouterLink>
       </div>
+
 
     </div><!-- /page-content -->
 
