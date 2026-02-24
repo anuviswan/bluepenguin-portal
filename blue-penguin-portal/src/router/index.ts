@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior() {
-    return { top: 0 };
+    return { top: 0 }
   },
   routes: [
     {
@@ -25,6 +25,16 @@ const router = createRouter({
       path: '/our-story',
       name: 'our-story',
       component: () => import('../views/OurStoryView.vue'),
+    },
+    {
+      path: '/refund-policy',
+      name: 'refund-policy',
+      component: () => import('../views/RefundPolicyView.vue'),
+    },
+    {
+      path: '/shipping-policy',
+      name: 'shipping-policy',
+      component: () => import('../views/ShippingPolicyView.vue'),
     },
   ],
 })

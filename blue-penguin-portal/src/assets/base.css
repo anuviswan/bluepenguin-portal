@@ -1,17 +1,19 @@
 :root {
-  --color-blue-primary: #1B4B8A;
-  --color-blue-light: #4A7AB0;
+  --color-blue-primary: #1b4b8a;
+  --color-blue-light: #4a7ab0;
   --color-text-main: #333333;
   --color-text-light: #666666;
-  --color-bg-light: #F9FAFB;
-  --color-border: #E5E7EB;
-  --color-white: #FFFFFF;
-  
+  --color-bg-light: #f9fafb;
+  --color-border: #e5e7eb;
+  --color-white: #ffffff;
+
   --font-family-body: 'Inter', sans-serif;
   --font-family-display: 'Dancing Script', cursive;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -26,7 +28,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   line-height: 1.2;
 }
@@ -37,7 +44,8 @@ a {
   transition: color 0.2s;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 

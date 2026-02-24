@@ -1,68 +1,53 @@
 <script setup lang="ts">
-import TheHeader from '@/components/TheHeader.vue';
-import TheFooter from '@/components/TheFooter.vue';
-import ProductFilter from '@/components/ProductFilter.vue';
-import ProductCard from '@/components/ProductCard.vue';
-import { useProductFilter } from '@/composables/useProductFilter';
-import { computed } from 'vue';
+import TheHeader from '@/components/TheHeader.vue'
+import TheFooter from '@/components/TheFooter.vue'
+import ProductFilter from '@/components/ProductFilter.vue'
+import ProductCard from '@/components/ProductCard.vue'
+import { useProductFilter } from '@/composables/useProductFilter'
+import { computed } from 'vue'
 
-const { 
-  filteredProducts, 
-  loading, 
-  error, 
-  totalCount, 
-  hasMore, 
-  loadMore 
-} = useProductFilter();
+const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useProductFilter()
 </script>
 
 <template>
   <div class="home-layout">
     <TheHeader />
-    
+
     <div class="main-container">
       <ProductFilter class="sidebar" />
-      
+
       <main class="content">
         <div class="content-header">
-           <p class="count">{{ totalCount }} items</p>
+          <p class="count">{{ totalCount }} items</p>
         </div>
-        
+
         <!-- Error State -->
         <div v-if="error" class="error-state">
-            <p class="error-message">{{ error }}</p>
-            <p class="error-hint">Please try again or adjust your filters.</p>
+          <p class="error-message">{{ error }}</p>
+          <p class="error-hint">Please try again or adjust your filters.</p>
         </div>
 
         <!-- Loading State -->
         <div v-else-if="loading && filteredProducts.length === 0" class="loading-state">
-            <div class="spinner"></div>
-            <p>Loading products...</p>
+          <div class="spinner"></div>
+          <p>Loading products...</p>
         </div>
 
         <!-- Products Grid -->
         <div v-else-if="filteredProducts.length > 0" class="product-grid">
-          <ProductCard 
-            v-for="product in filteredProducts" 
-            :key="product.sku" 
-            :product="product" 
-          />
+          <ProductCard v-for="product in filteredProducts" :key="product.sku" :product="product" />
         </div>
 
         <!-- No Results -->
         <div v-else-if="!loading" class="no-results">
-            <p>No products found matching your filters.</p>
+          <p>No products found matching your filters.</p>
         </div>
 
         <div class="load-more" v-if="hasMore">
-           <button 
-             class="load-more-btn" 
-             @click="loadMore" 
-             :disabled="loading"
-           >
-             <span v-if="loading" class="btn-spinner"></span>
-             {{ loading ? 'Loading...' : 'Load More ›' }}
-           </button> 
+          <button class="load-more-btn" @click="loadMore" :disabled="loading">
+            <span v-if="loading" class="btn-spinner"></span>
+            {{ loading ? 'Loading...' : 'Load More ›' }}
+          </button>
         </div>
       </main>
     </div>
@@ -102,8 +87,8 @@ const {
 }
 
 .count {
-    color: var(--color-text-light);
-    font-size: 0.9rem;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
 }
 
 .product-grid {
@@ -113,102 +98,106 @@ const {
 }
 
 .no-results {
-    padding: 4rem;
-    text-align: center;
-    color: var(--color-text-light);
+  padding: 4rem;
+  text-align: center;
+  color: var(--color-text-light);
 }
 
 .load-more {
-    margin-top: 4rem;
-    display: flex;
-    justify-content: center;
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
 }
 
 .load-more-btn {
-    border: 1px solid var(--color-border);
-    padding: 0.75rem 2rem;
-    border-radius: 4px;
-    background-color: white;
-    font-size: 1rem;
-    color: var(--color-text-main);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: background-color 0.2s;
+  border: 1px solid var(--color-border);
+  padding: 0.75rem 2rem;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 1rem;
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
 }
 
 .load-more-btn:hover {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 .loading-state {
-    padding: 4rem;
-    text-align: center;
-    color: var(--color-text-light);
+  padding: 4rem;
+  text-align: center;
+  color: var(--color-text-light);
 }
 
 .spinner {
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid var(--color-blue-primary);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 1rem;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--color-blue-primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .btn-spinner {
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid var(--color-blue-primary);
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    animation: spin 1s linear infinite;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid var(--color-blue-primary);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
 }
 
 .load-more-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .error-state {
-    padding: 4rem;
-    text-align: center;
+  padding: 4rem;
+  text-align: center;
 }
 
 .error-message {
-    color: #dc2626;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+  color: #dc2626;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .error-hint {
-    color: var(--color-text-light);
-    font-size: 0.9rem;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
-    .main-container {
-        flex-direction: column;
-        padding: 1rem;
-    }
-    
-    .sidebar {
-        width: 100%;
-        margin-bottom: 2rem;
-        padding-right: 0;
-        border-right: none;
-        border-bottom: 1px solid var(--color-border);
-        padding-bottom: 2rem;
-    }
-    
-    .content {
-        padding-left: 0;
-    }
+  .main-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 2rem;
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 2rem;
+  }
+
+  .content {
+    padding-left: 0;
+  }
 }
 </style>
