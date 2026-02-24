@@ -34,15 +34,17 @@ export const useProductsStore = defineStore('products', () => {
         ? product.featureCodes
         : typeof product.featureCodes === 'string'
           ? product.featureCodes
-              .split(',')
-              .map((c: string) => c.trim())
-              .filter(Boolean)
+            .split(',')
+            .map((c: string) => c.trim())
+            .filter(Boolean)
           : [],
       yearCode: typeof product.yearCode === 'number' ? product.yearCode : new Date().getFullYear(),
       sequenceCode: product.sequenceCode,
       description: product.description,
       discountPrice: typeof product.discountPrice === 'number' ? product.discountPrice : undefined,
       discountExpiryDate: product.discountExpiryDate,
+      specifications: Array.isArray(product.specifications) ? product.specifications : undefined,
+      productCareInstructions: Array.isArray(product.productCareInstructions) ? product.productCareInstructions : undefined,
     }
   }
 

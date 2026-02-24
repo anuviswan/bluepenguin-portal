@@ -12,4 +12,6 @@ export interface Product {
   description?: string
   discountPrice?: number
   discountExpiryDate?: string
+  specifications?: string[]
+  productCareInstructions?: string[]
 }

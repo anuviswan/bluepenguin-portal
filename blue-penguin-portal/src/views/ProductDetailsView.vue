@@ -247,25 +247,49 @@ const goBack = () => {
               </a>
             </div>
 
-            <div class="feature-tags">
-              <span v-if="materialName" class="tag material-tag">
-                Material: {{ materialName }}
-              </span>
-              <span v-if="collectionName" class="tag collection-tag">
-                Collection: {{ collectionName }}
-              </span>
-              <span v-for="name in featureNames" :key="name" class="tag">
-                {{ name }}
-              </span>
+            <div class="attributes-section">
+              <div class="feature-tags" v-if="materialName || collectionName">
+                <span v-if="materialName" class="tag material-tag">
+                  Material: {{ materialName }}
+                </span>
+                <span v-if="collectionName" class="tag collection-tag">
+                  Collection: {{ collectionName }}
+                </span>
+              </div>
+              <div class="feature-tags" v-if="featureNames.length > 0">
+                <span v-for="name in featureNames" :key="name" class="tag">
+                  {{ name }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Product Details Description -->
-        <div class="product-description-section">
-          <h2>Product Details</h2>
-          <div class="description-text">
-            <p>{{ currentProduct.description }}</p>
+        <div class="product-description-section" v-if="currentProduct.description || (currentProduct.specifications?.length) || (currentProduct.productCareInstructions?.length)">
+          <div v-if="currentProduct.description" class="detail-block">
+            <h2>Product Details</h2>
+            <div class="description-text">
+              <p>{{ currentProduct.description }}</p>
+            </div>
+          </div>
+
+          <div v-if="currentProduct.specifications && currentProduct.specifications.length > 0" class="detail-block">
+            <h2>Specifications</h2>
+            <div class="description-text">
+              <ul>
+                <li v-for="(spec, index) in currentProduct.specifications" :key="'spec-' + index">{{ spec }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div v-if="currentProduct.productCareInstructions && currentProduct.productCareInstructions.length > 0" class="detail-block">
+            <h2>Product Care</h2>
+            <div class="description-text">
+              <ul>
+                <li v-for="(care, index) in currentProduct.productCareInstructions" :key="'care-' + index">{{ care }}</li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -528,11 +552,17 @@ const goBack = () => {
   opacity: 0.9;
 }
 
+.attributes-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
 .feature-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 1rem;
 }
 
 .tag {
@@ -562,6 +592,14 @@ const goBack = () => {
   background-color: #fafafa;
 }
 
+.detail-block {
+  margin-bottom: 2.5rem;
+}
+
+.detail-block:last-child {
+  margin-bottom: 0;
+}
+
 .product-description-section h2 {
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
@@ -573,6 +611,24 @@ const goBack = () => {
   line-height: 1.6;
   color: var(--color-text-main);
   max-width: 800px;
+}
+
+.description-text p {
+  margin: 0;
+}
+
+.description-text ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+.description-text li {
+  margin-bottom: 0.5rem;
+}
+
+.description-text li:last-child {
+  margin-bottom: 0;
 }
 
 /* Related Products */
