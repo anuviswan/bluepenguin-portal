@@ -13,131 +13,129 @@ vi.mock('@/components/ProductCard.vue', () => ({ default: { template: '<div>Prod
 
 // Mock Services
 vi.mock('@/services/ProductService', () => ({
-    ProductService: {
-        getProductBySku: vi.fn().mockResolvedValue({
-            sku: 'SKU123',
-            productName: 'Blue Pearl Necklace',
-            price: 45,
-            featureCodes: 'HM,HP,AD',
-            description: 'Mock Description',
-            bulletPoints: ['Point 1', 'Point 2']
-        })
-    }
+  ProductService: {
+    getProductBySku: vi.fn().mockResolvedValue({
+      sku: 'SKU123',
+      productName: 'Blue Pearl Necklace',
+      price: 45,
+      featureCodes: 'HM,HP,AD',
+      description: 'Mock Description',
+      bulletPoints: ['Point 1', 'Point 2'],
+    }),
+  },
 }))
 
 vi.mock('@/services/api', () => ({
-    getPrimaryImageIdForSkuId: vi.fn().mockResolvedValue('img1'),
-    downloadByImageId: vi.fn().mockResolvedValue('blob:url'),
-    getAllImagesForSkuId: vi.fn().mockResolvedValue(['img1', 'img2'])
+  getPrimaryImageIdForSkuId: vi.fn().mockResolvedValue('img1'),
+  downloadByImageId: vi.fn().mockResolvedValue('blob:url'),
+  getAllImagesForSkuId: vi.fn().mockResolvedValue(['img1', 'img2']),
 }))
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes: [{ path: '/product/:sku', name: 'product-details', component: { template: '<div></div>' } }]
+  history: createWebHistory(),
+  routes: [
+    { path: '/product/:sku', name: 'product-details', component: { template: '<div></div>' } },
+  ],
 })
 
 describe('ProductDetailsView', () => {
-    let productsStore: any
-    let metadataStore: any
+  let productsStore: any
+  let metadataStore: any
 
-    beforeEach(() => {
-        setActivePinia(createPinia())
-        productsStore = useProductsStore()
-        metadataStore = useMetadataStore()
-        vi.clearAllMocks()
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    productsStore = useProductsStore()
+    metadataStore = useMetadataStore()
+    vi.clearAllMocks()
+  })
+
+  it('renders product details, feature tags, material, and collection correctly', async () => {
+    // Pre-set store state
+    productsStore.currentProduct = {
+      sku: 'SKU123',
+      productName: 'Blue Pearl Necklace',
+      price: 45,
+      featureCodes: ['HM', 'HP', 'AD'],
+      material: 'SLV',
+      collectionCode: 'NAT',
+      description: 'Mock Description',
+      stock: 10,
+      partitionKey: 'Necklace',
+      rowKey: 'SKU123',
+      timestamp: new Date().toISOString(),
+      eTag: '*',
+      categoryCode: 'Necklace',
+      yearCode: 2024,
+    }
+    productsStore.loading = false
+
+    // Mock metadata store
+    metadataStore.features = [
+      { id: 'HM', name: 'Handmade' },
+      { id: 'HP', name: 'Hypoallergenic' },
+      { id: 'AD', name: 'Adjustable' },
+    ]
+    metadataStore.materials = [{ id: 'SLV', name: 'Silver' }]
+    metadataStore.collections = [{ id: 'NAT', name: 'Nature' }]
+
+    const wrapper = mount(ProductDetailsView, {
+      global: {
+        plugins: [router],
+        stubs: {
+          TheHeader: true,
+          TheFooter: true,
+          ProductCard: true,
+        },
+      },
     })
 
-    it('renders product details, feature tags, material, and collection correctly', async () => {
-        // Pre-set store state
-        productsStore.currentProduct = {
-            sku: 'SKU123',
-            productName: 'Blue Pearl Necklace',
-            price: 45,
-            featureCodes: ['HM', 'HP', 'AD'],
-            material: 'SLV',
-            collectionCode: 'NAT',
-            description: 'Mock Description',
-            stock: 10,
-            partitionKey: 'Necklace',
-            rowKey: 'SKU123',
-            timestamp: new Date().toISOString(),
-            eTag: '*',
-            categoryCode: 'Necklace',
-            yearCode: 2024
-        }
-        productsStore.loading = false
+    await flushPromises()
 
-        // Mock metadata store
-        metadataStore.features = [
-            { id: 'HM', name: 'Handmade' },
-            { id: 'HP', name: 'Hypoallergenic' },
-            { id: 'AD', name: 'Adjustable' }
-        ]
-        metadataStore.materials = [
-            { id: 'SLV', name: 'Silver' }
-        ]
-        metadataStore.collections = [
-            { id: 'NAT', name: 'Nature' }
-        ]
+    expect(wrapper.text()).toContain('Blue Pearl Necklace')
+    expect(wrapper.text()).toContain('₹45')
+    expect(wrapper.text()).toContain('Handmade')
+    expect(wrapper.text()).toContain('Material: Silver')
+    expect(wrapper.text()).toContain('Collection: Nature')
+    expect(wrapper.text()).toContain('Mock Description')
 
-        const wrapper = mount(ProductDetailsView, {
-            global: {
-                plugins: [router],
-                stubs: {
-                    'TheHeader': true,
-                    'TheFooter': true,
-                    'ProductCard': true
-                }
-            }
-        })
+    // Verify tags are rendered
+    const tags = wrapper.findAll('.tag')
+    expect(tags.length).toBe(5) // 3 features + 1 material + 1 collection
+    expect(tags[0]!.text()).toBe('Material: Silver')
+  })
 
-        await flushPromises()
+  it('handles quantity changes', async () => {
+    productsStore.currentProduct = {
+      sku: 'SKU123',
+      productName: 'Blue Pearl Necklace',
+      price: 45,
+      featureCodes: ['HM', 'HP', 'AD'],
+      stock: 10,
+      categoryCode: 'Necklace',
+      material: 'Silver',
+      collectionCode: 'NAT',
+      yearCode: 2024,
+    }
+    productsStore.loading = false
 
-        expect(wrapper.text()).toContain('Blue Pearl Necklace')
-        expect(wrapper.text()).toContain('₹45')
-        expect(wrapper.text()).toContain('Handmade')
-        expect(wrapper.text()).toContain('Material: Silver')
-        expect(wrapper.text()).toContain('Collection: Nature')
-        expect(wrapper.text()).toContain('Mock Description')
-
-        // Verify tags are rendered
-        const tags = wrapper.findAll('.tag')
-        expect(tags.length).toBe(5) // 3 features + 1 material + 1 collection
-        expect(tags[0]!.text()).toBe('Material: Silver')
+    const wrapper = mount(ProductDetailsView, {
+      global: {
+        plugins: [router],
+        stubs: {
+          TheHeader: true,
+          TheFooter: true,
+          ProductCard: true,
+        },
+      },
     })
+    await flushPromises()
 
-    it('handles quantity changes', async () => {
-        productsStore.currentProduct = {
-            sku: 'SKU123',
-            productName: 'Blue Pearl Necklace',
-            price: 45,
-            featureCodes: ['HM', 'HP', 'AD'],
-            stock: 10,
-            categoryCode: 'Necklace',
-            material: 'Silver',
-            collectionCode: 'NAT',
-            yearCode: 2024
-        }
-        productsStore.loading = false
+    const incBtn = wrapper.find('.qty-btn:last-child')
+    await incBtn.trigger('click')
+    expect(wrapper.find('.qty-value').text()!).toBe('2')
 
-        const wrapper = mount(ProductDetailsView, {
-            global: {
-                plugins: [router],
-                stubs: {
-                    'TheHeader': true,
-                    'TheFooter': true,
-                    'ProductCard': true
-                }
-            }
-        })
-        await flushPromises()
-
-        const incBtn = wrapper.find('.qty-btn:last-child')
-        await incBtn.trigger('click')
-        expect(wrapper.find('.qty-value').text()!).toBe('2')
-
-        const decBtn = wrapper.find('.qty-btn:first-child')
-        await decBtn.trigger('click')
-        expect(wrapper.find('.qty-value').text()).toBe('1')
-    })
+    const decBtn = wrapper.find('.qty-btn:first-child')
+    await decBtn.trigger('click')
+    expect(wrapper.find('.qty-value').text()).toBe('1')
+  })
 })

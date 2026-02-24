@@ -1,21 +1,22 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <header class="header">
     <RouterLink to="/" class="logo-link">
       <div class="logo-container">
-         <img src="/images/penguin-logo.png" alt="Blue Penguin Logo" class="logo-img" />
-         <div class="brand">
-           <span class="brand-name">Blue Penguin</span>
-         </div>
+        <img src="/images/penguin-logo.png" alt="Blue Penguin Logo" class="logo-img" />
+        <div class="brand">
+          <span class="brand-name">Blue Penguin</span>
+        </div>
       </div>
     </RouterLink>
 
     <nav class="nav">
       <RouterLink to="/" class="nav-link" exact-active-class="nav-link--active">Home</RouterLink>
       <RouterLink to="/shop" class="nav-link" active-class="nav-link--active">Shop</RouterLink>
-      <RouterLink to="/our-story" class="nav-link" active-class="nav-link--active">Our Story</RouterLink>
+      <RouterLink to="/our-story" class="nav-link" active-class="nav-link--active"
+        >Our Story</RouterLink
+      >
     </nav>
   </header>
 </template>
@@ -41,14 +42,14 @@
 }
 
 .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .logo-img {
-    height: 48px;
-    width: auto;
+  height: 48px;
+  width: auto;
 }
 
 .brand {
@@ -77,7 +78,9 @@
   text-decoration: none;
   padding-bottom: 2px;
   border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
 }
 
 .nav-link:hover {

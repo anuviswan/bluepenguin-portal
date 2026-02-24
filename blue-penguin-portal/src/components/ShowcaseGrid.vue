@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { ShowcaseItem } from '@/types/ShowcaseItem';
+import type { ShowcaseItem } from '@/types/ShowcaseItem'
 
 defineProps<{
-  title: string;
-  items: ShowcaseItem[];
-  loading?: boolean;
-  error?: string | null;
-}>();
+  title: string
+  items: ShowcaseItem[]
+  loading?: boolean
+  error?: string | null
+}>()
 
 const emit = defineEmits<{
-  'item-click': [item: ShowcaseItem];
-}>();
+  'item-click': [item: ShowcaseItem]
+}>()
 </script>
 
 <template>
@@ -42,12 +42,7 @@ const emit = defineEmits<{
         @keydown.enter="emit('item-click', item)"
       >
         <div class="card-image-wrapper">
-          <img
-            v-if="item.imageUrl"
-            :src="item.imageUrl"
-            :alt="item.label"
-            class="card-image"
-          />
+          <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.label" class="card-image" />
           <div v-else class="card-image-placeholder">
             <span class="placeholder-icon">🌸</span>
           </div>
@@ -56,7 +51,12 @@ const emit = defineEmits<{
         <p class="card-label">{{ item.label }}</p>
         <div v-if="item.discountPrice || item.originalPrice" class="card-prices">
           <span v-if="item.discountPrice" class="discount-price">₹{{ item.discountPrice }}</span>
-          <span v-if="item.originalPrice" class="original-price" :class="{ 'has-discount': item.discountPrice }">₹{{ item.originalPrice }}</span>
+          <span
+            v-if="item.originalPrice"
+            class="original-price"
+            :class="{ 'has-discount': item.discountPrice }"
+            >₹{{ item.originalPrice }}</span
+          >
         </div>
       </div>
     </div>
@@ -121,7 +121,7 @@ const emit = defineEmits<{
   letter-spacing: 0.05em;
   pointer-events: none;
   z-index: 10;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card-image {
@@ -201,8 +201,12 @@ const emit = defineEmits<{
 }
 
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .showcase-error {

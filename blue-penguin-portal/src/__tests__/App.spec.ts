@@ -7,8 +7,8 @@ describe('App', () => {
   it('mounts renders properly', () => {
     const wrapper = mount(App, {
       global: {
-        stubs: ['RouterView']
-      }
+        stubs: ['RouterView'],
+      },
     })
     expect(wrapper.exists()).toBe(true)
   })
