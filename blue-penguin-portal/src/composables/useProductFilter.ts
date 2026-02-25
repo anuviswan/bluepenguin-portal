@@ -1,103 +1,106 @@
-import { computed, reactive, watch, onMounted } from 'vue';
-import { useProductsStore, type Product } from '@/stores/products';
-import { storeToRefs } from 'pinia';
-import type { SearchProductsRequest } from '@/types/SearchProductsRequest';
+import { computed, reactive, watch, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useProductsStore, type Product } from '@/stores/products'
+import { storeToRefs } from 'pinia'
+import type { SearchProductsRequest } from '@/types/SearchProductsRequest'
 
 export function useProductFilter() {
-    const productsStore = useProductsStore();
-    const {
-        products,
-        loading,
-        error,
-        totalCount,
-        page,
-        pageSize
-    } = storeToRefs(productsStore);
+  const productsStore = useProductsStore()
+  const route = useRoute()
+  const { products, loading, error, totalCount, page, pageSize } = storeToRefs(productsStore)
 
-    const filters = reactive({
-        categories: [] as string[],
-        materials: [] as string[],
-        features: [] as string[],
-        collections: [] as string[]
-    });
+  const filters = reactive({
+    categories: [] as string[],
+    materials: [] as string[],
+    features: [] as string[],
+    collections: [] as string[],
+  })
 
-    // Debounce timer
-    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+  // Debounce timer
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
-    // Convert filters to API request format
-    const buildSearchRequest = (): SearchProductsRequest => {
-        return {
-            selectedCategories: filters.categories,
-            selectedMaterials: filters.materials,
-            selectedCollections: filters.collections,
-            selectedFeatures: filters.features
-        };
-    };
-
-    // Trigger API search when filters change
-    const performSearch = () => {
-        if (debounceTimer) {
-            clearTimeout(debounceTimer);
-        }
-
-        debounceTimer = setTimeout(async () => {
-            const searchRequest = buildSearchRequest();
-            await productsStore.searchProducts(searchRequest);
-        }, 300);
-    };
-
-    // Watch for filter changes
-    watch(
-        () => ({ ...filters }),
-        () => {
-            performSearch();
-        },
-        { deep: true }
-    );
-
-    // Load more products
-    const loadMore = async () => {
-        const searchRequest = buildSearchRequest();
-        await productsStore.loadMoreProducts(searchRequest);
-    };
-
-    const hasMore = computed(() => products.value.length < totalCount.value);
-
-    // Load initial products on mount
-    onMounted(async () => {
-        await productsStore.searchProducts({
-            selectedCategories: [],
-            selectedMaterials: [],
-            selectedCollections: [],
-            selectedFeatures: []
-        });
-    });
-
-    const toggleFilter = (group: 'categories' | 'materials' | 'features' | 'collections', value: string) => {
-        const index = filters[group].indexOf(value);
-        if (index === -1) {
-            filters[group].push(value);
-        } else {
-            filters[group].splice(index, 1);
-        }
-    };
-
-    const clearFilters = () => {
-        filters.categories = [];
-        filters.materials = [];
-        filters.features = [];
-        filters.collections = [];
-    };
-
+  // Convert filters to API request format
+  const buildSearchRequest = (): SearchProductsRequest => {
     return {
-        filters,
-        filteredProducts: products,
-        loading,
-        error,
-        totalCount,
-        hasMore,
-        toggleFilter,
-        clearFilters,
-        loadMore
-    };
+      selectedCategories: filters.categories,
+      selectedMaterials: filters.materials,
+      selectedCollections: filters.collections,
+      selectedFeatures: filters.features,
+    }
+  }
+
+  // Trigger API search when filters change
+  const performSearch = () => {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer)
+    }
+
+    debounceTimer = setTimeout(async () => {
+      const searchRequest = buildSearchRequest()
+      await productsStore.searchProducts(searchRequest)
+    }, 300)
+  }
+
+  // Watch for filter changes
+  watch(
+    () => ({ ...filters }),
+    () => {
+      performSearch()
+    },
+    { deep: true },
+  )
+
+  // Load more products
+  const loadMore = async () => {
+    const searchRequest = buildSearchRequest()
+    await productsStore.loadMoreProducts(searchRequest)
+  }
+
+  const hasMore = computed(() => products.value.length < totalCount.value)
+
+  // Load initial products on mount, pre-selecting category/collection from query param if present
+  onMounted(async () => {
+    const preselectedCat = route.query.category as string | undefined
+    if (preselectedCat) {
+      filters.categories = [preselectedCat]
+    }
+
+    const preselectedColl = route.query.collection as string | undefined
+    if (preselectedColl) {
+      filters.collections = [preselectedColl]
+    }
+
+    await productsStore.searchProducts(buildSearchRequest())
+  })
+
+  const toggleFilter = (
+    group: 'categories' | 'materials' | 'features' | 'collections',
+    value: string,
+  ) => {
+    const index = filters[group].indexOf(value)
+    if (index === -1) {
+      filters[group].push(value)
+    } else {
+      filters[group].splice(index, 1)
+    }
+  }
+
+  const clearFilters = () => {
+    filters.categories = []
+    filters.materials = []
+    filters.features = []
+    filters.collections = []
+  }
+
+  return {
+    filters,
+    filteredProducts: products,
+    loading,
+    error,
+    totalCount,
+    hasMore,
+    toggleFilter,
+    clearFilters,
+    loadMore,
+  }
 }

@@ -1,4 +1,4 @@
-import { computed, type Ref, unref } from 'vue';
+import { computed, type Ref, unref } from 'vue'
 
 export function useCurrency(amount: Ref<number> | number, currencyCode = 'INR') {
   const formatted = computed(() => {
@@ -7,10 +7,10 @@ export function useCurrency(amount: Ref<number> | number, currencyCode = 'INR') 
       currency: currencyCode,
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(unref(amount));
-  });
+    }).format(unref(amount))
+  })
 
   return {
     formatted,
-  };
+  }
 }

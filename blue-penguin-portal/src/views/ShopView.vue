@@ -4,7 +4,6 @@ import TheFooter from '@/components/TheFooter.vue'
 import ProductFilter from '@/components/ProductFilter.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { useProductFilter } from '@/composables/useProductFilter'
-import { computed } from 'vue'
 
 const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useProductFilter()
 </script>
@@ -94,7 +93,7 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 2rem 1.5rem; /* Row gap 2rem, Col gap 1.5rem */
+  gap: 2rem 1.5rem;
 }
 
 .no-results {

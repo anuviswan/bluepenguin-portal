@@ -1,21 +1,21 @@
 <script setup lang="ts">
 defineProps<{
-  id: string;
-  label: string;
-  modelValue: boolean;
-  count?: number;
-}>();
+  id: string
+  label: string
+  modelValue: boolean
+  count?: number
+}>()
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void;
-}>();
+  (e: 'update:modelValue', value: boolean): void
+}>()
 </script>
 
 <template>
   <div class="checkbox-wrapper">
-    <input 
-      type="checkbox" 
-      :id="id" 
+    <input
+      type="checkbox"
+      :id="id"
       :checked="modelValue"
       @change="emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
     />
@@ -34,7 +34,7 @@ const emit = defineEmits<{
   cursor: pointer;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   width: 16px;
   height: 16px;
   cursor: pointer;
