@@ -16,6 +16,7 @@ const enableArtisanFavs = String(import.meta.env.VITE_ENABLE_ARTISANFAVS).trim()
 const enableInspiredColls = String(import.meta.env.VITE_ENABLE_INSPIREDCOLLS).trim() === 'true'
 const enableTopDeals = String(import.meta.env.VITE_ENABLE_TOPDEALS).trim() === 'true'
 const enableTopCategories = String(import.meta.env.VITE_ENABLE_TOPCATEGORIES).trim() === 'true'
+const enableWaysToStyle = String(import.meta.env.VITE_ENABLE_WAYSTOSTYLE).trim() !== 'false'
 
 const whatsappLink = computed(() =>
   whatsappNumber ? `https://wa.me/${whatsappNumber}` : 'https://wa.me/',
@@ -59,6 +60,11 @@ const artisanFavs = ref<ShowcaseItem[]>([])
 const artisanLoading = ref(enableArtisanFavs)
 const artisanError = ref<string | null>(null)
 
+// ── Ways to Style ───────────────────────────────────────────────────────────────
+const waysToStyle = ref<ShowcaseItem[]>([])
+const waysToStyleLoading = ref(enableWaysToStyle)
+const waysToStyleError = ref<string | null>(null)
+
 onMounted(async () => {
   try {
     const promises: Promise<any>[] = []
@@ -68,21 +74,25 @@ onMounted(async () => {
       ? ShowcaseService.getTopCollections(4)
       : Promise.resolve([])
     const favsPromise = enableArtisanFavs ? ShowcaseService.getArtisanFavs() : Promise.resolve([])
+    const waysPromise = enableWaysToStyle ? ShowcaseService.getWaysToStyle() : Promise.resolve([])
 
-    const [deals, colls, favs] = await Promise.all([dealsPromise, collsPromise, favsPromise])
+    const [deals, colls, favs, ways] = await Promise.all([dealsPromise, collsPromise, favsPromise, waysPromise])
 
     topDeals.value = deals
     collections.value = colls
     artisanFavs.value = favs
+    waysToStyle.value = ways
   } catch (err) {
     console.error('[LandingView] Error fetching additional showcase data:', err)
     dealsError.value = 'Could not load top deals at this time.'
     collError.value = 'Could not load collections at this time.'
     artisanError.value = 'Could not load artisan favorites at this time.'
+    waysToStyleError.value = 'Could not load ways to style at this time.'
   } finally {
     dealsLoading.value = false
     collLoading.value = false
     artisanLoading.value = false
+    waysToStyleLoading.value = false
   }
 })
 
@@ -231,6 +241,16 @@ function onDealClick(item: { id: string }) {
         :loading="artisanLoading"
         :error="artisanError"
         @item-click="onDealClick"
+      />
+
+      <!-- ── Ways to Style ─────────────────────────────────────────────────────── -->
+      <ShowcaseGrid
+        v-if="enableWaysToStyle"
+        title="Ways to Style"
+        :items="waysToStyle"
+        :loading="waysToStyleLoading"
+        :error="waysToStyleError"
+        @item-click="onCategoryClick"
       />
 
       <!-- ── Inspired Collections ─────────────────────────────────────────── -->

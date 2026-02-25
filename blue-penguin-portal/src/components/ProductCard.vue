@@ -100,12 +100,13 @@ const featureCodesArray = computed(() => {
 
 .image-container {
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 1 / 1;
   background-color: #eee;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
 }
 
 .sale-badge {

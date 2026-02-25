@@ -2,8 +2,10 @@ import api from './api'
 import { getPrimaryImageIdForSkuId, downloadByImageId } from './api'
 import { ProductService } from './ProductService'
 import CollectionService from './CollectionService'
+import CategoryService from './CategoryService'
 import type { ShowcaseItem } from '@/types/ShowcaseItem'
 import type { Collection } from '@/types/Collection'
+import type { Category } from '@/types/Category'
 
 interface TopCategoryResponse {
   categoryCode: string
@@ -152,6 +154,52 @@ export default {
           discountPrice,
           originalPrice,
           imageUrl: skuId ? await fetchImageForSku(skuId) : undefined,
+        }
+      }),
+    )
+  },
+
+  async getWaysToStyle(): Promise<ShowcaseItem[]> {
+    const response = await api.get<string[]>('/api/FeaturedCategory/getall')
+    const allCategories = await CategoryService.getAll()
+
+    return Promise.all(
+      response.data.map(async (categoryId): Promise<ShowcaseItem> => {
+        let name = 'Category'
+        let imageUrl: string | undefined
+
+        // Find category name from metadata
+        const category = allCategories.find((c) => c.id === categoryId)
+        if (category) {
+          name = category.name
+        }
+
+        // Fetch latest product in this category for the image
+        try {
+          const result = await ProductService.searchProducts(
+            {
+              selectedCategories: [categoryId],
+              selectedMaterials: [],
+              selectedCollections: [],
+              selectedFeatures: [],
+            },
+            { page: 1, pageSize: 1 },
+          )
+
+          if (result.items && result.items.length > 0) {
+            const latestProduct = result.items[0]
+            if (latestProduct && latestProduct.sku) {
+              imageUrl = await fetchImageForSku(latestProduct.sku)
+            }
+          }
+        } catch (err) {
+          console.error(`[ShowcaseService] Failed to fetch latest product for category ${categoryId}`, err)
+        }
+
+        return {
+          id: categoryId,
+          label: name,
+          imageUrl,
         }
       }),
     )
