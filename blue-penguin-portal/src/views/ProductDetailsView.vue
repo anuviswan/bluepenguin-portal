@@ -210,6 +210,8 @@ const handleKeydown = (e: KeyboardEvent) => {
                 :alt="currentProduct.productName"
                 class="main-image zoomable"
                 @click="openImageModal"
+                fetchpriority="high"
+                decoding="async"
               />
               <div v-else class="placeholder-main">
                 {{ currentProduct.productName ? currentProduct.productName[0] : '' }}
@@ -223,7 +225,7 @@ const handleKeydown = (e: KeyboardEvent) => {
                 :class="{ active: selectedImageIndex === index }"
                 @click="selectedImageIndex = index"
               >
-                <img :src="img" :alt="`${currentProduct.productName} thumb ${index}`" />
+                <img :src="img" :alt="`${currentProduct.productName} thumb ${index}`" decoding="async" />
               </div>
             </div>
           </div>
@@ -363,7 +365,7 @@ const handleKeydown = (e: KeyboardEvent) => {
         </button>
 
         <div class="modal-content" @click.stop>
-          <img :src="mainImage" :alt="currentProduct?.productName" class="modal-image" />
+          <img :src="mainImage" :alt="currentProduct?.productName" class="modal-image" decoding="async" />
         </div>
 
         <button v-if="currentProductImages.length > 1" class="modal-nav next-nav" @click.stop="nextImage" aria-label="Next image">

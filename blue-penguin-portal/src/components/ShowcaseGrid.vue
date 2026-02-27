@@ -43,7 +43,7 @@ const emit = defineEmits<{
         @keydown.enter="emit('item-click', item)"
       >
         <div class="card-image-wrapper">
-          <img v-if="item.imageUrl && item.imageUrl !== '/src/assets/images/no-images-found.jpg' && !item.imageUrl.includes('no-images-found')" :src="item.imageUrl" :alt="item.label" class="card-image" />
+          <img v-if="item.imageUrl && item.imageUrl !== '/src/assets/images/no-images-found.jpg' && !item.imageUrl.includes('no-images-found')" :src="item.imageUrl" :alt="item.label" class="card-image" loading="lazy" decoding="async" />
           <div v-else class="placeholder-image">
             {{ item.label ? item.label[0] : '' }}
           </div>

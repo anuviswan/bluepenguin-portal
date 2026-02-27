@@ -53,6 +53,8 @@ const featureCodesArray = computed(() => {
         :src="imageUrl"
         :alt="product.productName"
         class="product-image"
+        loading="lazy"
+        decoding="async"
       />
       <div v-else class="placeholder-image">
         {{ product.productName ? product.productName[0] : '' }}

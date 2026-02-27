@@ -4,7 +4,7 @@
   <header class="header">
     <RouterLink to="/" class="logo-link">
       <div class="logo-container">
-        <img src="/images/penguin-logo.png" alt="Blue Penguin Logo" class="logo-img" />
+        <img src="/images/penguin-logo.png" alt="Blue Penguin Logo" class="logo-img" fetchpriority="high" decoding="async" />
         <div class="brand">
           <span class="brand-name">Blue Penguin</span>
         </div>
