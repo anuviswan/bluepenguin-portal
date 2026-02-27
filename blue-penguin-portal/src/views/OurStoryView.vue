@@ -74,7 +74,7 @@ import TheFooter from '@/components/TheFooter.vue'
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8rem 2rem;
+  padding: var(--spacing-8xl) var(--spacing-2xl);
 }
 
 .story-content {
@@ -95,14 +95,14 @@ import TheFooter from '@/components/TheFooter.vue'
 }
 
 .story-header {
-  margin-bottom: 5rem;
+  margin-bottom: var(--spacing-6xl);
   text-align: center;
 }
 
 .subtitle {
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--color-blue-light);
   display: block;
   margin-bottom: 1rem;
@@ -110,18 +110,18 @@ import TheFooter from '@/components/TheFooter.vue'
 
 .display-title {
   font-family: var(--font-family-display);
-  font-size: 5.5rem;
+  font-size: var(--font-size-6xl);
   color: var(--color-blue-primary);
   line-height: 0.9;
   margin: 0;
 }
 
 .story-segment {
-  margin-bottom: 4rem;
+  margin-bottom: var(--spacing-5xl);
 }
 
 .lead-text {
-  font-size: 1.6rem;
+  font-size: var(--font-size-2xl);
   line-height: 1.5;
   font-weight: 300;
   color: var(--color-text-main);
@@ -137,7 +137,7 @@ import TheFooter from '@/components/TheFooter.vue'
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 4rem 0;
+  margin: var(--spacing-5xl) 0;
 }
 
 .dot {
@@ -151,11 +151,11 @@ import TheFooter from '@/components/TheFooter.vue'
 .body {
   text-align: center;
   max-width: 700px;
-  margin: 0 auto 4rem;
+  margin: 0 auto var(--spacing-5xl);
 }
 
 .body p {
-  font-size: 1.2rem;
+  font-size: var(--font-size-xl);
   line-height: 1.8;
   color: var(--color-text-light);
 }
@@ -166,15 +166,15 @@ import TheFooter from '@/components/TheFooter.vue'
 }
 
 .quote-block {
-  padding: 4rem;
+  padding: var(--spacing-5xl);
   background-color: var(--color-bg-light);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   position: relative;
   text-align: center;
 }
 
 .quote-block p {
-  font-size: 1.3rem;
+  font-size: var(--font-size-xl);
   line-height: 1.7;
   font-style: italic;
   color: var(--color-blue-primary);
@@ -184,15 +184,15 @@ import TheFooter from '@/components/TheFooter.vue'
 .cta-container {
   display: flex;
   justify-content: center;
-  margin-top: 6rem;
+  margin-top: var(--spacing-6xl);
 }
 
 .cta-button {
   background-color: var(--color-blue-primary);
   color: white;
-  padding: 1rem 3rem;
-  border-radius: 2px;
-  font-size: 1.1rem;
+  padding: var(--spacing-lg) var(--spacing-4xl);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-lg);
   text-decoration: none;
   transition:
     transform 0.2s,
@@ -207,19 +207,19 @@ import TheFooter from '@/components/TheFooter.vue'
 
 @media (max-width: 768px) {
   .display-title {
-    font-size: 3.5rem;
+    font-size: var(--font-size-4xl);
   }
 
   .lead-text {
-    font-size: 1.3rem;
+    font-size: var(--font-size-xl);
   }
 
   .story-container {
-    padding: 6rem 1.5rem;
+    padding: var(--spacing-6xl) var(--spacing-xl);
   }
 
   .quote-block {
-    padding: 2.5rem 1.5rem;
+    padding: var(--spacing-3xl) var(--spacing-xl);
   }
 }
 </style>

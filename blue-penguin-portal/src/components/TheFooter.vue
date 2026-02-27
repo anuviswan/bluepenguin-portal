@@ -76,9 +76,9 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com'
 <style scoped>
 .footer {
   background-color: var(--color-bg-light);
-  padding: 3rem 0;
+  padding: var(--spacing-4xl) 0;
   border-top: 1px solid var(--color-border);
-  margin-top: 4rem;
+  margin-top: var(--spacing-5xl);
 }
 
 .footer-content {
@@ -91,9 +91,9 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com'
 }
 
 .section h3 {
-  color: #4a5568;
+  color: var(--color-text-main);
   margin: 0 0 1rem 0;
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg);
   font-weight: 600;
 }
 
@@ -147,7 +147,7 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com'
 }
 
 .whatsapp:hover {
-  color: #25d366;
+  color: var(--color-success);
   transform: translateY(-2px);
 }
 
@@ -166,7 +166,7 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com'
 
 .footer-bottom p {
   color: var(--color-text-light);
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   margin: 0;
 }
 
