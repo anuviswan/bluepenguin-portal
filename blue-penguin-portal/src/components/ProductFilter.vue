@@ -171,19 +171,19 @@ const getDisplayedOptions = (options: FilterOption[], group: keyof typeof expand
 
 <style scoped>
 .filters {
-  padding-right: 2rem;
+  padding-right: var(--spacing-2xl);
   border-right: 1px solid var(--color-border);
   min-width: 200px;
 }
 
 .header {
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
+  margin-bottom: var(--spacing-2xl);
+  padding-bottom: var(--spacing-lg);
   border-bottom: 1px solid var(--color-border);
 }
 
 .filter-group {
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-2xl);
 }
 
 h2 {
@@ -199,7 +199,7 @@ h3 {
 }
 
 .actions {
-  margin-top: 2rem;
+  margin-top: var(--spacing-2xl);
 }
 
 .toggle-more {
@@ -231,7 +231,7 @@ h3 {
 }
 
 .clear-btn:hover {
-  background-color: #f3f4f6;
+  background-color: var(--color-bg-soft);
   color: var(--color-text-main);
 }
 </style>

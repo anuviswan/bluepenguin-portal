@@ -108,7 +108,7 @@ export const useProductsStore = defineStore('products', () => {
 
       // Fetch all images
       try {
-        const { getAllImagesForSkuId, downloadByImageId } = await import('@/services/api')
+        const { getAllImagesForSkuId, getPrimaryImageIdForSkuId, downloadByImageId } = await import('@/services/api')
         const fallbackImage = (await import('@/assets/images/no-images-found.jpg')).default
 
         const imageIds = await getAllImagesForSkuId(skuId)
@@ -116,6 +116,19 @@ export const useProductsStore = defineStore('products', () => {
         if (!imageIds || imageIds.length === 0) {
           currentProductImages.value = [fallbackImage]
         } else {
+          try {
+            const primaryId = await getPrimaryImageIdForSkuId(skuId)
+            if (primaryId) {
+              const primaryIdx = imageIds.indexOf(primaryId)
+              if (primaryIdx > 0) {
+                imageIds.splice(primaryIdx, 1)
+                imageIds.unshift(primaryId)
+              }
+            }
+          } catch (e) {
+            console.warn('Failed to fetch primary image id, using default order:', e)
+          }
+
           const imageUrls = await Promise.all(imageIds.map((id) => downloadByImageId(skuId, id)))
           currentProductImages.value = imageUrls.length > 0 ? imageUrls : [fallbackImage]
         }

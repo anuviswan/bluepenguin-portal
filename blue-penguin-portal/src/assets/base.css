@@ -1,14 +1,111 @@
 :root {
+  /* Colors - Brand */
   --color-blue-primary: #1b4b8a;
   --color-blue-light: #4a7ab0;
+  --color-blue-dark: #123766;
+  --color-accent: #e63946;
+  --color-accent-light: #fff1f2;
+  --color-accent-border: #ffe4e6;
+  --color-success: #25d366;
+  --color-success-dark: #1da851;
+  --color-warning: #f09433;
+
+  /* Colors - Neutral */
+  --color-white: #ffffff;
+  --color-bg-light: #f9fafb;
+  --color-bg-soft: #f3f4f6;
+  --color-bg-mute: #e5e7eb;
+  --color-border: #e5e7eb;
+  --color-border-light: #f3f3f3;
   --color-text-main: #333333;
   --color-text-light: #666666;
-  --color-bg-light: #f9fafb;
-  --color-border: #e5e7eb;
-  --color-white: #ffffff;
+  --color-text-lighter: #9ca3af;
+  --color-black: #000000;
 
+  /* Colors - Extended specific */
+  --color-material-bg: #f0f7ff;
+  --color-material-border: #cfe2ff;
+  --color-collection-bg: #fff9eb;
+  --color-collection-border: #ffecb5;
+  --color-collection-text: #856404;
+  --color-image-placeholder: #f0e2d9;
+
+  /* Colors - Earthy (Landing page etc) */
+  --color-earth-dark: #2d2420;
+  --color-earth-main: #5a4a42;
+  --color-earth-accent: #7a5c4e;
+  --color-earth-accent-hover: #6a4c3e;
+  --color-earth-light: #f7ede8;
+  --color-earth-lighter: #fdfbf7;
+
+  /* Spacing Scale */
+  --spacing-xs: 0.25rem;
+  /* 4px */
+  --spacing-sm: 0.5rem;
+  /* 8px */
+  --spacing-md: 0.75rem;
+  /* 12px */
+  --spacing-lg: 1rem;
+  /* 16px */
+  --spacing-xl: 1.5rem;
+  /* 24px */
+  --spacing-2xl: 2rem;
+  /* 32px */
+  --spacing-3xl: 2.5rem;
+  /* 40px */
+  --spacing-4xl: 3rem;
+  /* 48px */
+  --spacing-5xl: 4rem;
+  /* 64px */
+  --spacing-6xl: 5rem;
+  /* 80px */
+  --spacing-8xl: 8rem;
+  /* 128px */
+  --spacing-10xl: 10rem;
+  /* 160px */
+
+  /* Typography Scale */
   --font-family-body: 'Inter', sans-serif;
   --font-family-display: 'Dancing Script', cursive;
+  --font-family-title: 'Outfit', sans-serif;
+
+  --font-size-xs: 0.75rem;
+  /* 12px */
+  --font-size-sm: 0.85rem;
+  /* ~14px */
+  --font-size-md: 1rem;
+  /* 16px */
+  --font-size-lg: 1.1rem;
+  /* ~18px */
+  --font-size-xl: 1.25rem;
+  /* 20px */
+  --font-size-2xl: 1.5rem;
+  /* 24px */
+  --font-size-3xl: 1.75rem;
+  /* 28px */
+  --font-size-4xl: 2.5rem;
+  /* 40px */
+  --font-size-5xl: 3rem;
+  /* 48px */
+  --font-size-6xl: 4rem;
+  /* 64px */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Container Max Width */
+  --container-max-width: 1200px;
 }
 
 *,

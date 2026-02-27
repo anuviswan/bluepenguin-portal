@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import heroImage from '@/assets/images/hero-image.png'
@@ -8,7 +8,7 @@ import ShowcaseGrid from '@/components/ShowcaseGrid.vue'
 import ShowcaseService from '@/services/ShowcaseService'
 import type { ShowcaseItem } from '@/types/ShowcaseItem'
 
-// ── Env vars ──────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Env vars ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const whatsappNumber = import.meta.env.VITE_WHATSAPP_CONTACT || ''
 const instagramLink = import.meta.env.VITE_INSTAGRAM_LINK || 'https://www.instagram.com/'
 
@@ -16,7 +16,6 @@ const enableArtisanFavs = String(import.meta.env.VITE_ENABLE_ARTISANFAVS).trim()
 const enableInspiredColls = String(import.meta.env.VITE_ENABLE_INSPIREDCOLLS).trim() === 'true'
 const enableTopDeals = String(import.meta.env.VITE_ENABLE_TOPDEALS).trim() === 'true'
 const enableTopCategories = String(import.meta.env.VITE_ENABLE_TOPCATEGORIES).trim() === 'true'
-const enableWaysToStyle = String(import.meta.env.VITE_ENABLE_WAYSTOSTYLE).trim() !== 'false'
 
 const whatsappLink = computed(() =>
   whatsappNumber ? `https://wa.me/${whatsappNumber}` : 'https://wa.me/',
@@ -24,7 +23,7 @@ const whatsappLink = computed(() =>
 
 const router = useRouter()
 
-// ── Top Categories ─────────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Top Categories ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const categories = ref<ShowcaseItem[]>([])
 const catLoading = ref(enableTopCategories)
 const catError = ref<string | null>(null)
@@ -45,25 +44,20 @@ function onCategoryClick(item: { id: string }) {
   router.push({ path: '/shop', query: { category: item.id } })
 }
 
-// ── Top Deals ───────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Top Deals ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const topDeals = ref<ShowcaseItem[]>([])
 const dealsLoading = ref(enableTopDeals)
 const dealsError = ref<string | null>(null)
 
-// ── Inspired Collections ───────────────────────────────────────────────────────
+// ΓöÇΓöÇ Inspired Collections ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const collections = ref<ShowcaseItem[]>([])
 const collLoading = ref(enableInspiredColls)
 const collError = ref<string | null>(null)
 
-// ── Artisan Favs ───────────────────────────────────────────────────────────────
+// ΓöÇΓöÇ Artisan Favs ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const artisanFavs = ref<ShowcaseItem[]>([])
 const artisanLoading = ref(enableArtisanFavs)
 const artisanError = ref<string | null>(null)
-
-// ── Ways to Style ───────────────────────────────────────────────────────────────
-const waysToStyle = ref<ShowcaseItem[]>([])
-const waysToStyleLoading = ref(enableWaysToStyle)
-const waysToStyleError = ref<string | null>(null)
 
 onMounted(async () => {
   try {
@@ -74,25 +68,21 @@ onMounted(async () => {
       ? ShowcaseService.getTopCollections(4)
       : Promise.resolve([])
     const favsPromise = enableArtisanFavs ? ShowcaseService.getArtisanFavs() : Promise.resolve([])
-    const waysPromise = enableWaysToStyle ? ShowcaseService.getWaysToStyle() : Promise.resolve([])
 
-    const [deals, colls, favs, ways] = await Promise.all([dealsPromise, collsPromise, favsPromise, waysPromise])
+    const [deals, colls, favs] = await Promise.all([dealsPromise, collsPromise, favsPromise])
 
     topDeals.value = deals
     collections.value = colls
     artisanFavs.value = favs
-    waysToStyle.value = ways
   } catch (err) {
     console.error('[LandingView] Error fetching additional showcase data:', err)
     dealsError.value = 'Could not load top deals at this time.'
     collError.value = 'Could not load collections at this time.'
     artisanError.value = 'Could not load artisan favorites at this time.'
-    waysToStyleError.value = 'Could not load ways to style at this time.'
   } finally {
     dealsLoading.value = false
     collLoading.value = false
     artisanLoading.value = false
-    waysToStyleLoading.value = false
   }
 })
 
@@ -109,7 +99,7 @@ function onDealClick(item: { id: string }) {
   <div class="landing-layout">
     <TheHeader />
 
-    <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+    <!-- ΓöÇΓöÇ Hero ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ -->
     <section class="hero">
       <div class="hero-content">
         <h1 class="hero-heading">Handcrafted with Care,<br />Made Just for You</h1>
@@ -146,25 +136,25 @@ function onDealClick(item: { id: string }) {
         </div>
       </div>
       <div class="hero-image-area">
-        <img :src="heroImage" alt="Colourful handcrafted jewellery" class="hero-img" fetchpriority="high" decoding="async" />
+        <img :src="heroImage" alt="Colorful handcrafted jewellery" class="hero-img" />
       </div>
     </section>
 
-    <!-- ── Main content wrapper ───────────────────────────────────────────── -->
+    <!-- ΓöÇΓöÇ Main content wrapper ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ -->
     <div class="page-content">
-      <!-- ── Our Story ──────────────────────────────────────────────────────── -->
+      <!-- ΓöÇΓöÇ Our Story ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ -->
       <section class="story-section">
         <h2 class="story-title">Our Story</h2>
         <p class="story-text">
           At Blue Penguin, we believe in spreading happiness through handcrafted jewellery that's as
           unique as you are. Each piece is made with love, featuring vibrant, high-quality beads
-          assembled to brighten your day. We're a small team dedicated to creating colourful joy, one
+          assembled to brighten your day. We're a small team dedicated to creating colorful joy, one
           bracelet at a time.
         </p>
-        <RouterLink to="/our-story" class="story-link">Read Our Story →</RouterLink>
+        <RouterLink to="/our-story" class="story-link">Read Our Story ΓåÆ</RouterLink>
       </section>
 
-      <!-- ── How to Order ──────────────────────────────────────────────────── -->
+      <!-- ΓöÇΓöÇ How to Order ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ -->
       <section class="hiw-section">
         <h2 class="hiw-title">How to Order</h2>
         <div class="hiw-steps">
@@ -189,7 +179,7 @@ function onDealClick(item: { id: string }) {
               <span class="hiw-sub">our <strong>collection</strong></span>
             </div>
           </div>
-          <div class="hiw-arrow" aria-hidden="true">→</div>
+          <div class="hiw-arrow" aria-hidden="true">ΓåÆ</div>
           <!-- Step 2 -->
           <div class="hiw-step">
             <div class="hiw-icon">
@@ -208,7 +198,7 @@ function onDealClick(item: { id: string }) {
               <span class="hiw-sub">with product code</span>
             </div>
           </div>
-          <div class="hiw-arrow" aria-hidden="true">→</div>
+          <div class="hiw-arrow" aria-hidden="true">ΓåÆ</div>
           <!-- Step 3 -->
           <div class="hiw-step">
             <div class="hiw-icon">
@@ -233,7 +223,7 @@ function onDealClick(item: { id: string }) {
         </div>
       </section>
 
-      <!-- ── Artisan's Picks ────────────────────────────────────────────────── -->
+      <!-- ΓöÇΓöÇ Artisan's Picks ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ -->
       <ShowcaseGrid
         v-if="enableArtisanFavs"
         title="Artisan's Picks"
@@ -243,17 +233,7 @@ function onDealClick(item: { id: string }) {
         @item-click="onDealClick"
       />
 
-      <!-- ── Ways to Style ─────────────────────────────────────────────────────── -->
-      <ShowcaseGrid
-        v-if="enableWaysToStyle"
-        title="Ways to Style"
-        :items="waysToStyle"
-        :loading="waysToStyleLoading"
-        :error="waysToStyleError"
-        @item-click="onCategoryClick"
-      />
-
-      <!-- ── Inspired Collections ─────────────────────────────────────────── -->
+      <!-- ΓöÇΓöÇ Inspired Collections ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ -->
       <ShowcaseGrid
         v-if="enableInspiredColls"
         title="Inspired Collections"
@@ -263,7 +243,7 @@ function onDealClick(item: { id: string }) {
         @item-click="onCollectionClick"
       />
 
-      <!-- ── Categories (generic ShowcaseGrid) ─────────────────────────────── -->
+      <!-- ΓöÇΓöÇ Categories (generic ShowcaseGrid) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ -->
       <ShowcaseGrid
         v-if="enableTopCategories"
         title="Find What You Love"
@@ -273,7 +253,7 @@ function onDealClick(item: { id: string }) {
         @item-click="onCategoryClick"
       />
 
-      <!-- ── Top Deals ────────────────────────────────────────────────────── -->
+      <!-- ΓöÇΓöÇ Top Deals ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ -->
       <ShowcaseGrid
         v-if="enableTopDeals"
         title="Limited Offers"
@@ -283,9 +263,9 @@ function onDealClick(item: { id: string }) {
         @item-click="onDealClick"
       />
 
-      <!-- ── Browse All CTA ─────────────────────────────────────────────────── -->
+      <!-- ΓöÇΓöÇ Browse All CTA ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ -->
       <div class="browse-all-wrapper">
-        <RouterLink to="/shop" class="browse-all-btn">Browse All ›</RouterLink>
+        <RouterLink to="/shop" class="browse-all-btn">Browse All ΓÇ║</RouterLink>
       </div>
     </div>
     <!-- /page-content -->
@@ -295,7 +275,7 @@ function onDealClick(item: { id: string }) {
 </template>
 
 <style scoped>
-/* ── Layout ─────────────────────────────────────────────────────────────────── */
+/* ΓöÇΓöÇ Layout ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 .landing-layout {
   min-height: 100vh;
   display: flex;
@@ -307,10 +287,10 @@ function onDealClick(item: { id: string }) {
   max-width: 1100px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 var(--spacing-2xl) var(--spacing-4xl);
+  padding: 0 2rem 3rem;
 }
 
-/* ── Hero ────────────────────────────────────────────────────────────────────── */
+/* ΓöÇΓöÇ Hero ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 .hero {
   display: flex;
   align-items: stretch;
@@ -325,7 +305,7 @@ function onDealClick(item: { id: string }) {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--spacing-5xl) var(--spacing-4xl) var(--spacing-5xl) var(--spacing-6xl);
+  padding: 4rem 3.5rem 4rem 5rem;
   z-index: 1;
 }
 
@@ -333,14 +313,14 @@ function onDealClick(item: { id: string }) {
   font-family: var(--font-family-body);
   font-size: clamp(2rem, 3.5vw, 3rem);
   font-weight: 700;
-  color: var(--color-earth-dark);
+  color: #2d2420;
   line-height: 1.15;
   margin-bottom: 1rem;
 }
 
 .hero-sub {
   font-size: 1rem;
-  color: var(--color-earth-main);
+  color: #5a4a42;
   line-height: 1.6;
   margin-bottom: 2rem;
 }
@@ -355,8 +335,8 @@ function onDealClick(item: { id: string }) {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: var(--spacing-md) var(--spacing-xl);
-  border-radius: var(--radius-md);
+  padding: 0.7rem 1.4rem;
+  border-radius: 6px;
   font-size: 0.95rem;
   font-weight: 500;
   text-decoration: none;
@@ -371,21 +351,21 @@ function onDealClick(item: { id: string }) {
 }
 
 .btn-primary {
-  background-color: var(--color-earth-accent);
-  color: var(--color-white);
+  background-color: #7a5c4e;
+  color: #fff;
 }
 .btn-primary:hover {
-  background-color: var(--color-earth-accent-hover);
+  background-color: #5e4039;
   transform: translateY(-1px);
 }
 
 .btn-secondary {
   background-color: transparent;
-  color: var(--color-earth-main);
-  border: 1.5px solid var(--color-earth-main);
+  color: #5a4a42;
+  border: 1.5px solid rgba(90, 74, 66, 0.45);
 }
 .btn-secondary:hover {
-  background-color: var(--color-earth-light);
+  background-color: rgba(90, 74, 66, 0.08);
   transform: translateY(-1px);
 }
 
@@ -404,9 +384,9 @@ function onDealClick(item: { id: string }) {
   display: block;
 }
 
-/* ── Our Story ───────────────────────────────────────────────────────────────── */
+/* ΓöÇΓöÇ Our Story ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 .story-section {
-  padding: var(--spacing-4xl) 0 var(--spacing-3xl);
+  padding: 3rem 0 2rem;
   text-align: center;
   max-width: 680px;
   margin: 0 auto;
@@ -415,7 +395,7 @@ function onDealClick(item: { id: string }) {
 .story-title {
   font-family: var(--font-family-display);
   font-size: 2.2rem;
-  color: var(--color-earth-accent);
+  color: #8b5e52;
   font-weight: 400;
   margin-bottom: 1.25rem;
 }
@@ -430,16 +410,16 @@ function onDealClick(item: { id: string }) {
 .story-link {
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--color-earth-accent);
+  color: #7a5c4e;
   transition: color 0.2s;
 }
 .story-link:hover {
-  color: var(--color-earth-accent-hover);
+  color: #5e4039;
 }
 
-/* ── How It Works ────────────────────────────────────────────────────────────── */
+/* ΓöÇΓöÇ How It Works ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 .hiw-section {
-  padding: var(--spacing-4xl) 0 var(--spacing-3xl);
+  padding: 3rem 0 2rem;
 }
 
 .hiw-title {
@@ -456,9 +436,9 @@ function onDealClick(item: { id: string }) {
   align-items: center;
   justify-content: center;
   gap: 0;
-  background-color: var(--color-earth-lighter);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-3xl) var(--spacing-4xl);
+  background-color: #f5edea;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
 }
 
 .hiw-step {
@@ -472,13 +452,13 @@ function onDealClick(item: { id: string }) {
 .hiw-icon {
   width: 52px;
   height: 52px;
-  background-color: var(--color-earth-light);
-  border-radius: var(--radius-lg);
+  background-color: #e8d8d0;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: var(--color-earth-accent);
+  color: #7a5c4e;
 }
 
 .hiw-icon svg {
@@ -505,22 +485,22 @@ function onDealClick(item: { id: string }) {
 
 .hiw-arrow {
   font-size: 1.4rem;
-  color: var(--color-earth-accent);
+  color: #b09a91;
   padding: 0 1.5rem;
   flex-shrink: 0;
 }
 
-/* ── Browse All ──────────────────────────────────────────────────────────────── */
+/* ΓöÇΓöÇ Browse All ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 .browse-all-wrapper {
   display: flex;
   justify-content: center;
-  padding: var(--spacing-3xl) 0 var(--spacing-lg);
+  padding: 2.5rem 0 1rem;
 }
 
 .browse-all-btn {
   display: inline-block;
-  padding: var(--spacing-lg) var(--spacing-4xl);
-  border-radius: var(--radius-md);
+  padding: 0.85rem 3rem;
+  border-radius: 8px;
   background-color: #e8dbd5;
   color: #4a3830;
   font-size: 1rem;
@@ -535,7 +515,7 @@ function onDealClick(item: { id: string }) {
   transform: translateY(-1px);
 }
 
-/* ── Responsive ──────────────────────────────────────────────────────────────── */
+/* ΓöÇΓöÇ Responsive ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 @media (max-width: 768px) {
   .hero {
     flex-direction: column;
@@ -544,7 +524,7 @@ function onDealClick(item: { id: string }) {
 
   .hero-content {
     flex: none;
-    padding: var(--spacing-3xl) var(--spacing-2xl);
+    padding: 2.5rem 2rem;
   }
 
   .hero-image-area {
@@ -552,13 +532,13 @@ function onDealClick(item: { id: string }) {
   }
 
   .page-content {
-    padding: 0 var(--spacing-lg) var(--spacing-3xl);
+    padding: 0 1rem 2rem;
   }
 
   .hiw-steps {
     flex-direction: column;
     gap: 1.25rem;
-    padding: var(--spacing-2xl);
+    padding: 1.5rem;
   }
 
   .hiw-arrow {
@@ -571,7 +551,7 @@ function onDealClick(item: { id: string }) {
   }
 
   .story-section {
-    padding: var(--spacing-3xl) 0;
+    padding: 2rem 0;
   }
 }
 </style>
