@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch } from 'vue'
+import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useProductsStore } from '@/stores/products'
 import { useMetadataStore } from '@/stores/metadata'
@@ -30,6 +30,7 @@ const {
 
 const sku = computed(() => route.params.sku as string)
 const selectedImageIndex = ref(0)
+const isImageModalOpen = ref(false)
 
 const { formatted: price } = useCurrency(computed(() => currentProduct.value?.price || 0))
 const { formatted: discountPrice } = useCurrency(
@@ -70,7 +71,15 @@ const loadData = async () => {
   }
 }
 
-onMounted(loadData)
+onMounted(() => {
+  loadData()
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
+
 watch(sku, loadData)
 
 const mainImage = computed(() => {
@@ -134,7 +143,37 @@ const whatsappLink = computed(() => {
 const instagramLink = import.meta.env.VITE_INSTAGRAM_LINK || 'https://www.instagram.com/'
 
 const goBack = () => {
-  router.push('/')
+  router.push('/shop')
+}
+
+const openImageModal = () => {
+  if (mainImage.value && mainImage.value !== '/src/assets/images/no-images-found.jpg' && !mainImage.value.includes('no-images-found')) {
+    isImageModalOpen.value = true
+    document.body.style.overflow = 'hidden' // Prevent background scrolling
+  }
+}
+
+const closeImageModal = () => {
+  isImageModalOpen.value = false
+  document.body.style.overflow = '' // Restore scrolling
+}
+
+const prevImage = () => {
+  if (currentProductImages.value.length <= 1) return
+  selectedImageIndex.value =
+    (selectedImageIndex.value - 1 + currentProductImages.value.length) % currentProductImages.value.length
+}
+
+const nextImage = () => {
+  if (currentProductImages.value.length <= 1) return
+  selectedImageIndex.value = (selectedImageIndex.value + 1) % currentProductImages.value.length
+}
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (!isImageModalOpen.value) return
+  if (e.key === 'Escape') closeImageModal()
+  if (e.key === 'ArrowLeft') prevImage()
+  if (e.key === 'ArrowRight') nextImage()
 }
 </script>
 
@@ -169,7 +208,8 @@ const goBack = () => {
                 v-if="mainImage && mainImage !== '/src/assets/images/no-images-found.jpg' && !mainImage.includes('no-images-found')"
                 :src="mainImage"
                 :alt="currentProduct.productName"
-                class="main-image"
+                class="main-image zoomable"
+                @click="openImageModal"
               />
               <div v-else class="placeholder-main">
                 {{ currentProduct.productName ? currentProduct.productName[0] : '' }}
@@ -301,11 +341,38 @@ const goBack = () => {
             <ProductCard v-for="product in relatedProducts" :key="product.sku" :product="product" />
           </div>
           <div class="load-more-container">
-            <button class="load-more-btn" @click="goBack">Load More ›</button>
+            <button class="load-more-btn" @click="router.push('/shop')">Load More ›</button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Image Zoom Modal -->
+    <Teleport to="body">
+      <div v-if="isImageModalOpen" class="image-modal" @click="closeImageModal">
+        <div class="modal-close" @click.stop="closeImageModal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+        <button v-if="currentProductImages.length > 1" class="modal-nav prev-nav" @click.stop="prevImage" aria-label="Previous image">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="modal-content" @click.stop>
+          <img :src="mainImage" :alt="currentProduct?.productName" class="modal-image" />
+        </div>
+
+        <button v-if="currentProductImages.length > 1" class="modal-nav next-nav" @click.stop="nextImage" aria-label="Next image">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </Teleport>
 
     <TheFooter />
   </div>
@@ -396,6 +463,15 @@ const goBack = () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.main-image.zoomable {
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+}
+
+.main-image.zoomable:hover {
+  transform: scale(1.03);
 }
 
 .placeholder-main {
@@ -649,6 +725,7 @@ const goBack = () => {
 /* Related Products */
 .related-section {
   margin-top: 4rem;
+  padding: 0 2.5rem; /* Added horizontal padding to match main product section */
 }
 
 .related-section h2 {
@@ -666,6 +743,7 @@ const goBack = () => {
 
 .load-more-container {
   margin-top: 3rem;
+  padding-bottom: 2.5rem; /* Added padding to prevent touching bottom border */
   display: flex;
   justify-content: center;
 }
@@ -698,6 +776,100 @@ const goBack = () => {
   height: 50px;
   animation: spin 1s linear infinite;
   margin: 0 auto 1.5rem;
+}
+
+/* Image Modal */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10000;
+}
+
+.modal-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.modal-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+.modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10000;
+  border: none;
+}
+
+.modal-nav:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.modal-nav svg {
+  width: 28px;
+  height: 28px;
+}
+
+.prev-nav {
+  left: 2rem;
+}
+
+.next-nav {
+  right: 2rem;
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
 }
 
 @keyframes spin {

@@ -15,7 +15,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <section class="showcase-section">
+  <section v-if="loading || error || items.length > 0" class="showcase-section">
     <h2 class="showcase-title">{{ title }}</h2>
 
     <!-- Error State -->
