@@ -210,7 +210,6 @@ const handleKeydown = (e: KeyboardEvent) => {
                 :alt="currentProduct.productName"
                 class="main-image zoomable"
                 @click="openImageModal"
-                fetchpriority="high"
                 decoding="async"
               />
               <div v-else class="placeholder-main">

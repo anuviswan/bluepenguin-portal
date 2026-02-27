@@ -146,7 +146,7 @@ function onDealClick(item: { id: string }) {
         </div>
       </div>
       <div class="hero-image-area">
-        <img :src="heroImage" alt="Colourful handcrafted jewellery" class="hero-img" fetchpriority="high" decoding="async" />
+        <img :src="heroImage" alt="Colourful handcrafted jewellery" class="hero-img" decoding="async" />
       </div>
     </section>
 
