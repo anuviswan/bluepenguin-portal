@@ -26,7 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 3rem;
+  padding: 1.25rem var(--spacing-4xl);
   background-color: var(--color-bg-light);
   border-bottom: 1px solid var(--color-border);
 }
@@ -68,7 +68,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: var(--spacing-2xl);
 }
 
 .nav-link {
@@ -95,11 +95,11 @@
 @media (max-width: 600px) {
   .header {
     flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
   }
   .nav {
-    gap: 1.25rem;
+    gap: var(--spacing-xl);
   }
 }
 </style>

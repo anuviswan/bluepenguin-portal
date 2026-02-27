@@ -46,7 +46,7 @@
           <li>Custom-made or personalized jewelry</li>
           <li>Size-adjusted or specially modified pieces</li>
           <li>Items purchased during limited offers or clearance sales</li>
-          <li>Minor variations in color, texture, or finish due to the handmade nature</li>
+          <li>Minor variations in colour, texture, or finish due to the handmade nature</li>
         </ul>
         <p class="note">
           <strong>Please note:</strong> Slight variations are natural in handcrafted products and
@@ -113,15 +113,15 @@
 <style scoped>
 .policy-page {
   min-height: 100vh;
-  background-color: var(--color-bg-light, #f9fafb);
+  background-color: var(--color-bg-light);
   display: flex;
   flex-direction: column;
 }
 
 .hero-section {
-  background-color: var(--color-blue-primary, #1e3a8a);
-  color: white;
-  padding: 6rem 2rem 4rem;
+  background-color: var(--color-blue-primary);
+  color: var(--color-white);
+  padding: var(--spacing-6xl) var(--spacing-2xl) var(--spacing-5xl);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -135,14 +135,14 @@
 }
 
 .hero-section h1 {
-  font-size: 3rem;
+  font-size: var(--font-size-5xl);
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-lg);
   letter-spacing: -0.02em;
 }
 
 .subtitle {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   opacity: 0.9;
   font-weight: 300;
 }
@@ -150,42 +150,42 @@
 .policy-content {
   max-width: 800px;
   margin: 0 auto;
-  padding: 4rem 2rem;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: var(--spacing-5xl) var(--spacing-2xl);
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
   transform: translateY(-2rem);
   position: relative;
   z-index: 20;
 }
 
 .intro-text {
-  font-size: 1.15rem;
-  color: var(--color-text-main, #1f2937);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-main);
   line-height: 1.8;
-  margin-bottom: 3rem;
+  margin-bottom: var(--spacing-4xl);
   text-align: center;
   font-style: italic;
 }
 
 .policy-section {
-  margin-bottom: 3rem;
+  margin-bottom: var(--spacing-4xl);
 }
 
 .policy-section h2 {
-  font-size: 1.5rem;
-  color: var(--color-text-main, #1f2937);
-  margin-bottom: 1.25rem;
+  font-size: var(--font-size-2xl);
+  color: var(--color-text-main);
+  margin-bottom: var(--spacing-xl);
   font-weight: 600;
-  border-bottom: 1px solid var(--color-border, #e5e7eb);
-  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-sm);
 }
 
 .policy-section p {
-  color: var(--color-text-light, #4b5563);
+  color: var(--color-text-light);
   line-height: 1.8;
-  margin-bottom: 1rem;
-  font-size: 1.05rem;
+  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-md);
 }
 
 .policy-section ul {
@@ -195,33 +195,33 @@
 }
 
 .policy-section li {
-  color: var(--color-text-light, #4b5563);
+  color: var(--color-text-light);
   line-height: 1.8;
-  font-size: 1.05rem;
-  margin-bottom: 0.5rem;
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .note {
-  background-color: #f3f4f6;
-  padding: 1rem;
-  border-left: 4px solid var(--color-blue-primary, #1e3a8a);
-  border-radius: 4px;
-  margin-top: 1rem;
+  background-color: var(--color-bg-soft);
+  padding: var(--spacing-lg);
+  border-left: 4px solid var(--color-blue-primary);
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-lg);
 }
 
 .back-navigation {
-  margin-top: 4rem;
+  margin-top: var(--spacing-5xl);
   text-align: center;
-  padding-top: 2rem;
-  border-top: 1px solid var(--color-border, #e5e7eb);
+  padding-top: var(--spacing-3xl);
+  border-top: 1px solid var(--color-border);
 }
 
 .btn-primary {
   display: inline-block;
-  background-color: var(--color-blue-primary, #1e3a8a);
-  color: white;
-  padding: 0.75rem 2rem;
-  border-radius: 8px;
+  background-color: var(--color-blue-primary);
+  color: var(--color-white);
+  padding: var(--spacing-md) var(--spacing-2xl);
+  border-radius: var(--radius-md);
   font-weight: 600;
   text-decoration: none;
   transition:
@@ -236,11 +236,11 @@
 
 @media (max-width: 768px) {
   .hero-section {
-    padding: 4rem 1.5rem 3rem;
+    padding: var(--spacing-5xl) var(--spacing-xl) var(--spacing-4xl);
   }
 
   .hero-section h1 {
-    font-size: 2.25rem;
+    font-size: var(--font-size-4xl);
   }
 
   .policy-content {
@@ -251,8 +251,8 @@
   }
 
   .intro-text {
-    font-size: 1.05rem;
-    margin-bottom: 2rem;
+    font-size: var(--font-size-md);
+    margin-bottom: var(--spacing-3xl);
   }
 }
 </style>

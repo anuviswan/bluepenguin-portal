@@ -49,13 +49,13 @@ const featureCodesArray = computed(() => {
         <div class="spinner"></div>
       </div>
       <img
-        v-else-if="imageUrl && !error"
+        v-else-if="imageUrl && imageUrl !== '/src/assets/images/no-images-found.jpg' && !imageUrl.includes('no-images-found')"
         :src="imageUrl"
         :alt="product.productName"
         class="product-image"
       />
       <div v-else class="placeholder-image">
-        {{ product.productName[0] }}
+        {{ product.productName ? product.productName[0] : '' }}
       </div>
     </div>
     <div class="info">
@@ -82,8 +82,8 @@ const featureCodesArray = computed(() => {
 .product-card {
   display: flex;
   flex-direction: column;
-  background-color: white;
-  border-radius: 4px; /* Slight radius */
+  background-color: var(--color-white);
+  border-radius: var(--radius-sm);
   overflow: hidden;
   transition:
     transform 0.2s,
@@ -101,7 +101,7 @@ const featureCodesArray = computed(() => {
 .image-container {
   width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: #eee;
+  background-color: var(--color-bg-mute);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,10 +113,10 @@ const featureCodesArray = computed(() => {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #e63946;
-  color: white;
+  background-color: var(--color-accent);
+  color: var(--color-white);
   padding: 2px 8px;
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   font-weight: 700;
   border-radius: 2px;
   z-index: 10;
@@ -171,14 +171,17 @@ const featureCodesArray = computed(() => {
 }
 
 .placeholder-image {
-  font-size: 3rem;
-  color: #ccc;
+  font-size: var(--font-size-5xl);
+  color: var(--color-blue-primary);
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+  background-color: var(--color-image-placeholder); /* Warmer brand background replacing bg-light */
+  border: 1px solid var(--color-border); /* Subtle border */
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .info {
@@ -213,8 +216,8 @@ const featureCodesArray = computed(() => {
 
 .discount-price {
   font-weight: 700;
-  color: #e63946;
-  font-size: 1rem;
+  color: var(--color-accent);
+  font-size: var(--font-size-md);
 }
 
 .price {

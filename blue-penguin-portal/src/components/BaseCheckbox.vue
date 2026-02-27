@@ -29,8 +29,8 @@ const emit = defineEmits<{
 .checkbox-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
   cursor: pointer;
 }
 
@@ -43,12 +43,12 @@ input[type='checkbox'] {
 
 label {
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: var(--font-size-sm);
   color: var(--color-text-main);
 }
 
 .count {
   color: var(--color-text-light);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 </style>

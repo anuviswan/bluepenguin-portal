@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ShowcaseItem } from '@/types/ShowcaseItem'
+import fallbackImage from '@/assets/images/no-images-found.jpg'
 
 defineProps<{
   title: string
@@ -42,9 +43,9 @@ const emit = defineEmits<{
         @keydown.enter="emit('item-click', item)"
       >
         <div class="card-image-wrapper">
-          <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.label" class="card-image" />
-          <div v-else class="card-image-placeholder">
-            <span class="placeholder-icon">🌸</span>
+          <img v-if="item.imageUrl && item.imageUrl !== '/src/assets/images/no-images-found.jpg' && !item.imageUrl.includes('no-images-found')" :src="item.imageUrl" :alt="item.label" class="card-image" />
+          <div v-else class="placeholder-image">
+            {{ item.label ? item.label[0] : '' }}
           </div>
           <span v-if="item.badge" class="card-badge">{{ item.badge }}</span>
         </div>
@@ -65,15 +66,15 @@ const emit = defineEmits<{
 
 <style scoped>
 .showcase-section {
-  padding: 3rem 0;
+  padding: var(--spacing-4xl) 0;
 }
 
 .showcase-title {
   text-align: center;
-  font-size: 2rem;
+  font-size: var(--font-size-4xl);
   font-weight: 600;
   color: var(--color-text-main);
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-2xl);
   letter-spacing: 0.01em;
 }
 
@@ -81,7 +82,7 @@ const emit = defineEmits<{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.25rem;
+  gap: var(--spacing-xl);
 }
 
 .showcase-card {
@@ -91,7 +92,7 @@ const emit = defineEmits<{
   gap: 0.75rem;
   cursor: pointer;
   transition: transform 0.2s ease;
-  flex: 0 1 calc(25% - 1.25rem); /* Safer calculation for 4 per row */
+  flex: 0 1 calc(25% - var(--spacing-xl)); /* Safer calculation for 4 per row */
   max-width: 280px; /* Limits size of items when few exist */
 }
 
@@ -103,21 +104,21 @@ const emit = defineEmits<{
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  border-radius: 8px;
-  background-color: #f3ece8;
+  border-radius: var(--radius-md);
+  background-color: var(--color-earth-light);
   position: relative;
 }
 
 .card-badge {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  background: #e63946;
-  color: #fff;
-  font-size: 0.7rem;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-size: var(--font-size-xs);
   font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 4px;
+  padding: 3px var(--spacing-sm);
+  border-radius: var(--radius-sm);
   letter-spacing: 0.05em;
   pointer-events: none;
   z-index: 10;
@@ -136,18 +137,18 @@ const emit = defineEmits<{
   transform: scale(1.04);
 }
 
-.card-image-placeholder {
+.placeholder-image {
+  font-size: var(--font-size-5xl);
+  color: var(--color-blue-primary);
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f5ece8 0%, #e8ddd8 100%);
-}
-
-.placeholder-icon {
-  font-size: 3rem;
-  opacity: 0.6;
+  background-color: var(--color-image-placeholder);
+  border: 1px solid var(--color-border);
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .card-label {
@@ -167,8 +168,8 @@ const emit = defineEmits<{
 
 .discount-price {
   font-weight: 700;
-  color: #e63946;
-  font-size: 1.1rem;
+  color: var(--color-accent);
+  font-size: var(--font-size-lg);
 }
 
 .original-price {
@@ -185,8 +186,8 @@ const emit = defineEmits<{
 .skeleton .skeleton-img {
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #f0e8e3 25%, #e5dbd5 50%, #f0e8e3 75%);
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, var(--color-earth-lighter) 25%, var(--color-earth-light) 50%, var(--color-earth-lighter) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease infinite;
 }
@@ -194,8 +195,8 @@ const emit = defineEmits<{
 .skeleton .skeleton-label {
   width: 70%;
   height: 1.1rem;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #f0e8e3 25%, #e5dbd5 50%, #f0e8e3 75%);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--color-earth-lighter) 25%, var(--color-earth-light) 50%, var(--color-earth-lighter) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease infinite;
 }

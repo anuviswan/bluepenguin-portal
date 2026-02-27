@@ -68,7 +68,7 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
   width: 100%;
   margin: 0 auto;
   display: flex;
-  padding: 2rem;
+  padding: var(--spacing-2xl);
   flex: 1;
 }
 
@@ -79,11 +79,11 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
 
 .content {
   flex: 1;
-  padding-left: 2rem;
+  padding-left: var(--spacing-2xl);
 }
 
 .content-header {
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-2xl);
 }
 
 .count {
@@ -94,27 +94,27 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 2rem 1.5rem; /* Row gap 2rem, Col gap 1.5rem */
+  gap: var(--spacing-2xl) var(--spacing-xl);
 }
 
 .no-results {
-  padding: 4rem;
+  padding: var(--spacing-5xl);
   text-align: center;
   color: var(--color-text-light);
 }
 
 .load-more {
-  margin-top: 4rem;
+  margin-top: var(--spacing-5xl);
   display: flex;
   justify-content: center;
 }
 
 .load-more-btn {
   border: 1px solid var(--color-border);
-  padding: 0.75rem 2rem;
-  border-radius: 4px;
-  background-color: white;
-  font-size: 1rem;
+  padding: var(--spacing-md) var(--spacing-2xl);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white);
+  font-size: var(--font-size-md);
   color: var(--color-text-main);
   display: flex;
   align-items: center;
@@ -123,23 +123,23 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
 }
 
 .load-more-btn:hover {
-  background-color: #f9f9f9;
+  background-color: var(--color-bg-light);
 }
 
 .loading-state {
-  padding: 4rem;
+  padding: var(--spacing-5xl);
   text-align: center;
   color: var(--color-text-light);
 }
 
 .spinner {
-  border: 3px solid #f3f3f3;
+  border: 3px solid var(--color-border-light);
   border-top: 3px solid var(--color-blue-primary);
   border-radius: 50%;
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
+  margin: 0 auto var(--spacing-lg);
 }
 
 @keyframes spin {
@@ -152,7 +152,7 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
 }
 
 .btn-spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid var(--color-border-light);
   border-top: 2px solid var(--color-blue-primary);
   border-radius: 50%;
   width: 16px;
@@ -166,14 +166,14 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
 }
 
 .error-state {
-  padding: 4rem;
+  padding: var(--spacing-5xl);
   text-align: center;
 }
 
 .error-message {
-  color: #dc2626;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
+  color: var(--color-accent);
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .error-hint {
@@ -189,11 +189,11 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
 
   .sidebar {
     width: 100%;
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-2xl);
     padding-right: 0;
     border-right: none;
     border-bottom: 1px solid var(--color-border);
-    padding-bottom: 2rem;
+    padding-bottom: var(--spacing-2xl);
   }
 
   .content {

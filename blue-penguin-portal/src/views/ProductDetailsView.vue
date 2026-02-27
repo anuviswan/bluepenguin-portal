@@ -8,6 +8,7 @@ import TheHeader from '@/components/TheHeader.vue'
 import TheFooter from '@/components/TheFooter.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { useCurrency } from '@/composables/useCurrency'
+import fallbackImage from '@/assets/images/no-images-found.jpg'
 
 const route = useRoute()
 const router = useRouter()
@@ -165,13 +166,13 @@ const goBack = () => {
             <div class="main-image-container">
               <div v-if="hasDiscount" class="sale-badge">SALE -{{ discountPercentage }}%</div>
               <img
-                v-if="mainImage"
+                v-if="mainImage && mainImage !== '/src/assets/images/no-images-found.jpg' && !mainImage.includes('no-images-found')"
                 :src="mainImage"
                 :alt="currentProduct.productName"
                 class="main-image"
               />
               <div v-else class="placeholder-main">
-                {{ currentProduct.productName[0] }}
+                {{ currentProduct.productName ? currentProduct.productName[0] : '' }}
               </div>
             </div>
             <div class="thumbnails" v-if="currentProductImages.length > 1">
@@ -367,7 +368,7 @@ const goBack = () => {
 
 .main-image-container {
   aspect-ratio: 1;
-  background-color: #f8f8f8;
+  background-color: var(--color-bg-light);
   border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
@@ -380,8 +381,8 @@ const goBack = () => {
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
-  background-color: #e63946;
-  color: white;
+  background-color: var(--color-accent);
+  color: var(--color-white);
   padding: 0.4rem 1rem;
   font-size: 0.85rem;
   font-weight: 700;
@@ -395,6 +396,20 @@ const goBack = () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.placeholder-main {
+  font-size: 8rem; /* Scaled up for main image */
+  color: var(--color-blue-primary);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-image-placeholder);
+  border: 1px solid var(--color-border);
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .thumbnails {
@@ -453,7 +468,7 @@ const goBack = () => {
 }
 
 .discount-price {
-  color: #e63946 !important;
+  color: var(--color-accent);
 }
 
 .price-original {
@@ -464,18 +479,18 @@ const goBack = () => {
 }
 
 .discount-badge {
-  background-color: #fff1f2;
-  color: #e63946;
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
   padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
   font-weight: 600;
-  border: 1px solid #ffe4e6;
+  border: 1px solid var(--color-accent-border);
 }
 
 .expiry-date {
   font-size: 0.85rem;
-  color: #e63946;
+  color: var(--color-accent);
   font-weight: 500;
   margin-top: 0.25rem;
 }
@@ -535,12 +550,12 @@ const goBack = () => {
 }
 
 .whatsapp-btn {
-  background-color: #25d366;
-  color: white;
+  background-color: var(--color-success);
+  color: var(--color-white);
 }
 
 .whatsapp-btn:hover {
-  background-color: #1da851;
+  background-color: var(--color-success-dark);
 }
 
 .instagram-btn {
@@ -576,14 +591,14 @@ const goBack = () => {
 }
 
 .material-tag {
-  background-color: #f0f7ff;
-  border-color: #cfe2ff;
+  background-color: var(--color-material-bg);
+  border-color: var(--color-material-border);
 }
 
 .collection-tag {
-  background-color: #fff9eb;
-  border-color: #ffecb5;
-  color: #856404;
+  background-color: var(--color-collection-bg);
+  border-color: var(--color-collection-border);
+  color: var(--color-collection-text);
 }
 
 /* Description Section */
@@ -665,7 +680,7 @@ const goBack = () => {
 }
 
 .load-more-btn:hover {
-  background-color: #f5f5f5;
+  background-color: var(--color-bg-soft);
 }
 
 /* Common states */
@@ -676,7 +691,7 @@ const goBack = () => {
 }
 
 .spinner {
-  border: 3px solid #f3f3f3;
+  border: 3px solid var(--color-border-light);
   border-top: 3px solid var(--color-blue-primary);
   border-radius: 50%;
   width: 50px;
