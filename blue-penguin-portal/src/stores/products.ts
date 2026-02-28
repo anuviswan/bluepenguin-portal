@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { ProductService } from '@/services/ProductService'
 import api from '@/services/api'
 import type { Product } from '@/types/Product'
@@ -15,10 +15,17 @@ export const useProductsStore = defineStore('products', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  // Pagination state
   const totalCount = ref(0)
   const page = ref(1)
   const pageSize = ref(12)
+
+  // Filter state
+  const filters = reactive({
+    categories: [] as string[],
+    materials: [] as string[],
+    features: [] as string[],
+    collections: [] as string[],
+  })
 
   // Normalize product data to ensure type safety
   function normalizeProduct(product: any): Product {
@@ -45,6 +52,9 @@ export const useProductsStore = defineStore('products', () => {
       discountExpiryDate: product.discountExpiryDate,
       specifications: Array.isArray(product.specifications) ? product.specifications : undefined,
       productCareInstructions: Array.isArray(product.productCareInstructions) ? product.productCareInstructions : undefined,
+      primaryImageUrl: product.primaryImageUrl,
+      isArtisanFav: typeof product.isArtisanFav === 'boolean' ? product.isArtisanFav : false,
+      images: Array.isArray(product.images) ? product.images : [],
     }
   }
 
@@ -104,42 +114,33 @@ export const useProductsStore = defineStore('products', () => {
       if (!normalizedProduct.description) {
         normalizedProduct.description = `A delicate and elegant ${normalizedProduct.productName.toLowerCase()} featuring a premium design. Perfect for adding a touch of serene beauty to any outfit.`
       }
+
+      // Immediately set the product so the UI can render
       currentProduct.value = normalizedProduct
 
-      // Fetch all images
-      try {
-        const { getAllImagesForSkuId, getPrimaryImageIdForSkuId, downloadByImageId } = await import('@/services/api')
-        const fallbackImage = (await import('@/assets/images/no-images-found.jpg')).default
+      // Use inline images, or fallback
+      let imageUrls: string[] = []
 
-        const imageIds = await getAllImagesForSkuId(skuId)
+      if (normalizedProduct.images && normalizedProduct.images.length > 0) {
+        // Sort so primary image is first if there is an indicator, else just map them
+        const sortedImages = [...normalizedProduct.images].sort((a, b) => {
+          if (a.isPrimary) return -1
+          if (b.isPrimary) return 1
+          return 0
+        })
+        imageUrls = sortedImages.map(img => img.imageUrl).filter(Boolean)
+      } else if (normalizedProduct.primaryImageUrl) {
+        imageUrls = [normalizedProduct.primaryImageUrl]
+      }
 
-        if (!imageIds || imageIds.length === 0) {
-          currentProductImages.value = [fallbackImage]
-        } else {
-          try {
-            const primaryId = await getPrimaryImageIdForSkuId(skuId)
-            if (primaryId) {
-              const primaryIdx = imageIds.indexOf(primaryId)
-              if (primaryIdx > 0) {
-                imageIds.splice(primaryIdx, 1)
-                imageIds.unshift(primaryId)
-              }
-            }
-          } catch (e) {
-            console.warn('Failed to fetch primary image id, using default order:', e)
-          }
-
-          const imageUrls = await Promise.all(imageIds.map((id) => downloadByImageId(skuId, id)))
-          currentProductImages.value = imageUrls.length > 0 ? imageUrls : [fallbackImage]
-        }
-      } catch (imgErr) {
-        console.warn('Failed to fetch product images:', imgErr)
-        // Use fallback on error
+      if (imageUrls.length > 0) {
+        currentProductImages.value = imageUrls
+      } else {
         try {
           const fallbackImage = (await import('@/assets/images/no-images-found.jpg')).default
           currentProductImages.value = [fallbackImage]
-        } catch (fallbackErr) {
-          console.error('Failed to load fallback image:', fallbackErr)
+        } catch (e) {
+          console.error('Failed to load fallback image:', e)
         }
       }
     } catch (err) {
@@ -159,6 +160,53 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
+  function buildSearchRequest(): SearchProductsRequest {
+    return {
+      selectedCategories: filters.categories,
+      selectedMaterials: filters.materials,
+      selectedCollections: filters.collections,
+      selectedFeatures: filters.features,
+    }
+  }
+
+  function toggleFilter(group: 'categories' | 'materials' | 'features' | 'collections', value: string) {
+    const index = filters[group].indexOf(value)
+    if (index === -1) {
+      filters[group].push(value)
+    } else {
+      filters[group].splice(index, 1)
+    }
+  }
+
+  function clearFilters() {
+    filters.categories = []
+    filters.materials = []
+    filters.features = []
+    filters.collections = []
+  }
+
+  // Live debounced search when filters change
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null
+
+  function performSearch() {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer)
+    }
+    debounceTimer = setTimeout(async () => {
+      const searchRequest = buildSearchRequest()
+      await searchProducts(searchRequest)
+    }, 300)
+  }
+
+  // Watch filters deeply, triggering a search only once per change
+  watch(
+    () => ({ ...filters }),
+    () => {
+      performSearch()
+    },
+    { deep: true }
+  )
+
   return {
     products,
     currentProduct,
@@ -169,9 +217,13 @@ export const useProductsStore = defineStore('products', () => {
     totalCount,
     page,
     pageSize,
+    filters,
     searchProducts,
     loadMoreProducts,
     fetchProductBySku,
     fetchArtisanFavs,
+    toggleFilter,
+    clearFilters,
+    buildSearchRequest,
   }
 })

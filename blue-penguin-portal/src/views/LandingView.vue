@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import heroImage from '@/assets/images/hero-image.png'
+import heroImage from '@/assets/images/hero-image.webp'
 import TheHeader from '@/components/TheHeader.vue'
 import TheFooter from '@/components/TheFooter.vue'
 import ShowcaseGrid from '@/components/ShowcaseGrid.vue'
@@ -146,7 +146,7 @@ function onDealClick(item: { id: string }) {
         </div>
       </div>
       <div class="hero-image-area">
-        <img :src="heroImage" alt="Colourful handcrafted jewellery" class="hero-img" fetchpriority="high" decoding="async" />
+        <img :src="heroImage" alt="Colourful handcrafted jewellery" class="hero-img" decoding="async" />
       </div>
     </section>
 
