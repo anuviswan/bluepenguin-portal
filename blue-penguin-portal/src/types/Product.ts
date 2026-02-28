@@ -14,4 +14,7 @@ export interface Product {
   discountExpiryDate?: string
   specifications?: string[]
   productCareInstructions?: string[]
+  primaryImageUrl?: string
+  isArtisanFav?: boolean
+  images?: Array<{ imageUrl: string; isPrimary?: boolean }>
 }
