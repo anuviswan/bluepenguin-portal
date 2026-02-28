@@ -20,7 +20,6 @@ const {
   loading,
   error,
   products: allProducts,
-  artisanFavSkuList,
 } = storeToRefs(productsStore)
 const {
   features: allFeatures,
@@ -65,7 +64,6 @@ const loadData = async () => {
     await Promise.all([
       productsStore.fetchProductBySku(sku.value),
       metadataStore.fetchAll(),
-      productsStore.fetchArtisanFavs(),
     ])
     selectedImageIndex.value = 0
   }
@@ -89,9 +87,9 @@ const mainImage = computed(() => {
   return ''
 })
 
-const isArtisanFav = computed(
-  () => !!currentProduct.value && artisanFavSkuList.value.includes(currentProduct.value.sku),
-)
+const isArtisanFav = computed(() => {
+  return currentProduct.value?.isArtisanFav === true
+})
 
 const featureCodesArray = computed(() => {
   const codes = currentProduct.value?.featureCodes
@@ -210,7 +208,6 @@ const handleKeydown = (e: KeyboardEvent) => {
                 :alt="currentProduct.productName"
                 class="main-image zoomable"
                 @click="openImageModal"
-                fetchpriority="high"
                 decoding="async"
               />
               <div v-else class="placeholder-main">

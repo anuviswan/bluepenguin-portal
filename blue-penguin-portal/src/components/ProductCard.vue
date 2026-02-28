@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCurrency } from '@/composables/useCurrency'
-import { useProductImage } from '@/composables/useProductImage'
-import { useProductsStore } from '@/stores/products'
-import { storeToRefs } from 'pinia'
+import fallbackImage from '@/assets/images/no-images-found.jpg'
 import type { Product } from '@/types/Product'
 
 const props = defineProps<{
@@ -16,11 +14,12 @@ const { formatted: discountPrice } = useCurrency(computed(() => props.product.di
 const hasDiscount = computed(
   () => !!props.product.discountPrice && props.product.discountPrice < props.product.price,
 )
-const { imageUrl, isLoading, error } = useProductImage(props.product.sku)
 
-const productsStore = useProductsStore()
-const { artisanFavSkuList } = storeToRefs(productsStore)
-const isArtisanFav = computed(() => artisanFavSkuList.value.includes(props.product.sku))
+const imageUrl = computed(() => {
+  return props.product.primaryImageUrl || fallbackImage
+})
+
+const isArtisanFav = computed(() => !!props.product.isArtisanFav)
 
 // Parse feature codes - they might be an array or a comma-separated string
 const featureCodesArray = computed(() => {
@@ -45,11 +44,8 @@ const featureCodesArray = computed(() => {
       <!-- Artisan Fav Overlay -->
       <div v-if="isArtisanFav" class="artisan-badge" title="Artisan's Pick">⭐ Artisan's Pick</div>
       <div v-if="hasDiscount" class="sale-badge">SALE</div>
-      <div v-if="isLoading" class="loading-overlay">
-        <div class="spinner"></div>
-      </div>
       <img
-        v-else-if="imageUrl && imageUrl !== '/src/assets/images/no-images-found.jpg' && !imageUrl.includes('no-images-found')"
+        v-if="imageUrl && !imageUrl.includes('no-images-found')"
         :src="imageUrl"
         :alt="product.productName"
         class="product-image"

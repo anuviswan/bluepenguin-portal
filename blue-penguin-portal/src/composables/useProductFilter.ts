@@ -1,106 +1,62 @@
-import { computed, reactive, watch, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useProductsStore, type Product } from '@/stores/products'
+import { useProductsStore } from '@/stores/products'
 import { storeToRefs } from 'pinia'
-import type { SearchProductsRequest } from '@/types/SearchProductsRequest'
+
+let isInitialized = false
 
 export function useProductFilter() {
   const productsStore = useProductsStore()
   const route = useRoute()
   const { products, loading, error, totalCount, page, pageSize } = storeToRefs(productsStore)
 
-  const filters = reactive({
-    categories: [] as string[],
-    materials: [] as string[],
-    features: [] as string[],
-    collections: [] as string[],
-  })
-
-  // Debounce timer
-  let debounceTimer: ReturnType<typeof setTimeout> | null = null
-
-  // Convert filters to API request format
-  const buildSearchRequest = (): SearchProductsRequest => {
-    return {
-      selectedCategories: filters.categories,
-      selectedMaterials: filters.materials,
-      selectedCollections: filters.collections,
-      selectedFeatures: filters.features,
-    }
-  }
-
-  // Trigger API search when filters change
-  const performSearch = () => {
-    if (debounceTimer) {
-      clearTimeout(debounceTimer)
-    }
-
-    debounceTimer = setTimeout(async () => {
-      const searchRequest = buildSearchRequest()
-      await productsStore.searchProducts(searchRequest)
-    }, 300)
-  }
-
-  // Watch for filter changes
-  watch(
-    () => ({ ...filters }),
-    () => {
-      performSearch()
-    },
-    { deep: true },
-  )
-
   // Load more products
   const loadMore = async () => {
-    const searchRequest = buildSearchRequest()
+    const searchRequest = productsStore.buildSearchRequest()
     await productsStore.loadMoreProducts(searchRequest)
   }
 
   const hasMore = computed(() => products.value.length < totalCount.value)
 
-  // Load initial products on mount, pre-selecting category/collection from query param if present
-  onMounted(async () => {
+  // Initialize function. Only actually hits the API if the store is completely empty, 
+  // or if we have route query parameters that we need to force into the filters.
+  // The watcher inside Pinia handles subsequent generic API reloading.
+  onMounted(() => {
+    if (isInitialized) return
+    isInitialized = true
+
     const preselectedCat = route.query.category as string | undefined
-    if (preselectedCat) {
-      filters.categories = [preselectedCat]
-    }
-
     const preselectedColl = route.query.collection as string | undefined
-    if (preselectedColl) {
-      filters.collections = [preselectedColl]
+
+    let injectedFilter = false
+
+    if (preselectedCat && !productsStore.filters.categories.includes(preselectedCat)) {
+      productsStore.filters.categories.push(preselectedCat)
+      injectedFilter = true
     }
 
-    await productsStore.searchProducts(buildSearchRequest())
+    if (preselectedColl && !productsStore.filters.collections.includes(preselectedColl)) {
+      productsStore.filters.collections.push(preselectedColl)
+      injectedFilter = true
+    }
+
+    // Only manually trigger the initial search if we didn't inject anything (which triggers the watcher)
+    // AND we actually need to load products (i.e. first page load, not a component re-mount)
+    if (!injectedFilter && products.value.length === 0 && page.value === 1) {
+      productsStore.searchProducts(productsStore.buildSearchRequest())
+    }
   })
 
-  const toggleFilter = (
-    group: 'categories' | 'materials' | 'features' | 'collections',
-    value: string,
-  ) => {
-    const index = filters[group].indexOf(value)
-    if (index === -1) {
-      filters[group].push(value)
-    } else {
-      filters[group].splice(index, 1)
-    }
-  }
-
-  const clearFilters = () => {
-    filters.categories = []
-    filters.materials = []
-    filters.features = []
-    filters.collections = []
-  }
-
   return {
-    filters,
+    filters: productsStore.filters,
     filteredProducts: products,
     loading,
     error,
     totalCount,
     hasMore,
-    toggleFilter,
-    clearFilters,
+    toggleFilter: productsStore.toggleFilter,
+    clearFilters: productsStore.clearFilters,
     loadMore,
   }
 }
+
