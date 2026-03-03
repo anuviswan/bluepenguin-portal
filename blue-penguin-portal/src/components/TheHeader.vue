@@ -61,7 +61,7 @@
   font-family: var(--font-family-display);
   font-size: 2rem;
   color: var(--color-blue-primary);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* Nav */
