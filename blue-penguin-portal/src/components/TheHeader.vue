@@ -4,7 +4,7 @@
   <header class="header">
     <RouterLink to="/" class="logo-link">
       <div class="logo-container">
-        <img src="/images/penguin-logo.png" alt="Blue Penguin Logo" class="logo-img" decoding="async" />
+        <img src="@/assets/logo.png" alt="Blue Penguin Logo" class="logo-img" decoding="async" />
         <div class="brand">
           <span class="brand-name">Blue Penguin</span>
         </div>
@@ -44,7 +44,7 @@
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: var(--spacing-sm);
 }
 
 .logo-img {
