@@ -171,14 +171,36 @@ const email = import.meta.env.VITE_EMAIL || 'info@bluepenguin.com'
 }
 
 @media (max-width: 768px) {
+  .footer {
+    padding: var(--spacing-3xl) 0;
+  }
+
   .footer-content {
     flex-direction: column;
-    gap: 2rem;
+    gap: var(--spacing-2xl);
     text-align: center;
+    align-items: center;
+  }
+
+  .section {
+    width: 100%;
+  }
+
+  .section h3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-link {
+    justify-content: center;
   }
 
   .social-icons {
     justify-content: center;
+  }
+
+  .footer-bottom {
+    margin-top: var(--spacing-2xl);
+    padding: var(--spacing-xl) var(--spacing-xl) 0;
   }
 }
 </style>
