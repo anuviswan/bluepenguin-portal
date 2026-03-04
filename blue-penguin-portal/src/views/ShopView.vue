@@ -183,20 +183,32 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
 @media (max-width: 768px) {
   .main-container {
     flex-direction: column;
-    padding: 1rem;
+    padding: var(--spacing-lg) var(--spacing-md);
   }
 
   .sidebar {
     width: 100%;
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
     padding-right: 0;
     border-right: none;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: var(--spacing-2xl);
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: var(--spacing-xl);
   }
 
   .content {
     padding-left: 0;
+  }
+
+  .content-header {
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--spacing-lg) var(--spacing-sm);
   }
 }
 </style>
