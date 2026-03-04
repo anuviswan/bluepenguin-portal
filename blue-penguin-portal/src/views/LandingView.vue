@@ -314,10 +314,11 @@ function onDealClick(item: { id: string }) {
 .hero {
   display: flex;
   align-items: stretch;
-  min-height: 420px;
+  min-height: 480px;
   background: linear-gradient(120deg, #f7ede8 0%, #f2e4da 60%, #e8d8cc 100%);
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
 .hero-content {
@@ -458,7 +459,9 @@ function onDealClick(item: { id: string }) {
   gap: 0;
   background-color: var(--color-earth-lighter);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-3xl) var(--spacing-4xl);
+  padding: var(--spacing-3xl) var(--spacing-2xl);
+  width: 100%;
+  overflow: hidden;
 }
 
 .hiw-step {
@@ -538,17 +541,31 @@ function onDealClick(item: { id: string }) {
 /* ── Responsive ──────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hero {
-    flex-direction: column;
+    flex-direction: column-reverse;
     min-height: auto;
   }
 
   .hero-content {
     flex: none;
-    padding: var(--spacing-3xl) var(--spacing-2xl);
+    padding: var(--spacing-4xl) var(--spacing-xl);
+    text-align: center;
+  }
+
+  .hero-heading {
+    font-size: 2.25rem;
+  }
+
+  .hero-ctas {
+    justify-content: center;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .hero-image-area {
-    height: 260px;
+    height: 300px;
   }
 
   .page-content {
@@ -557,21 +574,29 @@ function onDealClick(item: { id: string }) {
 
   .hiw-steps {
     flex-direction: column;
-    gap: 1.25rem;
-    padding: var(--spacing-2xl);
+    gap: 1.5rem;
+    padding: var(--spacing-2xl) var(--spacing-lg);
   }
 
   .hiw-arrow {
     transform: rotate(90deg);
-    padding: 0;
+    padding: var(--spacing-sm) 0;
+    margin: 0;
   }
 
   .hiw-step {
     width: 100%;
+    justify-content: center;
   }
 
   .story-section {
     padding: var(--spacing-3xl) 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-heading {
+    font-size: 1.85rem;
   }
 }
 </style>

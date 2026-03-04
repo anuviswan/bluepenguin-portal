@@ -883,11 +883,65 @@ const handleKeydown = (e: KeyboardEvent) => {
 @media (max-width: 900px) {
   .product-main {
     grid-template-columns: 1fr;
-    padding: 1.5rem;
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .info-section {
+    padding-left: 0;
   }
 
   .related-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .product-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .product-main {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .product-description-section {
+    padding: 1.5rem;
+  }
+
+  .related-section {
+    padding: 0 1rem;
+  }
+
+  .quick-features {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .price-large {
+    font-size: 1.5rem;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+
+  .related-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .thumbnail {
+    width: 60px;
+    height: 60px;
   }
 }
 </style>

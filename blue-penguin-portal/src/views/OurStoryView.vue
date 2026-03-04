@@ -222,4 +222,26 @@ import TheFooter from '@/components/TheFooter.vue'
     padding: var(--spacing-3xl) var(--spacing-xl);
   }
 }
+
+@media (max-width: 480px) {
+  .display-title {
+    font-size: 2.2rem;
+  }
+  
+  .lead-text {
+    font-size: 1.1rem;
+  }
+  
+  .body p {
+    font-size: 1rem;
+  }
+  
+  .quote-block p {
+    font-size: 1.1rem;
+  }
+  
+  .story-container {
+    padding: var(--spacing-4xl) var(--spacing-lg);
+  }
+}
 </style>
