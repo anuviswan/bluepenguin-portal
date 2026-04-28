@@ -95,7 +95,7 @@ const closeMenu = () => {
 }
 
 .brand-name {
-  font-family: var(--font-family-display);
+  font-family: 'Yeseva One', serif;
   font-size: 2rem;
   color: var(--color-blue-primary);
   font-weight: 500;
