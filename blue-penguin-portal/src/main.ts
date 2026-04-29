@@ -19,7 +19,8 @@ if (import.meta.env.PROD) {
 
   window.dataLayer = window.dataLayer || []
   function gtag(...args: unknown[]) {
-    window.dataLayer.push(args)
+    //window.dataLayer.push(args)
+    window.dataLayer.push(arguments)
   }
   gtag('js', new Date())
   gtag('config', 'G-3G2CEWVYGN')
