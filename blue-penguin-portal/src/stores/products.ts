@@ -25,6 +25,7 @@ export const useProductsStore = defineStore('products', () => {
     materials: [] as string[],
     features: [] as string[],
     collections: [] as string[],
+    searchTerm: '',
   })
 
   // Normalize product data to ensure type safety
@@ -166,6 +167,7 @@ export const useProductsStore = defineStore('products', () => {
       selectedMaterials: filters.materials,
       selectedCollections: filters.collections,
       selectedFeatures: filters.features,
+      partialProductName: filters.searchTerm || undefined,
     }
   }
 
@@ -183,6 +185,7 @@ export const useProductsStore = defineStore('products', () => {
     filters.materials = []
     filters.features = []
     filters.collections = []
+    filters.searchTerm = ''
   }
 
   // Live debounced search when filters change

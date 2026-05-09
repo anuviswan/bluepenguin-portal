@@ -1,4 +1,4 @@
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useProductsStore } from '@/stores/products'
 import { storeToRefs } from 'pinia'
@@ -17,6 +17,23 @@ export function useProductFilter() {
   }
 
   const hasMore = computed(() => products.value.length < totalCount.value)
+
+  // Local sorting
+  const sortBy = ref('newest')
+
+  const sortedFilteredProducts = computed(() => {
+    let result = [...products.value]
+    
+    if (sortBy.value === 'featured') {
+      result.sort((a, b) => (b.isArtisanFav ? 1 : 0) - (a.isArtisanFav ? 1 : 0))
+    } else if (sortBy.value === 'price_asc') {
+      result.sort((a, b) => a.price - b.price)
+    } else if (sortBy.value === 'price_desc') {
+      result.sort((a, b) => b.price - a.price)
+    }
+    
+    return result
+  })
 
   // Initialize function. Only actually hits the API if the store is completely empty, 
   // or if we have route query parameters that we need to force into the filters.
@@ -49,7 +66,8 @@ export function useProductFilter() {
 
   return {
     filters: productsStore.filters,
-    filteredProducts: products,
+    filteredProducts: sortedFilteredProducts,
+    sortBy,
     loading,
     error,
     totalCount,

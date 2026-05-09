@@ -4,4 +4,5 @@ export interface SearchProductsRequest {
   selectedCollections: string[]
   selectedFeatures: string[]
   selectedYears?: string[]
+  partialProductName?: string
 }
