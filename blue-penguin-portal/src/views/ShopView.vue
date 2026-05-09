@@ -4,8 +4,17 @@ import TheFooter from '@/components/TheFooter.vue'
 import ProductFilter from '@/components/ProductFilter.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { useProductFilter } from '@/composables/useProductFilter'
+import { computed } from 'vue'
 
 const { filteredProducts, loading, error, totalCount, hasMore, loadMore, filters, sortBy } = useProductFilter()
+
+const hasActiveFilters = computed(() => {
+  return filters.searchTerm !== '' || 
+         filters.categories.length > 0 || 
+         filters.materials.length > 0 || 
+         filters.collections.length > 0 || 
+         filters.features.length > 0
+})
 </script>
 
 <template>
@@ -25,7 +34,7 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore, filters
             <input 
               type="text" 
               v-model="filters.searchTerm" 
-              placeholder="Search handcrafted jewelry..." 
+              placeholder="Search bracelets, earrings, necklaces..." 
               class="search-input"
             />
             <button v-if="filters.searchTerm" @click="filters.searchTerm = ''" class="clear-search-btn" aria-label="Clear search">
@@ -36,6 +45,7 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore, filters
             </button>
           </div>
           <div class="toolbar-actions">
+            <p v-if="hasActiveFilters" class="count">Showing {{ totalCount }} results</p>
             <div class="sort-dropdown">
               <select v-model="sortBy" class="sort-select" aria-label="Sort products">
                 <option value="newest">Newest</option>
@@ -44,7 +54,6 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore, filters
                 <option value="price_desc">Price: High to Low</option>
               </select>
             </div>
-            <p class="count">{{ totalCount }} items</p>
           </div>
         </div>
 
@@ -214,7 +223,8 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore, filters
 
 .count {
   color: var(--color-text-light);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
 }
 
 .product-grid {
