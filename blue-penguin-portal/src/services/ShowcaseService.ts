@@ -74,7 +74,7 @@ export default {
   },
 
   async getArtisanFavs(): Promise<ShowcaseItem[]> {
-    const response = await api.get<ArtisanFavItemResponse[]>('/api/ArtisanFav/getall')
+    const response = await api.get<ArtisanFavItemResponse[]>('/api/ArtisanFav/latest')
 
     return response.data.map((item): ShowcaseItem => {
       return {
