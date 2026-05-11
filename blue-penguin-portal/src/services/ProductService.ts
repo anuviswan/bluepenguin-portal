@@ -13,6 +13,15 @@ export const ProductService = {
     })
     return response.data
   },
+  async searchFeaturedProducts(
+    filters: SearchProductsRequest,
+    params: { page: number; pageSize: number },
+  ): Promise<PaginatedResult<Product>> {
+    const response = await api.post<PaginatedResult<Product>>('/api/ArtisanFav/search-products', filters, {
+      params: params,
+    })
+    return response.data
+  },
   async getAllProducts(page: number = 1, pageSize: number = 12): Promise<PaginatedResult<Product>> {
     const response = await api.get<PaginatedResult<Product>>('/api/Product/getall', {
       params: { page, pageSize },

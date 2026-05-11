@@ -28,6 +28,8 @@ export const useProductsStore = defineStore('products', () => {
     searchTerm: '',
   })
 
+  const sortBy = ref('newest')
+
   // Normalize product data to ensure type safety
   function normalizeProduct(product: any): Product {
     return {
@@ -71,7 +73,9 @@ export const useProductsStore = defineStore('products', () => {
         pageSize: pageSize.value,
       }
 
-      const result = await ProductService.searchProducts(filters, params)
+      const result = sortBy.value === 'featured'
+        ? await ProductService.searchFeaturedProducts(filters, params)
+        : await ProductService.searchProducts(filters, params)
 
       // Normalize all products to ensure type safety
       const normalizedProducts = result.items.map(normalizeProduct)
@@ -203,7 +207,7 @@ export const useProductsStore = defineStore('products', () => {
 
   // Watch filters deeply, triggering a search only once per change
   watch(
-    () => ({ ...filters }),
+    () => ({ ...filters, sortBy: sortBy.value }),
     () => {
       performSearch()
     },
@@ -221,6 +225,7 @@ export const useProductsStore = defineStore('products', () => {
     page,
     pageSize,
     filters,
+    sortBy,
     searchProducts,
     loadMoreProducts,
     fetchProductBySku,

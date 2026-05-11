@@ -8,7 +8,7 @@ let isInitialized = false
 export function useProductFilter() {
   const productsStore = useProductsStore()
   const route = useRoute()
-  const { products, loading, error, totalCount, page, pageSize } = storeToRefs(productsStore)
+  const { products, loading, error, totalCount, page, pageSize, sortBy } = storeToRefs(productsStore)
 
   // Load more products
   const loadMore = async () => {
@@ -18,15 +18,10 @@ export function useProductFilter() {
 
   const hasMore = computed(() => products.value.length < totalCount.value)
 
-  // Local sorting
-  const sortBy = ref('newest')
-
   const sortedFilteredProducts = computed(() => {
     let result = [...products.value]
     
-    if (sortBy.value === 'featured') {
-      result.sort((a, b) => (b.isArtisanFav ? 1 : 0) - (a.isArtisanFav ? 1 : 0))
-    } else if (sortBy.value === 'price_asc') {
+    if (sortBy.value === 'price_asc') {
       result.sort((a, b) => a.price - b.price)
     } else if (sortBy.value === 'price_desc') {
       result.sort((a, b) => b.price - a.price)
