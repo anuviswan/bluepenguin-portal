@@ -186,7 +186,7 @@ onMounted(async () => {
       <!-- Raw Materials -->
       <div class="filter-group" :class="{ 'filter-group--collapsed': collapsedSections.materials }">
         <button class="section-header" @click="toggleSection('materials')">
-          <h3>Raw Material</h3>
+          <h3>Materials</h3>
           <div class="section-header-right">
             <span v-if="getSelectedCount('materials') > 0" class="section-badge">{{
               getSelectedCount('materials')
@@ -222,7 +222,7 @@ onMounted(async () => {
       <!-- Features -->
       <div class="filter-group" :class="{ 'filter-group--collapsed': collapsedSections.features }">
         <button class="section-header" @click="toggleSection('features')">
-          <h3>Features</h3>
+          <h3>Details</h3>
           <div class="section-header-right">
             <span v-if="getSelectedCount('features') > 0" class="section-badge">{{
               getSelectedCount('features')
@@ -456,7 +456,6 @@ h3 {
   margin: 0;
   color: var(--color-blue-primary);
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 

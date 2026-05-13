@@ -4,8 +4,17 @@ import TheFooter from '@/components/TheFooter.vue'
 import ProductFilter from '@/components/ProductFilter.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { useProductFilter } from '@/composables/useProductFilter'
+import { computed } from 'vue'
 
-const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useProductFilter()
+const { filteredProducts, loading, error, totalCount, hasMore, loadMore, filters, sortBy } = useProductFilter()
+
+const hasActiveFilters = computed(() => {
+  return filters.searchTerm !== '' || 
+         filters.categories.length > 0 || 
+         filters.materials.length > 0 || 
+         filters.collections.length > 0 || 
+         filters.features.length > 0
+})
 </script>
 
 <template>
@@ -16,8 +25,36 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
       <ProductFilter class="sidebar" />
 
       <main class="content">
-        <div class="content-header">
-          <p class="count">{{ totalCount }} items</p>
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              v-model="filters.searchTerm" 
+              placeholder="Search bracelets, earrings, necklaces..." 
+              class="search-input"
+            />
+            <button v-if="filters.searchTerm" @click="filters.searchTerm = ''" class="clear-search-btn" aria-label="Clear search">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="toolbar-actions">
+            <p v-if="hasActiveFilters" class="count">Showing {{ totalCount }} results</p>
+            <div class="sort-dropdown">
+              <select v-model="sortBy" class="sort-select" aria-label="Sort products">
+                <option value="newest">Newest</option>
+                <option value="featured">Featured</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <!-- Error State -->
@@ -78,16 +115,116 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
 
 .content {
   flex: 1;
-  padding-left: var(--spacing-2xl);
+  padding-left: var(--spacing-4xl); /* Increased to move slightly away from left filter divider */
 }
 
-.content-header {
-  margin-bottom: var(--spacing-2xl);
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-4xl);
+  padding-bottom: var(--spacing-xl);
+  border-bottom: 1px solid var(--color-border-light);
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+}
+
+.toolbar-search {
+  position: relative;
+  flex: 1;
+  max-width: 420px;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 40px 12px 44px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  color: var(--color-text-main);
+  background-color: var(--color-white);
+  transition: all 0.2s ease;
+}
+
+.search-input::placeholder {
+  color: var(--color-text-light);
+  opacity: 0.8;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-blue-primary);
+  box-shadow: 0 0 0 2px rgba(11, 79, 108, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-light);
+  pointer-events: none;
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.clear-search-btn:hover {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-main);
+}
+
+.clear-search-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sort-select {
+  padding: 8px 32px 8px 12px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-main);
+  background-color: var(--color-white);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: var(--color-blue-primary);
 }
 
 .count {
   color: var(--color-text-light);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
 }
 
 .product-grid {
@@ -202,6 +339,21 @@ const { filteredProducts, loading, error, totalCount, hasMore, loadMore } = useP
   .content-header {
     margin-bottom: var(--spacing-xl);
     text-align: center;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+  }
+
+  .toolbar-search {
+    max-width: none;
+  }
+
+  .toolbar-actions {
+    justify-content: space-between;
   }
 }
 

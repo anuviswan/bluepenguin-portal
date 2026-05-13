@@ -1,4 +1,4 @@
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useProductsStore } from '@/stores/products'
 import { storeToRefs } from 'pinia'
@@ -8,7 +8,7 @@ let isInitialized = false
 export function useProductFilter() {
   const productsStore = useProductsStore()
   const route = useRoute()
-  const { products, loading, error, totalCount, page, pageSize } = storeToRefs(productsStore)
+  const { products, loading, error, totalCount, page, pageSize, sortBy } = storeToRefs(productsStore)
 
   // Load more products
   const loadMore = async () => {
@@ -17,6 +17,18 @@ export function useProductFilter() {
   }
 
   const hasMore = computed(() => products.value.length < totalCount.value)
+
+  const sortedFilteredProducts = computed(() => {
+    let result = [...products.value]
+    
+    if (sortBy.value === 'price_asc') {
+      result.sort((a, b) => a.price - b.price)
+    } else if (sortBy.value === 'price_desc') {
+      result.sort((a, b) => b.price - a.price)
+    }
+    
+    return result
+  })
 
   // Initialize function. Only actually hits the API if the store is completely empty, 
   // or if we have route query parameters that we need to force into the filters.
@@ -49,7 +61,8 @@ export function useProductFilter() {
 
   return {
     filters: productsStore.filters,
-    filteredProducts: products,
+    filteredProducts: sortedFilteredProducts,
+    sortBy,
     loading,
     error,
     totalCount,
