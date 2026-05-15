@@ -1,3 +1,5 @@
+import type { ProductSortOrder } from './ProductSortOrder'
+
 export interface SearchProductsRequest {
   selectedCategories: string[]
   selectedMaterials: string[]
@@ -5,4 +7,5 @@ export interface SearchProductsRequest {
   selectedFeatures: string[]
   selectedYears?: string[]
   partialProductName?: string
+  sortOrder?: ProductSortOrder
 }

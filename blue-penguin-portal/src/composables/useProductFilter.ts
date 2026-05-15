@@ -19,15 +19,7 @@ export function useProductFilter() {
   const hasMore = computed(() => products.value.length < totalCount.value)
 
   const sortedFilteredProducts = computed(() => {
-    let result = [...products.value]
-    
-    if (sortBy.value === 'price_asc') {
-      result.sort((a, b) => a.price - b.price)
-    } else if (sortBy.value === 'price_desc') {
-      result.sort((a, b) => b.price - a.price)
-    }
-    
-    return result
+    return products.value
   })
 
   // Initialize function. Only actually hits the API if the store is completely empty, 
