@@ -1002,6 +1002,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ProductSortOrder"
+            }
           }
         ],
         "requestBody": {
@@ -1458,6 +1465,15 @@
         },
         "additionalProperties": false
       },
+      "ProductSortOrder": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "SearchProductsRequest": {
         "type": "object",
         "properties": {
@@ -1499,6 +1515,9 @@
           "partialProductName": {
             "type": "string",
             "nullable": true
+          },
+          "sortOrder": {
+            "$ref": "#/components/schemas/ProductSortOrder"
           }
         },
         "additionalProperties": false

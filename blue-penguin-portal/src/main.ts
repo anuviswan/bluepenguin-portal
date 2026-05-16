@@ -11,10 +11,11 @@ declare global {
   }
 }
 
-if (import.meta.env.PROD) {
+const gaId = import.meta.env.VITE_GA_ID
+if (import.meta.env.PROD && gaId) {
   const script = document.createElement('script')
   script.async = true
-  script.src = 'https://www.googletagmanager.com/gtag/js?id=G-3G2CEWVYGN'
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`
   document.head.appendChild(script)
 
   window.dataLayer = window.dataLayer || []
@@ -23,7 +24,7 @@ if (import.meta.env.PROD) {
     window.dataLayer.push(arguments)
   }
   gtag('js', new Date())
-  gtag('config', 'G-3G2CEWVYGN')
+  gtag('config', gaId)
 }
 
 const app = createApp(App)

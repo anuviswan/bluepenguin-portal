@@ -4,6 +4,7 @@ import { ProductService } from '@/services/ProductService'
 import api from '@/services/api'
 import type { Product } from '@/types/Product'
 import type { SearchProductsRequest } from '@/types/SearchProductsRequest'
+import { ProductSortOrder } from '@/types/ProductSortOrder'
 
 export type { Product }
 
@@ -166,12 +167,23 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   function buildSearchRequest(): SearchProductsRequest {
+    let sortOrder: ProductSortOrder | undefined
+
+    if (sortBy.value === 'price_asc') {
+      sortOrder = ProductSortOrder.PriceLowToHigh
+    } else if (sortBy.value === 'price_desc') {
+      sortOrder = ProductSortOrder.PriceHighToLow
+    } else if (sortBy.value === 'newest') {
+      sortOrder = ProductSortOrder.Newest
+    }
+
     return {
       selectedCategories: filters.categories,
       selectedMaterials: filters.materials,
       selectedCollections: filters.collections,
       selectedFeatures: filters.features,
       partialProductName: filters.searchTerm || undefined,
+      sortOrder,
     }
   }
 
