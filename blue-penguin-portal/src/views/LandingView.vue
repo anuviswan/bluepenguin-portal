@@ -112,7 +112,7 @@ useSEO(() => ({
   description: 'Explore Blue Penguin\'s premium, elegant, and handcrafted jewellery. From colourful custom bead bracelets to unique accessories, each piece is crafted with care.',
   keywords: 'handcrafted jewellery, custom bead bracelets, premium accessories, blue penguin jewellery, elegant bracelets, beaded accessories, handmade India',
   canonical: siteUrl,
-  ogImage: `${siteUrl}/favicon.png`,
+  ogImage: `${siteUrl}/images/og-share-default.png`,
   schema: [
     {
       '@context': 'https://schema.org',

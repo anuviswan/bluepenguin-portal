@@ -10,7 +10,7 @@ useSEO(() => ({
   description: 'Learn about shipping charges, dispatch timelines, tracking, and delivery terms for handcrafted bead jewellery by Blue Penguin.',
   keywords: 'shipping policy, jewellery shipping, delivery timelines, tracking orders, customer care India, handmade dispatch',
   canonical: `${siteUrl}/shipping-policy`,
-  ogImage: `${siteUrl}/favicon.png`,
+  ogImage: `${siteUrl}/images/og-share-default.png`,
   schema: {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

@@ -206,11 +206,11 @@ const seoImage = computed(() => {
       if (currentProduct.value?.primaryImageUrl) {
         return resolveAbsoluteUrl(currentProduct.value.primaryImageUrl)
       }
-      return `${siteUrl}/favicon.png`
+      return `${siteUrl}/images/og-share-default.png`
     }
     return resolveAbsoluteUrl(mainImage.value)
   }
-  return `${siteUrl}/favicon.png`
+  return `${siteUrl}/images/og-share-default.png`
 })
 
 useSEO(() => {

@@ -10,7 +10,7 @@ useSEO(() => ({
   description: 'Understand the return, replacement, and cancellation terms for handcrafted jewellery at Blue Penguin. Read our clear, fair, and transparent refund policy.',
   keywords: 'return policy, refund policy, jewellery returns, custom jewellery refunds, cancel order, customer care India',
   canonical: `${siteUrl}/refund-policy`,
-  ogImage: `${siteUrl}/favicon.png`,
+  ogImage: `${siteUrl}/images/og-share-default.png`,
   schema: {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

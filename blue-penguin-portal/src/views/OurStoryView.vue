@@ -10,7 +10,7 @@ useSEO(() => ({
   description: 'Discover the story behind Blue Penguin. Learn how the quiet resilience of the little blue penguin inspires our premium handcrafted jewellery and accessories.',
   keywords: 'blue penguin jewellery, brand story, handcrafted jewellery history, artisan beads, about us, jewellery India',
   canonical: `${siteUrl}/our-story`,
-  ogImage: `${siteUrl}/favicon.png`,
+  ogImage: `${siteUrl}/images/og-share-default.png`,
   schema: {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
