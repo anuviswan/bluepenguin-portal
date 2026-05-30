@@ -8,6 +8,7 @@ import TheHeader from '@/components/TheHeader.vue'
 import TheFooter from '@/components/TheFooter.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { useCurrency } from '@/composables/useCurrency'
+import { useSEO } from '@/composables/useSEO'
 import fallbackImage from '@/assets/images/no-images-found.jpg'
 
 const route = useRoute()
@@ -173,6 +174,114 @@ const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'ArrowLeft') prevImage()
   if (e.key === 'ArrowRight') nextImage()
 }
+
+const siteUrl = import.meta.env.VITE_SITE_URL || 'https://bluepenguin.in'
+
+const resolveAbsoluteUrl = (url?: string) => {
+  if (!url) return ''
+  if (url.startsWith('http://') || url.startsWith('https://')) return url
+  const cleanUrl = url.startsWith('/') ? url : `/${url}`
+  return `${siteUrl}${cleanUrl}`
+}
+
+const seoTitle = computed(() => {
+  if (currentProduct.value) {
+    return `${currentProduct.value.productName} | Premium Handcrafted Jewellery | Blue Penguin`
+  }
+  return 'Premium Handcrafted Jewellery | Blue Penguin'
+})
+
+const seoDescription = computed(() => {
+  if (currentProduct.value) {
+    const desc = currentProduct.value.description || ''
+    const mat = materialName.value ? ` made with ${materialName.value.toLowerCase()}` : ''
+    return `${desc} Buy this custom handcrafted ${currentProduct.value.productName.toLowerCase()}${mat} from Blue Penguin. SKU: ${currentProduct.value.sku}`
+  }
+  return 'Shop premium handcrafted bracelets, bead jewellery, and custom accessories at Blue Penguin.'
+})
+
+const seoImage = computed(() => {
+  if (mainImage.value) {
+    if (mainImage.value.startsWith('blob:')) {
+      if (currentProduct.value?.primaryImageUrl) {
+        return resolveAbsoluteUrl(currentProduct.value.primaryImageUrl)
+      }
+      return `${siteUrl}/images/og-share-default.png`
+    }
+    return resolveAbsoluteUrl(mainImage.value)
+  }
+  return `${siteUrl}/images/og-share-default.png`
+})
+
+useSEO(() => {
+  const prod = currentProduct.value
+  const productUrl = prod ? `${siteUrl}/product/${prod.sku}` : `${siteUrl}/shop`
+
+  let schemaData: Record<string, unknown>[] | undefined = undefined
+
+  if (prod) {
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Home',
+          'item': siteUrl
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Shop',
+          'item': `${siteUrl}/shop`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 3,
+          'name': prod.productName,
+          'item': productUrl
+        }
+      ]
+    }
+
+    const productSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      'name': prod.productName,
+      'image': seoImage.value,
+      'description': prod.description || seoDescription.value,
+      'sku': prod.sku,
+      'mpn': prod.sku,
+      'brand': {
+        '@type': 'Brand',
+        'name': 'Blue Penguin'
+      },
+      'offers': {
+        '@type': 'Offer',
+        'url': productUrl,
+        'priceCurrency': 'INR',
+        'price': prod.discountPrice && prod.discountPrice < prod.price ? prod.discountPrice : prod.price,
+        'itemCondition': 'https://schema.org/NewCondition',
+        'availability': prod.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        'priceValidUntil': prod.discountExpiryDate ? prod.discountExpiryDate.split('T')[0] : '2026-12-31'
+      },
+      'material': materialName.value || undefined,
+      'category': collectionName.value || undefined
+    }
+
+    schemaData = [breadcrumbSchema, productSchema]
+  }
+
+  return {
+    title: seoTitle.value,
+    description: seoDescription.value,
+    canonical: productUrl,
+    ogImage: seoImage.value,
+    ogType: 'product',
+    schema: schemaData
+  }
+})
 </script>
 
 <template>

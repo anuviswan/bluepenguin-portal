@@ -1,16 +1,48 @@
 <script setup lang="ts">
-// Refund and Return Policy View
-// Content sourced from docs/Return Policy.md
+import TheHeader from '@/components/TheHeader.vue'
+import TheFooter from '@/components/TheFooter.vue'
+import { useSEO } from '@/composables/useSEO'
+
+const siteUrl = import.meta.env.VITE_SITE_URL || 'https://bluepenguin.in'
+
+useSEO(() => ({
+  title: 'Refund & Return Policy | Customer Care | Blue Penguin',
+  description: 'Understand the return, replacement, and cancellation terms for handcrafted jewellery at Blue Penguin. Read our clear, fair, and transparent refund policy.',
+  keywords: 'return policy, refund policy, jewellery returns, custom jewellery refunds, cancel order, customer care India',
+  canonical: `${siteUrl}/refund-policy`,
+  ogImage: `${siteUrl}/images/og-share-default.png`,
+  schema: {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': siteUrl
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Refund Policy',
+        'item': `${siteUrl}/refund-policy`
+      }
+    ]
+  }
+}))
 </script>
 
 <template>
   <div class="policy-page">
-    <div class="hero-section">
-      <div class="hero-content">
-        <h1>Refund & Return Policy</h1>
-        <p class="subtitle">Clear, fair, and transparent.</p>
+    <TheHeader />
+
+    <main>
+      <div class="hero-section">
+        <div class="hero-content">
+          <h1>Refund & Return Policy</h1>
+          <p class="subtitle">Clear, fair, and transparent.</p>
+        </div>
       </div>
-    </div>
 
     <div class="policy-content">
       <p class="intro-text">
@@ -43,7 +75,7 @@
         <h2>2. Non-Returnable Items</h2>
         <p>The following items are not eligible for return or refund:</p>
         <ul>
-          <li>Custom-made or personalized jewelry</li>
+          <li>Custom-made or personalized jewellery</li>
           <li>Size-adjusted or specially modified pieces</li>
           <li>Items purchased during limited offers or clearance sales</li>
           <li>Minor variations in colour, texture, or finish due to the handmade nature</li>
@@ -107,6 +139,9 @@
         <RouterLink to="/" class="btn-primary">Back to Home</RouterLink>
       </div>
     </div>
+    </main>
+
+    <TheFooter />
   </div>
 </template>
 
