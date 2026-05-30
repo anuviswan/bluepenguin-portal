@@ -1,6 +1,35 @@
 <script setup lang="ts">
 import TheHeader from '@/components/TheHeader.vue'
 import TheFooter from '@/components/TheFooter.vue'
+import { useSEO } from '@/composables/useSEO'
+
+const siteUrl = import.meta.env.VITE_SITE_URL || 'https://bluepenguin.in'
+
+useSEO(() => ({
+  title: 'Our Story | Quiet Resilience & Handcrafted Joy | Blue Penguin',
+  description: 'Discover the story behind Blue Penguin. Learn how the quiet resilience of the little blue penguin inspires our premium handcrafted jewellery and accessories.',
+  keywords: 'blue penguin jewellery, brand story, handcrafted jewellery history, artisan beads, about us, jewellery India',
+  canonical: `${siteUrl}/our-story`,
+  ogImage: `${siteUrl}/favicon.png`,
+  schema: {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': siteUrl
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Our Story',
+        'item': `${siteUrl}/our-story`
+      }
+    ]
+  }
+}))
 </script>
 
 <template>

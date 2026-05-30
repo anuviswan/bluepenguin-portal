@@ -4,6 +4,13 @@ import { createPinia, setActivePinia } from 'pinia'
 import ProductFilter from '../ProductFilter.vue'
 import { useMetadataStore } from '@/stores/metadata'
 
+// Mock vue-router
+vi.mock('vue-router', () => ({
+  useRoute: vi.fn(() => ({
+    query: {},
+  })),
+}))
+
 // Mock services are implicitly useful if store uses them, but if we assume logic is moved to store,
 // we might want to mock the store actions or just rely on service mocks if store calls them.
 // Let's rely on service mocks and the real store logic to verify integration,
@@ -45,7 +52,7 @@ describe('ProductFilter', () => {
     await flushPromises()
 
     expect(wrapper.text()).toContain('Category')
-    expect(wrapper.text()).toContain('Raw Material')
+    expect(wrapper.text()).toContain('Materials')
     expect(wrapper.text()).toContain('Necklace')
     expect(wrapper.text()).toContain('Bead-Based')
     expect(wrapper.text()).toContain('Ocean Dreams')
