@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import logo64 from '@/assets/logos/BP 64.png'
-import logo68 from '@/assets/logos/BP 68.png'
-import logo72 from '@/assets/logos/BP 72.png'
-import logo76 from '@/assets/logos/BP 76.png'
+import logo64 from '@/assets/Logos/BP_64.png'
+import logo68 from '@/assets/Logos/BP_68.png'
+import logo72 from '@/assets/Logos/BP_72.png'
+import logo76 from '@/assets/Logos/BP_76.png'
 
 const isMenuOpen = ref(false)
 
