@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useSEO } from '@/composables/useSEO'
 import heroImage from '@/assets/images/hero-image.webp'
 import TheHeader from '@/components/TheHeader.vue'
 import TheFooter from '@/components/TheFooter.vue'
@@ -103,16 +104,56 @@ function onCollectionClick(item: { id: string }) {
 function onDealClick(item: { id: string }) {
   router.push({ name: 'product-details', params: { sku: item.id } })
 }
+
+const siteUrl = import.meta.env.VITE_SITE_URL || 'https://bluepenguin.in'
+
+useSEO(() => ({
+  title: 'Blue Penguin | Premium Handcrafted Bead Jewellery & Custom Accessories',
+  description: 'Explore Blue Penguin\'s premium, elegant, and handcrafted jewellery. From colourful custom bead bracelets to unique accessories, each piece is crafted with care.',
+  keywords: 'handcrafted jewellery, custom bead bracelets, premium accessories, blue penguin jewellery, elegant bracelets, beaded accessories, handmade India',
+  canonical: siteUrl,
+  ogImage: `${siteUrl}/images/og-share-default.png`,
+  schema: [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      'name': 'Blue Penguin',
+      'url': siteUrl,
+      'logo': `${siteUrl}/favicon.png`,
+      'sameAs': [
+        instagramLink,
+        whatsappLink.value
+      ].filter(Boolean),
+      'contactPoint': {
+        '@type': 'ContactPoint',
+        'email': import.meta.env.VITE_EMAIL || 'blue.penguin.india@gmail.com',
+        'contactType': 'customer support'
+      }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      'name': 'Blue Penguin',
+      'url': siteUrl,
+      'potentialAction': {
+        '@type': 'SearchAction',
+        'target': `${siteUrl}/shop?search={search_term_string}`,
+        'query-input': 'required name=search_term_string'
+      }
+    }
+  ]
+}))
 </script>
 
 <template>
   <div class="landing-layout">
     <TheHeader />
 
-    <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
-    <section class="hero">
-      <div class="hero-content">
-        <h1 class="hero-heading">Handcrafted with Care,<br />Made Just for You</h1>
+    <main>
+      <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1 class="hero-heading">Handcrafted with Care,<br />Made Just for You</h1>
         <p class="hero-sub">
           Thoughtfully designed and carefully crafted<br />to feel uniquely yours.
         </p>
@@ -289,6 +330,7 @@ function onDealClick(item: { id: string }) {
       </div>
     </div>
     <!-- /page-content -->
+    </main>
 
     <TheFooter />
   </div>

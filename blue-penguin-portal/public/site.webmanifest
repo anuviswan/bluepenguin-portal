@@ -1,0 +1,16 @@
+{
+  "name": "Blue Penguin Handcrafted Jewellery",
+  "short_name": "Blue Penguin",
+  "description": "Premium Handcrafted Bead Jewellery & Custom Accessories",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1b4b8a",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

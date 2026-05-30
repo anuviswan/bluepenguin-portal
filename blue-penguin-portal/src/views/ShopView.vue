@@ -4,6 +4,7 @@ import TheFooter from '@/components/TheFooter.vue'
 import ProductFilter from '@/components/ProductFilter.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { useProductFilter } from '@/composables/useProductFilter'
+import { useSEO } from '@/composables/useSEO'
 import { computed } from 'vue'
 
 const { filteredProducts, loading, error, totalCount, hasMore, loadMore, filters, sortBy } = useProductFilter()
@@ -15,6 +16,34 @@ const hasActiveFilters = computed(() => {
          filters.collections.length > 0 || 
          filters.features.length > 0
 })
+
+const siteUrl = import.meta.env.VITE_SITE_URL || 'https://bluepenguin.in'
+
+useSEO(() => ({
+  title: 'Shop Custom Bead Jewellery & Handmade Bracelets | Blue Penguin',
+  description: 'Browse the premium handcrafted bead jewellery collection by Blue Penguin. Customise and choose from our artisan bracelets, necklaces, and accessories.',
+  keywords: 'bead jewellery, handmade bracelets, custom jewellery, beaded necklaces, artisan accessories, shop handmade India',
+  canonical: `${siteUrl}/shop`,
+  ogImage: `${siteUrl}/favicon.png`,
+  schema: {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': siteUrl
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Shop',
+        'item': `${siteUrl}/shop`
+      }
+    ]
+  }
+}))
 </script>
 
 <template>

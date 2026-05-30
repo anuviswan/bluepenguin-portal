@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import logo64 from '@/assets/Logos/BP_64.png'
+import logo68 from '@/assets/Logos/BP_68.png'
+import logo72 from '@/assets/Logos/BP_72.png'
+import logo76 from '@/assets/Logos/BP_76.png'
 
 const isMenuOpen = ref(false)
 
@@ -16,10 +20,14 @@ const closeMenu = () => {
   <header class="header">
     <RouterLink to="/" class="logo-link" @click="closeMenu">
       <div class="logo-container">
-        <img src="@/assets/logo.png" alt="Blue Penguin Logo" class="logo-img" decoding="async" />
-        <div class="brand">
-          <span class="brand-name">Blue Penguin</span>
-        </div>
+        <img
+          :src="logo76"
+          :srcset="`${logo64} 900w, ${logo68} 956w, ${logo72} 1013w, ${logo76} 1069w`"
+          sizes="(max-width: 480px) 253px, 337px"
+          alt="Blue Penguin Logo"
+          class="logo-img"
+          decoding="async"
+        />
       </div>
     </RouterLink>
 
@@ -87,18 +95,6 @@ const closeMenu = () => {
 .logo-img {
   height: 48px;
   width: auto;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-}
-
-.brand-name {
-  font-family: 'Yeseva One', serif;
-  font-size: 2rem;
-  color: var(--color-blue-primary);
-  font-weight: 500;
 }
 
 /* Nav */
@@ -224,10 +220,6 @@ const closeMenu = () => {
 @media (max-width: 480px) {
   .header {
     padding: 0.75rem var(--spacing-lg);
-  }
-
-  .brand-name {
-    font-size: 1.5rem;
   }
 
   .logo-img {

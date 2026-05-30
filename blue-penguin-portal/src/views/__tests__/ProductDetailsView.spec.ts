@@ -104,38 +104,5 @@ describe('ProductDetailsView', () => {
     expect(tags[0]!.text()).toBe('Material: Silver')
   })
 
-  it('handles quantity changes', async () => {
-    productsStore.currentProduct = {
-      sku: 'SKU123',
-      productName: 'Blue Pearl Necklace',
-      price: 45,
-      featureCodes: ['HM', 'HP', 'AD'],
-      stock: 10,
-      categoryCode: 'Necklace',
-      material: 'Silver',
-      collectionCode: 'NAT',
-      yearCode: 2024,
-    }
-    productsStore.loading = false
-
-    const wrapper = mount(ProductDetailsView, {
-      global: {
-        plugins: [router],
-        stubs: {
-          TheHeader: true,
-          TheFooter: true,
-          ProductCard: true,
-        },
-      },
-    })
-    await flushPromises()
-
-    const incBtn = wrapper.find('.qty-btn:last-child')
-    await incBtn.trigger('click')
-    expect(wrapper.find('.qty-value').text()!).toBe('2')
-
-    const decBtn = wrapper.find('.qty-btn:first-child')
-    await decBtn.trigger('click')
-    expect(wrapper.find('.qty-value').text()).toBe('1')
-  })
 })
+

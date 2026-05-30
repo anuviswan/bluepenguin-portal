@@ -1,16 +1,48 @@
 <script setup lang="ts">
-// Shipping Policy View
-// Content sourced from docs/Shipping Policy.md
+import TheHeader from '@/components/TheHeader.vue'
+import TheFooter from '@/components/TheFooter.vue'
+import { useSEO } from '@/composables/useSEO'
+
+const siteUrl = import.meta.env.VITE_SITE_URL || 'https://bluepenguin.in'
+
+useSEO(() => ({
+  title: 'Shipping Policy | Customer Care | Blue Penguin',
+  description: 'Learn about shipping charges, dispatch timelines, tracking, and delivery terms for handcrafted bead jewellery by Blue Penguin.',
+  keywords: 'shipping policy, jewellery shipping, delivery timelines, tracking orders, customer care India, handmade dispatch',
+  canonical: `${siteUrl}/shipping-policy`,
+  ogImage: `${siteUrl}/images/og-share-default.png`,
+  schema: {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': siteUrl
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Shipping Policy',
+        'item': `${siteUrl}/shipping-policy`
+      }
+    ]
+  }
+}))
 </script>
 
 <template>
   <div class="policy-page">
-    <div class="hero-section">
-      <div class="hero-content">
-        <h1>Shipping Policy</h1>
-        <p class="subtitle">Carefully packed and thoughtfully handcrafted.</p>
+    <TheHeader />
+
+    <main>
+      <div class="hero-section">
+        <div class="hero-content">
+          <h1>Shipping Policy</h1>
+          <p class="subtitle">Carefully packed and thoughtfully handcrafted.</p>
+        </div>
       </div>
-    </div>
 
     <div class="policy-content">
       <p class="intro-text">
@@ -116,6 +148,9 @@
         <RouterLink to="/" class="btn-primary">Back to Home</RouterLink>
       </div>
     </div>
+    </main>
+
+    <TheFooter />
   </div>
 </template>
 
